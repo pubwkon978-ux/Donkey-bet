@@ -1,0 +1,1853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Donkey Bet</title>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --green: #0a4422;
+  --green2: #1a7a40;
+  --gold: #f1c40f;
+  --gold2: #e67e22;
+  --bg: #071d0f;
+  --card-bg: rgba(255,255,255,0.06);
+  --border: rgba(255,255,255,0.1);
+  --text: #ffffff;
+  --muted: rgba(255,255,255,0.45);
+  --danger: #e74c3c;
+  --success: #2ecc71;
+  --red-card: #c0392b;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+  color: var(--text);
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 20%, rgba(26,122,64,0.25) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 80%, rgba(241,196,15,0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== SCREENS ===== */
+.screen { display: none; min-height: 100vh; position: relative; z-index: 1; }
+.screen.active { display: flex; flex-direction: column; }
+
+/* ===== LOGIN SCREEN ===== */
+#screen-login {
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  text-align: center;
+}
+
+.logo-area {
+  margin-bottom: 48px;
+  animation: fadeDown 0.6s ease;
+}
+
+.logo-suit {
+  font-size: 52px;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 0 20px rgba(241,196,15,0.4));
+}
+
+.logo-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 52px;
+  letter-spacing: 4px;
+  background: linear-gradient(135deg, #f1c40f, #e67e22);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+.logo-sub {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.login-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px 24px;
+  width: 100%;
+  max-width: 340px;
+  backdrop-filter: blur(10px);
+  animation: fadeUp 0.6s ease 0.2s both;
+}
+
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 20px;
+  background: white;
+  color: #333;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.btn-google:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
+.btn-google:active { transform: translateY(0); }
+
+.google-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+.login-divider::before, .login-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ===== NAME SETUP SCREEN ===== */
+#screen-name {
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+}
+
+.setup-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px 24px;
+  width: 100%;
+  max-width: 340px;
+  animation: fadeUp 0.4s ease;
+}
+
+.avatar-upload {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.avatar-circle {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: rgba(241,196,15,0.15);
+  border: 2px dashed rgba(241,196,15,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.2s;
+  font-size: 32px;
+}
+.avatar-circle:hover { border-color: var(--gold); }
+.avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
+
+.inp {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(0,0,0,0.4);
+  color: white;
+  font-size: 15px;
+  font-family: 'Outfit', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.inp:focus { border-color: rgba(241,196,15,0.5); }
+.inp::placeholder { color: var(--muted); }
+
+.btn-gold {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  color: #1a1a1a;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+}
+.btn-gold:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(241,196,15,0.3); }
+.btn-gold:active { transform: translateY(0); }
+.btn-gold:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* ===== MAIN SCREEN ===== */
+#screen-main {
+  padding-bottom: 0;
+}
+
+/* Top Bar */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: rgba(0,0,0,0.5);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(10px);
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.menu-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+}
+.menu-btn span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: white;
+  border-radius: 2px;
+}
+
+.topbar-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 24px;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.topbar-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  cursor: pointer;
+  object-fit: cover;
+  overflow: hidden;
+  background: rgba(241,196,15,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+.topbar-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+
+/* Balance chip */
+.balance-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(241,196,15,0.12);
+  border: 1px solid rgba(241,196,15,0.3);
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold);
+}
+
+/* Main content */
+.main-content {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+/* Section header */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Players list */
+.players-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.player-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 14px;
+  transition: all 0.2s;
+  animation: fadeUp 0.3s ease;
+}
+.player-card:hover { border-color: rgba(255,255,255,0.2); }
+
+.player-avatar {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.player-avatar img, .player-avatar .avatar-placeholder {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: rgba(241,196,15,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  border: 2px solid transparent;
+}
+
+.status-dot {
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+}
+.status-dot.online { background: var(--success); box-shadow: 0 0 6px rgba(46,204,113,0.6); }
+.status-dot.offline { background: #555; }
+
+.player-info { flex: 1; min-width: 0; }
+.player-name { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.player-id { font-size: 11px; color: var(--muted); }
+
+.player-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.15s;
+}
+.btn-icon:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.25); }
+
+.btn-icon.challenge {
+  background: rgba(241,196,15,0.1);
+  border-color: rgba(241,196,15,0.3);
+  color: var(--gold);
+}
+.btn-icon.challenge:hover { background: rgba(241,196,15,0.2); }
+
+/* Search bar */
+.search-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.search-inp {
+  flex: 1;
+  padding: 11px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(0,0,0,0.4);
+  color: white;
+  font-size: 14px;
+  font-family: 'Outfit', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-inp:focus { border-color: rgba(241,196,15,0.4); }
+.search-inp::placeholder { color: var(--muted); }
+
+.btn-search {
+  padding: 11px 16px;
+  border-radius: 12px;
+  background: rgba(241,196,15,0.15);
+  border: 1px solid rgba(241,196,15,0.3);
+  color: var(--gold);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-search:hover { background: rgba(241,196,15,0.25); }
+
+/* ===== SIDE MENU ===== */
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 90;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  backdrop-filter: blur(3px);
+}
+.menu-overlay.open { opacity: 1; pointer-events: all; }
+
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 280px;
+  background: linear-gradient(180deg, #0d3320 0%, #071d0f 100%);
+  border-right: 1px solid rgba(241,196,15,0.2);
+  z-index: 100;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.side-menu.open { transform: translateX(0); }
+
+.menu-profile {
+  padding: 32px 20px 20px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(241,196,15,0.04);
+}
+
+.menu-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 3px solid var(--gold);
+  overflow: hidden;
+  background: rgba(241,196,15,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin-bottom: 12px;
+  box-shadow: 0 0 20px rgba(241,196,15,0.2);
+}
+.menu-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.menu-name { font-size: 18px; font-weight: 700; margin-bottom: 2px; }
+.menu-uid { font-size: 11px; color: var(--muted); letter-spacing: 1px; }
+
+.balance-display {
+  margin-top: 16px;
+  background: rgba(241,196,15,0.1);
+  border: 1px solid rgba(241,196,15,0.25);
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+.balance-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+.balance-amount { font-family: 'Bebas Neue', cursive; font-size: 32px; letter-spacing: 2px; color: var(--gold); line-height: 1; }
+.balance-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+.menu-items {
+  flex: 1;
+  padding: 12px 0;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.8);
+}
+.menu-item:hover { background: rgba(255,255,255,0.06); }
+.menu-item.active { background: rgba(241,196,15,0.08); color: var(--gold); }
+.menu-item-icon { font-size: 20px; width: 28px; text-align: center; }
+
+.menu-separator {
+  height: 1px;
+  background: var(--border);
+  margin: 8px 20px;
+}
+
+.menu-footer {
+  padding: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.btn-signout {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(231,76,60,0.15);
+  border: 1px solid rgba(231,76,60,0.3);
+  color: #e74c3c;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-signout:hover { background: rgba(231,76,60,0.25); }
+
+/* ===== CHAT PANEL ===== */
+.chat-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 80;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.chat-overlay.open { opacity: 1; pointer-events: all; }
+
+.chat-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 75vh;
+  background: #0d2d18;
+  border-top: 1px solid rgba(241,196,15,0.3);
+  border-radius: 20px 20px 0 0;
+  z-index: 85;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  display: flex;
+  flex-direction: column;
+}
+.chat-panel.open { transform: translateY(0); }
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 16px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.chat-header-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: rgba(241,196,15,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.chat-header-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.chat-header-info { flex: 1; }
+.chat-header-name { font-size: 15px; font-weight: 600; }
+.chat-header-status { font-size: 11px; color: var(--success); }
+
+.chat-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chat-msg {
+  display: flex;
+  gap: 8px;
+  max-width: 80%;
+  animation: fadeUp 0.2s ease;
+}
+.chat-msg.own { align-self: flex-end; flex-direction: row-reverse; }
+
+.msg-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(241,196,15,0.2);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  overflow: hidden;
+}
+.msg-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.msg-bubble {
+  background: rgba(255,255,255,0.08);
+  border-radius: 14px;
+  border-bottom-left-radius: 4px;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.chat-msg.own .msg-bubble {
+  background: rgba(241,196,15,0.2);
+  border-radius: 14px;
+  border-bottom-right-radius: 4px;
+}
+
+.msg-time {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 3px;
+  text-align: right;
+}
+
+.chat-input-area {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+}
+
+.chat-inp {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 22px;
+  border: 1px solid var(--border);
+  background: rgba(0,0,0,0.4);
+  color: white;
+  font-size: 14px;
+  font-family: 'Outfit', sans-serif;
+  outline: none;
+}
+.chat-inp:focus { border-color: rgba(241,196,15,0.4); }
+
+.btn-send {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  border: none;
+  color: #1a1a1a;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ===== GAME REQUEST POPUP ===== */
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 110;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  backdrop-filter: blur(4px);
+}
+.popup-overlay.show { display: flex; }
+
+.popup-card {
+  background: linear-gradient(135deg, #0d3320, #071d0f);
+  border: 1px solid rgba(241,196,15,0.4);
+  border-radius: 20px;
+  padding: 28px 24px;
+  width: 100%;
+  max-width: 320px;
+  text-align: center;
+  animation: popIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(241,196,15,0.1);
+}
+
+.popup-suits { font-size: 32px; margin-bottom: 12px; animation: float 2s ease-in-out infinite; }
+.popup-title { font-family: 'Bebas Neue', cursive; font-size: 22px; letter-spacing: 2px; color: var(--gold); margin-bottom: 6px; }
+.popup-text { font-size: 14px; color: var(--muted); line-height: 1.5; margin-bottom: 20px; }
+.popup-challenger { font-size: 16px; font-weight: 600; color: white; }
+
+.popup-actions { display: flex; gap: 10px; }
+.btn-accept {
+  flex: 1; padding: 13px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--success), #27ae60);
+  border: none; color: white; font-family: 'Outfit', sans-serif;
+  font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.15s;
+}
+.btn-accept:hover { transform: translateY(-1px); }
+.btn-decline {
+  flex: 1; padding: 13px; border-radius: 12px;
+  background: rgba(231,76,60,0.15); border: 1px solid rgba(231,76,60,0.4);
+  color: #e74c3c; font-family: 'Outfit', sans-serif;
+  font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.15s;
+}
+.btn-decline:hover { background: rgba(231,76,60,0.25); }
+
+/* ===== GAME SCREEN ===== */
+#screen-game {
+  background: radial-gradient(ellipse at center, #1a7a40 0%, #0a4422 50%, #071d0f 100%);
+}
+
+.game-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: rgba(0,0,0,0.4);
+  border-bottom: 1px solid var(--border);
+}
+
+.game-players {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.game-player-chip {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.game-player-chip.active { border-color: var(--gold); color: var(--gold); }
+
+.vs-badge { font-size: 11px; color: var(--muted); font-weight: 700; }
+
+.btn-quit {
+  padding: 8px 16px;
+  border-radius: 10px;
+  background: rgba(231,76,60,0.15);
+  border: 1px solid rgba(231,76,60,0.35);
+  color: #e74c3c;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.game-frame {
+  flex: 1;
+  overflow: auto;
+}
+
+/* ===== MENU SUBPAGES ===== */
+.subpage {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 105;
+  display: none;
+  flex-direction: column;
+}
+.subpage.open { display: flex; }
+
+.subpage-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(0,0,0,0.4);
+}
+
+.btn-back {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.subpage-title {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.subpage-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 16px;
+}
+
+/* History items */
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 8px;
+}
+.history-result {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.history-result.win { background: rgba(46,204,113,0.15); border: 1px solid rgba(46,204,113,0.3); }
+.history-result.lose { background: rgba(231,76,60,0.15); border: 1px solid rgba(231,76,60,0.3); }
+.history-info { flex: 1; }
+.history-opponent { font-size: 14px; font-weight: 600; }
+.history-card { font-size: 12px; color: var(--muted); }
+.history-amount { font-size: 15px; font-weight: 700; }
+.history-amount.win { color: var(--success); }
+.history-amount.lose { color: var(--danger); }
+
+/* Top up form */
+.topup-info {
+  background: rgba(241,196,15,0.06);
+  border: 1px solid rgba(241,196,15,0.2);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+.topup-info p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+.amount-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.amount-btn {
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  color: white;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+}
+.amount-btn:hover, .amount-btn.sel { background: rgba(241,196,15,0.12); border-color: rgba(241,196,15,0.4); color: var(--gold); }
+
+/* Terms */
+.terms-content {
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.8;
+}
+.terms-section { margin-bottom: 20px; }
+.terms-section h3 { font-size: 15px; font-weight: 700; color: var(--gold); margin-bottom: 8px; }
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: rgba(20,50,30,0.95);
+  border: 1px solid rgba(241,196,15,0.3);
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 200;
+  transition: transform 0.3s ease;
+  backdrop-filter: blur(10px);
+  white-space: nowrap;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* Loading */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(241,196,15,0.2);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Animations */
+@keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeDown { from { opacity:0; transform:translateY(-16px); } to { opacity:1; transform:translateY(0); } }
+@keyframes popIn { from { opacity:0; transform:scale(0.85); } to { opacity:1; transform:scale(1); } }
+@keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-6px); } }
+@keyframes spin { to { transform:rotate(360deg); } }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.5; } }
+
+.label { font-size: 12px; color: var(--muted); margin-bottom: 6px; display: block; }
+.form-gap { margin-bottom: 14px; }
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--muted);
+}
+.empty-state .icon { font-size: 40px; margin-bottom: 12px; }
+.empty-state p { font-size: 14px; line-height: 1.6; }
+
+/* Request sent indicator */
+.request-sent {
+  font-size: 11px;
+  color: var(--gold);
+  animation: pulse 1.5s ease infinite;
+}
+</style>
+</head>
+<body>
+
+<!-- Loading -->
+<div class="loading-overlay" id="loading">
+  <div style="font-size:40px">♠ ♥ ♦ ♣</div>
+  <div class="spinner"></div>
+  <div style="font-size:14px;color:var(--muted)">Loading...</div>
+</div>
+
+<!-- ===== LOGIN SCREEN ===== -->
+<div class="screen" id="screen-login">
+  <div class="logo-area">
+    <div class="logo-suit">🃏</div>
+    <div class="logo-title">Donkey Bet</div>
+    <div class="logo-sub">Card Betting Game</div>
+  </div>
+  <div class="login-card">
+    <p style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:20px;">Login to your account to play</p>
+    <button class="btn-google" onclick="signInGoogle()">
+      <svg class="google-icon" viewBox="0 0 24 24">
+        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+      </svg>
+      Continue with Google
+    </button>
+    <div class="login-divider">secured by Firebase</div>
+    <p style="font-size:11px;color:var(--muted);text-align:center;line-height:1.6;">By continuing, you agree to our<br>Terms of Service & Privacy Policy</p>
+  </div>
+</div>
+
+<!-- ===== NAME SETUP SCREEN ===== -->
+<div class="screen" id="screen-name">
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:32px 24px;">
+    <div class="setup-card">
+      <h2 style="text-align:center;margin-bottom:6px;font-size:20px;">Set Up Profile</h2>
+      <p style="text-align:center;font-size:13px;color:var(--muted);margin-bottom:24px;">Choose your player name</p>
+
+      <div class="avatar-upload">
+        <div class="avatar-circle" id="avatarCircle" onclick="document.getElementById('avatarFile').click()">
+          📷
+        </div>
+        <input type="file" id="avatarFile" accept="image/*" style="display:none" onchange="previewAvatar(event)">
+        <p style="font-size:12px;color:var(--muted);">Tap to upload photo</p>
+      </div>
+
+      <div class="form-gap">
+        <label class="label">Player Name</label>
+        <input class="inp" id="playerNameInp" placeholder="Enter your name..." maxlength="20">
+      </div>
+
+      <button class="btn-gold" id="setupBtn" onclick="completeSetup()" style="margin-top:8px;">
+        Enter Game →
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MAIN SCREEN ===== -->
+<div class="screen" id="screen-main">
+
+  <!-- Top Bar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="menu-btn" onclick="openMenu()">
+        <span></span><span></span><span></span>
+      </div>
+      <span class="topbar-title">DONKEY BET</span>
+    </div>
+    <div class="topbar-right">
+      <div class="balance-chip">
+        <span>💰</span>
+        <span id="balanceDisplay">Rs. 0</span>
+      </div>
+      <div class="topbar-avatar" id="topbarAvatar" onclick="openMenu()">👤</div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+
+    <!-- Search -->
+    <div class="search-bar">
+      <input class="search-inp" id="searchInp" placeholder="🔍  Search player by name..." oninput="filterPlayers()">
+    </div>
+
+    <!-- Online Players -->
+    <div class="section-header">
+      <span class="section-title">Players</span>
+      <span id="onlineCount" style="font-size:12px;color:var(--success);"></span>
+    </div>
+
+    <div class="players-list" id="playersList">
+      <div class="empty-state">
+        <div class="icon">👥</div>
+        <p>No other players online yet.<br>Invite friends to play!</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== GAME SCREEN ===== -->
+<div class="screen" id="screen-game">
+  <div class="game-header">
+    <div class="game-players">
+      <div class="game-player-chip active" id="game-p0">Me</div>
+      <span class="vs-badge">VS</span>
+      <div class="game-player-chip" id="game-p1">Opponent</div>
+    </div>
+    <button class="btn-quit" onclick="quitGame()">✕ Quit</button>
+  </div>
+  <div class="game-frame" id="gameFrame"></div>
+</div>
+
+<!-- ===== SIDE MENU ===== -->
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+<div class="side-menu" id="sideMenu">
+  <div class="menu-profile">
+    <div class="menu-avatar" id="menuAvatar">👤</div>
+    <div class="menu-name" id="menuName">Player</div>
+    <div class="menu-uid" id="menuUID">ID: #------</div>
+    <div class="balance-display">
+      <div class="balance-label">Your Balance</div>
+      <div class="balance-amount" id="menuBalance">Rs. 0</div>
+      <div class="balance-sub">Available to play</div>
+    </div>
+  </div>
+  <div class="menu-items">
+    <div class="menu-item active" onclick="closeMenu();showScreen('main')">
+      <span class="menu-item-icon">🃏</span> Play
+    </div>
+    <div class="menu-item" onclick="openSubpage('history')">
+      <span class="menu-item-icon">📊</span> Game History
+    </div>
+    <div class="menu-item" onclick="openSubpage('topup')">
+      <span class="menu-item-icon">💳</span> Top Up
+    </div>
+    <div class="menu-separator"></div>
+    <div class="menu-item" onclick="openSubpage('support')">
+      <span class="menu-item-icon">💬</span> Customer Support
+    </div>
+    <div class="menu-item" onclick="openSubpage('terms')">
+      <span class="menu-item-icon">📜</span> Terms & Privacy
+    </div>
+  </div>
+  <div class="menu-footer">
+    <button class="btn-signout" onclick="signOut()">
+      <span>⬅</span> Sign Out
+    </button>
+  </div>
+</div>
+
+<!-- ===== CHAT PANEL ===== -->
+<div class="chat-overlay" id="chatOverlay" onclick="closeChat()"></div>
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-header">
+    <div class="chat-header-avatar" id="chatAvatar">👤</div>
+    <div class="chat-header-info">
+      <div class="chat-header-name" id="chatName">Player</div>
+      <div class="chat-header-status" id="chatStatus">● Online</div>
+    </div>
+    <button class="chat-close" onclick="closeChat()">✕</button>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-input-area">
+    <input class="chat-inp" id="chatInp" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendChatMsg()">
+    <button class="btn-send" onclick="sendChatMsg()">➤</button>
+  </div>
+</div>
+
+<!-- ===== GAME REQUEST POPUP ===== -->
+<div class="popup-overlay" id="requestPopup">
+  <div class="popup-card">
+    <div class="popup-suits">♠ ♥ ♦ ♣</div>
+    <div class="popup-title">Game Request!</div>
+    <div class="popup-text">
+      <span class="popup-challenger" id="popupChallenger">Player</span><br>
+      wants to play against you!
+    </div>
+    <div class="popup-actions">
+      <button class="btn-accept" onclick="acceptRequest()">✓ Accept</button>
+      <button class="btn-decline" onclick="declineRequest()">✕ Decline</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SUBPAGES ===== -->
+
+<!-- Game History -->
+<div class="subpage" id="subpage-history">
+  <div class="subpage-header">
+    <button class="btn-back" onclick="closeSubpage('history')">‹</button>
+    <span class="subpage-title">📊 Game History</span>
+  </div>
+  <div class="subpage-content" id="historyContent">
+    <div class="empty-state">
+      <div class="icon">🎴</div>
+      <p>No games played yet.<br>Challenge someone to start!</p>
+    </div>
+  </div>
+</div>
+
+<!-- Top Up -->
+<div class="subpage" id="subpage-topup">
+  <div class="subpage-header">
+    <button class="btn-back" onclick="closeSubpage('topup')">‹</button>
+    <span class="subpage-title">💳 Top Up</span>
+  </div>
+  <div class="subpage-content">
+    <div class="topup-info">
+      <p>Send money to admin's bank account and request a top up. Admin will add funds to your account after payment is confirmed.</p>
+    </div>
+
+    <div class="form-gap">
+      <label class="label">Select Amount</label>
+      <div class="amount-grid">
+        <div class="amount-btn" onclick="selectAmount(500, this)">Rs. 500</div>
+        <div class="amount-btn" onclick="selectAmount(1000, this)">Rs. 1,000</div>
+        <div class="amount-btn" onclick="selectAmount(2500, this)">Rs. 2,500</div>
+        <div class="amount-btn" onclick="selectAmount(5000, this)">Rs. 5,000</div>
+      </div>
+    </div>
+
+    <div class="form-gap">
+      <label class="label">Or enter custom amount</label>
+      <input class="inp" type="number" id="customAmountInp" placeholder="Rs. 0" min="100" oninput="topupAmount=+this.value">
+    </div>
+
+    <div class="form-gap">
+      <label class="label">Payment Reference / Note</label>
+      <input class="inp" id="topupNote" placeholder="e.g. Bank transfer ref #...">
+    </div>
+
+    <button class="btn-gold" onclick="requestTopUp()">Request Top Up →</button>
+
+    <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:16px;line-height:1.7;">
+      After submitting, admin will contact you to confirm payment.<br>
+      Funds will be added within 24 hours.
+    </p>
+  </div>
+</div>
+
+<!-- Customer Support -->
+<div class="subpage" id="subpage-support">
+  <div class="subpage-header">
+    <button class="btn-back" onclick="closeSubpage('support')">‹</button>
+    <span class="subpage-title">💬 Customer Support</span>
+  </div>
+  <div style="display:flex;flex-direction:column;height:calc(100vh - 65px);">
+    <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;" id="supportMessages"></div>
+    <div class="chat-input-area">
+      <input class="chat-inp" id="supportInp" placeholder="Message admin..." onkeydown="if(event.key==='Enter')sendSupportMsg()">
+      <button class="btn-send" onclick="sendSupportMsg()">➤</button>
+    </div>
+  </div>
+</div>
+
+<!-- Terms -->
+<div class="subpage" id="subpage-terms">
+  <div class="subpage-header">
+    <button class="btn-back" onclick="closeSubpage('terms')">‹</button>
+    <span class="subpage-title">📜 Terms & Privacy</span>
+  </div>
+  <div class="subpage-content">
+    <div class="terms-content">
+      <div class="terms-section">
+        <h3>1. Acceptance of Terms</h3>
+        <p>By accessing and using Donkey Bet, you accept and agree to be bound by these Terms of Service. If you do not agree, please do not use this platform.</p>
+      </div>
+      <div class="terms-section">
+        <h3>2. Eligibility</h3>
+        <p>You must be 18 years or older to use this platform. By registering, you confirm that you are of legal age in your jurisdiction.</p>
+      </div>
+      <div class="terms-section">
+        <h3>3. Game Rules</h3>
+        <p>All games are played fairly. Bets placed are final once a game starts. Winnings and losses are settled immediately after each round. The platform is not responsible for network interruptions.</p>
+      </div>
+      <div class="terms-section">
+        <h3>4. Financial Transactions</h3>
+        <p>Top-ups are processed manually by an admin after payment confirmation. Withdrawal requests are processed within 48 hours. The platform takes no commission on winnings between players.</p>
+      </div>
+      <div class="terms-section">
+        <h3>5. Privacy Policy</h3>
+        <p>We collect your Google account information (name, email, profile photo) for authentication purposes. Your game history and balance are stored securely in Firebase. We never sell or share your personal data with third parties.</p>
+      </div>
+      <div class="terms-section">
+        <h3>6. Responsible Gaming</h3>
+        <p>Only bet what you can afford to lose. If you feel gambling is becoming a problem, please seek professional help. We reserve the right to limit or suspend accounts showing signs of problem gambling.</p>
+      </div>
+      <div class="terms-section">
+        <h3>7. Account Suspension</h3>
+        <p>We reserve the right to suspend or terminate accounts that violate these terms, engage in cheating, or display inappropriate behavior toward other players.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== FIREBASE CONFIG =====
+const firebaseConfig = {
+  apiKey: "AIzaSyCh8ATjBERok1XPOhPameciyPalntsPWg8",
+  authDomain: "donkey-bet.firebaseapp.com",
+  databaseURL: "https://donkey-bet-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "donkey-bet",
+  storageBucket: "donkey-bet.firebasestorage.app",
+  messagingSenderId: "709170827454",
+  appId: "1:709170827454:web:200a3ac74bbad45ff90eef"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.database();
+
+// ===== CLOUDINARY CONFIG =====
+const CLOUDINARY_CLOUD = 'dnvx958gz';
+const CLOUDINARY_PRESET = 'donkey_bet'; // create an unsigned upload preset named this
+
+// ===== APP STATE =====
+let currentUser = null;
+let currentProfile = null;
+let activeChatUid = null;
+let activeChatRef = null;
+let pendingRequestFrom = null;
+let pendingRequestKey = null;
+let topupAmount = 0;
+let allPlayers = {};
+
+// ===== UTILS =====
+function genUID() {
+  return 'DB' + Math.random().toString(36).substr(2,6).toUpperCase();
+}
+
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+}
+
+function showToast(msg, duration = 2500) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), duration);
+}
+
+function setLoading(show) {
+  document.getElementById('loading').style.display = show ? 'flex' : 'none';
+}
+
+// ===== GOOGLE AUTH =====
+async function signInGoogle() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  try {
+    await auth.signInWithPopup(provider);
+  } catch(e) {
+    showToast('Login failed: ' + e.message);
+  }
+}
+
+async function signOut() {
+  closeMenu();
+  await db.ref('users/' + currentUser.uid + '/online').set(false);
+  await auth.signOut();
+}
+
+// ===== AUTH STATE =====
+auth.onAuthStateChanged(async user => {
+  setLoading(false);
+  if (!user) {
+    showScreen('login');
+    return;
+  }
+  currentUser = user;
+
+  // Check if profile exists
+  const snap = await db.ref('users/' + user.uid).once('value');
+  if (!snap.exists() || !snap.val().playerName) {
+    showScreen('name');
+    // Pre-fill with Google name
+    document.getElementById('playerNameInp').value = user.displayName || '';
+    // Pre-fill avatar if Google photo
+    if (user.photoURL) {
+      const circle = document.getElementById('avatarCircle');
+      circle.innerHTML = `<img src="${user.photoURL}">`;
+    }
+  } else {
+    currentProfile = snap.val();
+    await goOnline();
+    loadMainScreen();
+  }
+});
+
+// ===== SETUP =====
+async function previewAvatar(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const circle = document.getElementById('avatarCircle');
+    circle.innerHTML = `<img src="${e.target.result}">`;
+  };
+  reader.readAsDataURL(file);
+}
+
+async function uploadToCloudinary(file) {
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', CLOUDINARY_PRESET);
+  fd.append('folder', 'donkey_bet_avatars');
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, {
+    method: 'POST', body: fd
+  });
+  const data = await res.json();
+  return data.secure_url;
+}
+
+async function completeSetup() {
+  const name = document.getElementById('playerNameInp').value.trim();
+  if (!name) { showToast('Please enter a player name'); return; }
+
+  const btn = document.getElementById('setupBtn');
+  btn.disabled = true;
+  btn.textContent = 'Setting up...';
+
+  try {
+    let photoURL = currentUser.photoURL || '';
+    const fileInput = document.getElementById('avatarFile');
+    if (fileInput.files[0]) {
+      try {
+        photoURL = await uploadToCloudinary(fileInput.files[0]);
+      } catch(e) {
+        // fallback to google photo
+      }
+    }
+
+    const uid = genUID();
+    const profile = {
+      playerName: name,
+      uid: currentUser.uid,
+      playerID: uid,
+      photoURL: photoURL,
+      balance: 1000, // starter balance
+      email: currentUser.email,
+      createdAt: Date.now(),
+      online: true
+    };
+
+    await db.ref('users/' + currentUser.uid).set(profile);
+    currentProfile = profile;
+    await goOnline();
+    loadMainScreen();
+  } catch(e) {
+    showToast('Setup failed: ' + e.message);
+    btn.disabled = false;
+    btn.textContent = 'Enter Game →';
+  }
+}
+
+// ===== ONLINE PRESENCE =====
+async function goOnline() {
+  const ref = db.ref('users/' + currentUser.uid);
+  await ref.update({ online: true, lastSeen: Date.now() });
+  // Set offline on disconnect
+  db.ref('users/' + currentUser.uid + '/online').onDisconnect().set(false);
+  db.ref('users/' + currentUser.uid + '/lastSeen').onDisconnect().set(Date.now());
+}
+
+// ===== MAIN SCREEN =====
+function loadMainScreen() {
+  showScreen('main');
+  updateMenuUI();
+  listenToPlayers();
+  listenToRequests();
+}
+
+function updateMenuUI() {
+  if (!currentProfile) return;
+  document.getElementById('menuName').textContent = currentProfile.playerName;
+  document.getElementById('menuUID').textContent = 'ID: ' + currentProfile.playerID;
+  document.getElementById('menuBalance').textContent = 'Rs. ' + (currentProfile.balance || 0).toLocaleString();
+  document.getElementById('balanceDisplay').textContent = 'Rs. ' + (currentProfile.balance || 0).toLocaleString();
+
+  const avatarHTML = currentProfile.photoURL
+    ? `<img src="${currentProfile.photoURL}">`
+    : (currentProfile.playerName ? currentProfile.playerName[0].toUpperCase() : '👤');
+
+  document.getElementById('menuAvatar').innerHTML = avatarHTML;
+  document.getElementById('topbarAvatar').innerHTML = currentProfile.photoURL
+    ? `<img src="${currentProfile.photoURL}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`
+    : (currentProfile.playerName ? currentProfile.playerName[0].toUpperCase() : '👤');
+}
+
+// ===== PLAYERS LIST =====
+function listenToPlayers() {
+  db.ref('users').on('value', snap => {
+    allPlayers = {};
+    snap.forEach(child => {
+      const data = child.val();
+      if (child.key !== currentUser.uid) {
+        allPlayers[child.key] = data;
+      }
+    });
+    renderPlayers(allPlayers);
+  });
+
+  // Listen for own balance updates
+  db.ref('users/' + currentUser.uid + '/balance').on('value', snap => {
+    if (snap.val() !== null) {
+      currentProfile.balance = snap.val();
+      document.getElementById('menuBalance').textContent = 'Rs. ' + snap.val().toLocaleString();
+      document.getElementById('balanceDisplay').textContent = 'Rs. ' + snap.val().toLocaleString();
+    }
+  });
+}
+
+function renderPlayers(players) {
+  const list = document.getElementById('playersList');
+  const keys = Object.keys(players);
+
+  // Count online
+  const online = keys.filter(k => players[k].online).length;
+  document.getElementById('onlineCount').textContent = online + ' online';
+
+  if (keys.length === 0) {
+    list.innerHTML = `<div class="empty-state"><div class="icon">👥</div><p>No other players yet.<br>Invite friends to play!</p></div>`;
+    return;
+  }
+
+  // Sort: online first
+  keys.sort((a,b) => (players[b].online ? 1 : 0) - (players[a].online ? 1 : 0));
+
+  list.innerHTML = keys.map(key => {
+    const p = players[key];
+    const isOnline = p.online;
+    const avatarContent = p.photoURL
+      ? `<img src="${p.photoURL}" style="width:42px;height:42px;border-radius:50%;object-fit:cover;">`
+      : `<div class="avatar-placeholder" style="width:42px;height:42px;border-radius:50%;background:rgba(241,196,15,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;">${(p.playerName||'?')[0].toUpperCase()}</div>`;
+
+    return `
+    <div class="player-card">
+      <div class="player-avatar">
+        ${avatarContent}
+        <span class="status-dot ${isOnline ? 'online' : 'offline'}"></span>
+      </div>
+      <div class="player-info">
+        <div class="player-name">${p.playerName || 'Unknown'}</div>
+        <div class="player-id">#${p.playerID || '------'}</div>
+      </div>
+      <div class="player-actions">
+        <div class="btn-icon" onclick="openChat('${key}')" title="Chat">💬</div>
+        <div class="btn-icon challenge" onclick="sendGameRequest('${key}')" title="Challenge"
+          ${!isOnline ? 'style="opacity:0.4;pointer-events:none;"' : ''}>⚔️</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterPlayers() {
+  const q = document.getElementById('searchInp').value.trim().toLowerCase();
+  if (!q) { renderPlayers(allPlayers); return; }
+  const filtered = {};
+  Object.keys(allPlayers).forEach(k => {
+    const p = allPlayers[k];
+    if ((p.playerName||'').toLowerCase().includes(q) || (p.playerID||'').toLowerCase().includes(q)) {
+      filtered[k] = p;
+    }
+  });
+  renderPlayers(filtered);
+}
+
+// ===== MENU =====
+function openMenu() {
+  document.getElementById('menuOverlay').classList.add('open');
+  document.getElementById('sideMenu').classList.add('open');
+}
+function closeMenu() {
+  document.getElementById('menuOverlay').classList.remove('open');
+  document.getElementById('sideMenu').classList.remove('open');
+}
+
+// ===== SUBPAGES =====
+function openSubpage(name) {
+  closeMenu();
+  document.getElementById('subpage-' + name).classList.add('open');
+  if (name === 'history') loadHistory();
+  if (name === 'support') loadSupportChat();
+}
+function closeSubpage(name) {
+  document.getElementById('subpage-' + name).classList.remove('open');
+}
+
+// ===== CHAT =====
+function openChat(uid) {
+  activeChatUid = uid;
+  const player = allPlayers[uid];
+  if (!player) return;
+
+  document.getElementById('chatName').textContent = player.playerName;
+  document.getElementById('chatStatus').textContent = player.online ? '● Online' : '○ Offline';
+  document.getElementById('chatStatus').style.color = player.online ? 'var(--success)' : 'var(--muted)';
+
+  const avatarEl = document.getElementById('chatAvatar');
+  avatarEl.innerHTML = player.photoURL
+    ? `<img src="${player.photoURL}" style="width:100%;height:100%;object-fit:cover;">`
+    : (player.playerName || '?')[0].toUpperCase();
+
+  document.getElementById('chatOverlay').classList.add('open');
+  document.getElementById('chatPanel').classList.add('open');
+
+  // Load chat messages
+  const chatKey = [currentUser.uid, uid].sort().join('_');
+  if (activeChatRef) activeChatRef.off();
+  activeChatRef = db.ref('chats/' + chatKey);
+  activeChatRef.on('value', snap => {
+    const msgs = document.getElementById('chatMessages');
+    msgs.innerHTML = '';
+    if (snap.exists()) {
+      snap.forEach(child => {
+        const m = child.val();
+        const isOwn = m.senderUID === currentUser.uid;
+        const avatarContent = isOwn
+          ? (currentProfile.photoURL ? `<img src="${currentProfile.photoURL}">` : (currentProfile.playerName||'?')[0])
+          : (allPlayers[uid]?.photoURL ? `<img src="${allPlayers[uid].photoURL}">` : (allPlayers[uid]?.playerName||'?')[0]);
+
+        msgs.innerHTML += `
+          <div class="chat-msg ${isOwn ? 'own' : ''}">
+            <div class="msg-avatar">${avatarContent}</div>
+            <div>
+              <div class="msg-bubble">${escapeHTML(m.text)}</div>
+              <div class="msg-time">${formatTime(m.ts)}</div>
+            </div>
+          </div>`;
+      });
+      msgs.scrollTop = msgs.scrollHeight;
+    }
+  });
+}
+
+function closeChat() {
+  document.getElementById('chatOverlay').classList.remove('open');
+  document.getElementById('chatPanel').classList.remove('open');
+  if (activeChatRef) { activeChatRef.off(); activeChatRef = null; }
+  activeChatUid = null;
+}
+
+async function sendChatMsg() {
+  const inp = document.getElementById('chatInp');
+  const text = inp.value.trim();
+  if (!text || !activeChatUid) return;
+  inp.value = '';
+
+  const chatKey = [currentUser.uid, activeChatUid].sort().join('_');
+  await db.ref('chats/' + chatKey).push({
+    senderUID: currentUser.uid,
+    senderName: currentProfile.playerName,
+    text: text,
+    ts: Date.now()
+  });
+}
+
+// ===== GAME REQUESTS =====
+async function sendGameRequest(targetUID) {
+  if (!currentProfile) return;
+  const reqRef = await db.ref('requests/' + targetUID).push({
+    fromUID: currentUser.uid,
+    fromName: currentProfile.playerName,
+    fromPhoto: currentProfile.photoURL || '',
+    ts: Date.now(),
+    status: 'pending'
+  });
+  showToast('⚔️ Challenge sent!');
+}
+
+function listenToRequests() {
+  db.ref('requests/' + currentUser.uid).on('child_added', snap => {
+    const req = snap.val();
+    if (req.status !== 'pending') return;
+    pendingRequestFrom = req;
+    pendingRequestKey = snap.key;
+    document.getElementById('popupChallenger').textContent = req.fromName;
+    document.getElementById('requestPopup').classList.add('show');
+  });
+}
+
+async function acceptRequest() {
+  document.getElementById('requestPopup').classList.remove('show');
+  if (!pendingRequestFrom) return;
+  await db.ref('requests/' + currentUser.uid + '/' + pendingRequestKey).update({ status: 'accepted' });
+  startGame(currentProfile.playerName, pendingRequestFrom.fromName);
+  pendingRequestFrom = null;
+}
+
+function declineRequest() {
+  document.getElementById('requestPopup').classList.remove('show');
+  if (pendingRequestKey) {
+    db.ref('requests/' + currentUser.uid + '/' + pendingRequestKey).update({ status: 'declined' });
+  }
+  pendingRequestFrom = null;
+}
+
+// ===== GAME =====
+function startGame(p1Name, p2Name) {
+  document.getElementById('game-p0').textContent = p1Name;
+  document.getElementById('game-p1').textContent = p2Name;
+  showScreen('game');
+
+  // Embed the betting game
+  const frame = document.getElementById('gameFrame');
+  frame.innerHTML = '<iframe src="card_betting_game.html" style="width:100%;height:calc(100vh - 60px);border:none;" id="gameIframe"></iframe>';
+
+  // Listen for game results from iframe
+  window.addEventListener('message', handleGameResult);
+}
+
+function handleGameResult(event) {
+  if (event.data && event.data.type === 'gameResult') {
+    const delta = event.data.winner === 0 ? event.data.bet : -event.data.bet;
+    db.ref('users/' + currentUser.uid + '/balance').transaction(bal => (bal || 0) + delta);
+    // Save to history
+    db.ref('users/' + currentUser.uid + '/history').push({
+      opponent: event.data.opponentName || 'Opponent',
+      card: event.data.card || '',
+      bet: event.data.bet || 0,
+      win: event.data.winner === 0,
+      ts: Date.now()
+    });
+  }
+}
+
+function quitGame() {
+  window.removeEventListener('message', handleGameResult);
+  document.getElementById('gameFrame').innerHTML = '';
+  showScreen('main');
+}
+
+// ===== HISTORY =====
+function loadHistory() {
+  db.ref('users/' + currentUser.uid + '/history').orderByChild('ts').limitToLast(30).once('value', snap => {
+    const container = document.getElementById('historyContent');
+    if (!snap.exists()) {
+      container.innerHTML = `<div class="empty-state"><div class="icon">🎴</div><p>No games played yet.<br>Challenge someone to start!</p></div>`;
+      return;
+    }
+    const items = [];
+    snap.forEach(c => items.unshift(c.val()));
+    container.innerHTML = items.map(h => `
+      <div class="history-item">
+        <div class="history-result ${h.win ? 'win' : 'lose'}">${h.win ? '🏆' : '💔'}</div>
+        <div class="history-info">
+          <div class="history-opponent">vs ${h.opponent}</div>
+          <div class="history-card">${h.card} · ${new Date(h.ts).toLocaleDateString()}</div>
+        </div>
+        <div class="history-amount ${h.win ? 'win' : 'lose'}">${h.win ? '+' : '-'}Rs.${(h.bet||0).toLocaleString()}</div>
+      </div>`).join('');
+  });
+}
+
+// ===== TOP UP =====
+function selectAmount(val, btn) {
+  document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  topupAmount = val;
+  document.getElementById('customAmountInp').value = '';
+}
+
+async function requestTopUp() {
+  const amount = topupAmount || +document.getElementById('customAmountInp').value;
+  const note = document.getElementById('topupNote').value.trim();
+  if (!amount || amount < 100) { showToast('Please select or enter a valid amount'); return; }
+
+  await db.ref('topup_requests').push({
+    userUID: currentUser.uid,
+    playerName: currentProfile.playerName,
+    playerID: currentProfile.playerID,
+    amount: amount,
+    note: note,
+    status: 'pending',
+    ts: Date.now()
+  });
+
+  showToast('✅ Top up request sent!');
+  closeSubpage('topup');
+}
+
+// ===== SUPPORT CHAT =====
+function loadSupportChat() {
+  const chatKey = 'support_' + currentUser.uid;
+  db.ref('support_chats/' + chatKey).on('value', snap => {
+    const msgs = document.getElementById('supportMessages');
+    msgs.innerHTML = '';
+
+    // Welcome message
+    if (!snap.exists()) {
+      msgs.innerHTML = `
+        <div class="chat-msg">
+          <div class="msg-avatar">🎰</div>
+          <div>
+            <div class="msg-bubble">Hi ${currentProfile.playerName}! How can we help you today?</div>
+            <div class="msg-time">Admin</div>
+          </div>
+        </div>`;
+      return;
+    }
+
+    snap.forEach(child => {
+      const m = child.val();
+      const isOwn = m.senderUID === currentUser.uid;
+      msgs.innerHTML += `
+        <div class="chat-msg ${isOwn ? 'own' : ''}">
+          <div class="msg-avatar">${isOwn ? (currentProfile.playerName||'?')[0] : '🎰'}</div>
+          <div>
+            <div class="msg-bubble">${escapeHTML(m.text)}</div>
+            <div class="msg-time">${formatTime(m.ts)}</div>
+          </div>
+        </div>`;
+    });
+    msgs.scrollTop = msgs.scrollHeight;
+  });
+}
+
+async function sendSupportMsg() {
+  const inp = document.getElementById('supportInp');
+  const text = inp.value.trim();
+  if (!text) return;
+  inp.value = '';
+  const chatKey = 'support_' + currentUser.uid;
+  await db.ref('support_chats/' + chatKey).push({
+    senderUID: currentUser.uid,
+    senderName: currentProfile.playerName,
+    text: text,
+    ts: Date.now()
+  });
+}
+
+// ===== HELPERS =====
+function escapeHTML(str) {
+  return (str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function formatTime(ts) {
+  if (!ts) return '';
+  const d = new Date(ts);
+  return d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
+}
+
+// Init
+setLoading(true);
+</script>
+</body>
+</html>
