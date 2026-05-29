@@ -8,698 +8,256 @@
 <style>
 :root {
   --green-deep: #0a3d1f;
-  --green-mid: #0f5c2e;
-  --green-felt: #1a7a40;
-  --gold: #f1c40f;
-  --gold-light: #ffd700;
-  --gold-dim: rgba(241,196,15,0.15);
-  --red: #e74c3c;
-  --red-dim: rgba(231,76,60,0.15);
-  --white: #ffffff;
-  --glass: rgba(0,0,0,0.35);
-  --glass2: rgba(255,255,255,0.06);
-  --border: rgba(255,255,255,0.1);
-  --border-gold: rgba(241,196,15,0.3);
-  --text-dim: rgba(255,255,255,0.45);
-  --text-mid: rgba(255,255,255,0.7);
-  --radius: 14px;
-  --radius-sm: 8px;
+  --green-mid:  #0f5c2e;
+  --gold:       #f1c40f;
+  --gold-dim:   rgba(241,196,15,0.14);
+  --gold-bdr:   rgba(241,196,15,0.3);
+  --red:        #e74c3c;
+  --red-dim:    rgba(231,76,60,0.15);
+  --white:      #ffffff;
+  --glass:      rgba(0,0,0,0.35);
+  --glass2:     rgba(255,255,255,0.06);
+  --border:     rgba(255,255,255,0.1);
+  --text-dim:   rgba(255,255,255,0.42);
+  --text-mid:   rgba(255,255,255,0.68);
+  --radius:     14px;
+  --rsm:        8px;
 }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Outfit',sans-serif;background:radial-gradient(ellipse at 30% 20%,#1a6b38 0%,#0a3d1f 50%,#040f08 100%);min-height:100vh;color:#fff;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;}
 
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+/* PAGES */
+.page{display:none;min-height:100vh;position:relative;z-index:1;}
+.page.active{display:block;}
+#page-login,#page-username{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;}
+#page-login{background:radial-gradient(ellipse at 50% 30%,#1e5c32 0%,#071d10 70%);}
 
-body {
-  font-family: 'Outfit', sans-serif;
-  background: radial-gradient(ellipse at 30% 20%, #1a6b38 0%, #0a3d1f 50%, #040f08 100%);
-  min-height: 100vh;
-  color: var(--white);
-  overflow-x: hidden;
-}
+/* LOGIN */
+.login-box{width:100%;max-width:380px;background:rgba(0,0,0,0.52);border:1px solid var(--gold-bdr);border-radius:20px;padding:40px 28px;text-align:center;backdrop-filter:blur(20px);}
+.login-logo{font-family:'Cinzel',serif;font-size:36px;font-weight:900;color:var(--gold);letter-spacing:3px;margin-bottom:6px;text-shadow:0 0 30px rgba(241,196,15,0.4);}
+.login-suits{font-size:22px;letter-spacing:8px;margin-bottom:32px;opacity:0.7;}
+.btn-google{width:100%;display:flex;align-items:center;justify-content:center;gap:12px;padding:14px 20px;background:white;color:#333;border:none;border-radius:var(--radius);font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;box-shadow:0 4px 20px rgba(0,0,0,0.3);}
+.btn-google:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(0,0,0,0.4);}
+.btn-google svg{width:20px;height:20px;}
 
-/* ─── NOISE TEXTURE OVERLAY ─── */
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none; z-index: 0;
-}
+/* USERNAME */
+.username-box{width:100%;max-width:380px;background:rgba(0,0,0,0.52);border:1px solid var(--border);border-radius:20px;padding:36px 24px;backdrop-filter:blur(20px);}
+.sec-title{font-family:'Cinzel',serif;font-size:18px;font-weight:700;color:var(--gold);margin-bottom:20px;text-align:center;}
+.inp{width:100%;padding:12px 16px;background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:var(--rsm);color:white;font-size:15px;font-family:'Outfit',sans-serif;outline:none;transition:border-color 0.2s;margin-bottom:14px;}
+.inp:focus{border-color:var(--gold-bdr);}
+.btn-primary{width:100%;padding:13px;background:linear-gradient(135deg,var(--gold),#e6ac00);border:none;border-radius:var(--rsm);color:#0a1a05;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:opacity 0.2s,transform 0.15s;}
+.btn-primary:active{transform:scale(0.98);opacity:0.9;}
 
-/* ─── PAGES ─── */
-.page { display: none; min-height: 100vh; position: relative; z-index: 1; }
-.page.active { display: block; }
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:rgba(4,15,8,0.88);border-bottom:1px solid var(--border);backdrop-filter:blur(20px);}
+.topbar-logo{font-family:'Cinzel',serif;font-size:18px;font-weight:700;color:var(--gold);letter-spacing:1px;}
+.menu-btn{width:40px;height:40px;background:var(--glass2);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.2s;position:relative;}
+.menu-btn:hover{background:rgba(255,255,255,0.1);}
 
-/* ─── LOGIN PAGE ─── */
-#page-login {
-  display: flex; align-items: center; justify-content: center;
-  min-height: 100vh; padding: 24px;
-  background: radial-gradient(ellipse at 50% 30%, #1e5c32 0%, #071d10 70%);
-}
-.login-box {
-  width: 100%; max-width: 380px;
-  background: rgba(0,0,0,0.5);
-  border: 1px solid var(--border-gold);
-  border-radius: 20px;
-  padding: 40px 28px;
-  text-align: center;
-  backdrop-filter: blur(20px);
-}
-.login-logo {
-  font-family: 'Cinzel', serif;
-  font-size: 36px; font-weight: 900;
-  color: var(--gold);
-  letter-spacing: 3px;
-  margin-bottom: 6px;
-  text-shadow: 0 0 30px rgba(241,196,15,0.4);
-}
-.login-suits { font-size: 22px; letter-spacing: 8px; margin-bottom: 32px; opacity: 0.7; }
-.btn-google {
-  width: 100%;
-  display: flex; align-items: center; justify-content: center; gap: 12px;
-  padding: 14px 20px;
-  background: white; color: #333;
-  border: none; border-radius: var(--radius);
-  font-family: 'Outfit', sans-serif;
-  font-size: 15px; font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-}
-.btn-google:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(0,0,0,0.4); }
-.btn-google svg { width: 20px; height: 20px; }
-
-/* ─── USERNAME PAGE ─── */
-#page-username {
-  display: flex; align-items: center; justify-content: center;
-  min-height: 100vh; padding: 24px;
-}
-.username-box {
-  width: 100%; max-width: 380px;
-  background: rgba(0,0,0,0.5);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 36px 24px;
-  backdrop-filter: blur(20px);
-}
-.section-title {
-  font-family: 'Cinzel', serif;
-  font-size: 18px; font-weight: 700;
-  color: var(--gold);
-  margin-bottom: 20px;
-  text-align: center;
-}
-.inp {
-  width: 100%; padding: 12px 16px;
-  background: rgba(0,0,0,0.4);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: white; font-size: 15px;
-  font-family: 'Outfit', sans-serif;
-  outline: none; transition: border-color 0.2s;
-  margin-bottom: 14px;
-}
-.inp:focus { border-color: var(--border-gold); }
-.btn-primary {
-  width: 100%; padding: 13px;
-  background: linear-gradient(135deg, var(--gold), #e6ac00);
-  border: none; border-radius: var(--radius-sm);
-  color: #0a1a05; font-family: 'Outfit', sans-serif;
-  font-size: 15px; font-weight: 700;
-  cursor: pointer; transition: opacity 0.2s, transform 0.15s;
-}
-.btn-primary:active { transform: scale(0.98); opacity: 0.9; }
-
-/* ─── MAIN PAGE ─── */
-#page-main { padding-bottom: 20px; }
-
-/* TOP BAR */
-.topbar {
-  position: sticky; top: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 16px;
-  background: rgba(4,15,8,0.85);
-  border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(20px);
-}
-.topbar-logo {
-  font-family: 'Cinzel', serif;
-  font-size: 18px; font-weight: 700;
-  color: var(--gold);
-  letter-spacing: 1px;
-}
-.menu-btn {
-  width: 40px; height: 40px;
-  background: var(--glass2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: background 0.2s;
-}
-.menu-btn:hover { background: rgba(255,255,255,0.1); }
+/* TOPBAR UNREAD BADGE */
+.topbar-badge{position:absolute;top:-5px;right:-5px;background:var(--red);color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;padding:0 3px;display:none;align-items:center;justify-content:center;border:2px solid #040f08;font-family:monospace;line-height:1;}
+.topbar-badge.show{display:flex;}
 
 /* MAIN CONTENT */
-.main-content { padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+#page-main{padding-bottom:20px;}
+.main-content{padding:16px;display:flex;flex-direction:column;gap:14px;}
 
 /* BALANCE CARD */
-.balance-card {
-  background: linear-gradient(135deg, rgba(15,92,46,0.6), rgba(4,15,8,0.8));
-  border: 1px solid var(--border-gold);
-  border-radius: 18px; padding: 20px;
-  text-align: center;
-  position: relative; overflow: hidden;
-}
-.balance-card::before {
-  content: '♠'; position: absolute;
-  font-size: 120px; color: rgba(241,196,15,0.04);
-  right: -20px; bottom: -30px; line-height: 1;
-}
-.balance-label { font-size: 12px; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
-.balance-amount {
-  font-family: 'Cinzel', serif;
-  font-size: 38px; font-weight: 700;
-  color: var(--gold);
-  text-shadow: 0 0 20px rgba(241,196,15,0.3);
-  line-height: 1;
-}
-.balance-sub { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+.balance-card{background:linear-gradient(135deg,rgba(15,92,46,0.6),rgba(4,15,8,0.8));border:1px solid var(--gold-bdr);border-radius:18px;padding:20px;text-align:center;position:relative;overflow:hidden;}
+.balance-card::before{content:'♠';position:absolute;font-size:120px;color:rgba(241,196,15,0.04);right:-20px;bottom:-30px;line-height:1;}
+.balance-label{font-size:12px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
+.balance-amount{font-family:'Cinzel',serif;font-size:38px;font-weight:700;color:var(--gold);text-shadow:0 0 20px rgba(241,196,15,0.3);line-height:1;}
+.balance-sub{font-size:12px;color:var(--text-dim);margin-top:4px;}
+
+/* ZERO BALANCE BANNER */
+.zero-balance-banner{background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.3);border-radius:var(--radius);padding:14px 16px;display:flex;align-items:center;gap:12px;}
+.zbb-icon{font-size:22px;flex-shrink:0;}
+.zbb-text{flex:1;font-size:13px;color:var(--text-mid);line-height:1.5;}
+.zbb-btn{padding:8px 14px;background:linear-gradient(135deg,var(--gold),#e6ac00);border:none;border-radius:var(--rsm);color:#0a1a05;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Outfit',sans-serif;}
 
 /* SECTION HEADER */
-.sec-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 10px;
-}
-.sec-title {
-  font-family: 'Cinzel', serif;
-  font-size: 13px; font-weight: 600;
-  color: var(--text-mid);
-  letter-spacing: 1px; text-transform: uppercase;
-}
-.sec-link { font-size: 12px; color: var(--gold); cursor: pointer; }
+.sec-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.sec-label{font-family:'Cinzel',serif;font-size:13px;font-weight:600;color:var(--text-mid);letter-spacing:1px;text-transform:uppercase;}
+.sec-link{font-size:12px;color:var(--gold);cursor:pointer;}
 
-/* PLAYERS LIST */
-.players-list { display: flex; flex-direction: column; gap: 8px; }
-.player-card {
-  display: flex; align-items: center; gap: 12px;
-  background: var(--glass);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 12px 14px;
-  transition: border-color 0.2s;
-}
-.player-card:hover { border-color: var(--border-gold); }
-.avatar {
-  width: 42px; height: 42px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--green-mid), var(--green-deep));
-  border: 2px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px; font-weight: 700; font-family: 'Cinzel', serif;
-  color: var(--gold); flex-shrink: 0; overflow: hidden;
-  position: relative;
-}
-.avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-.online-dot {
-  position: absolute; bottom: 0; right: 0;
-  width: 11px; height: 11px; border-radius: 50%;
-  background: #2ecc71;
-  border: 2px solid #040f08;
-}
-.online-dot.offline { background: #555; }
-.player-info { flex: 1; min-width: 0; }
-.player-name { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.player-id { font-size: 11px; color: var(--text-dim); }
-.player-actions { display: flex; gap: 8px; flex-shrink: 0; }
-.icon-btn {
-  width: 34px; height: 34px;
-  background: var(--glass2); border: 1px solid var(--border);
-  border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: all 0.2s; font-size: 14px;
-}
-.icon-btn:hover { background: var(--gold-dim); border-color: var(--border-gold); }
-.icon-btn.challenge:hover { background: rgba(241,196,15,0.2); }
-.req-btn {
-  padding: 5px 11px;
-  background: var(--gold-dim); border: 1px solid var(--border-gold);
-  border-radius: 6px; color: var(--gold);
-  font-size: 11px; font-weight: 600; cursor: pointer;
-  white-space: nowrap; transition: background 0.2s;
-}
-.req-btn:hover { background: rgba(241,196,15,0.25); }
+/* PLAYER CARDS */
+.players-list{display:flex;flex-direction:column;gap:8px;}
+.player-card{display:flex;align-items:center;gap:12px;background:var(--glass);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;transition:border-color 0.2s;}
+.player-card:hover{border-color:var(--gold-bdr);}
+.avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--green-mid),var(--green-deep));border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;font-family:'Cinzel',serif;color:var(--gold);flex-shrink:0;overflow:hidden;position:relative;}
+.avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.online-dot{position:absolute;bottom:0;right:0;width:11px;height:11px;border-radius:50%;background:#2ecc71;border:2px solid #040f08;}
+.online-dot.offline{background:#555;}
+.player-info{flex:1;min-width:0;}
+.player-name{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.player-id{font-size:11px;color:var(--text-dim);}
+.player-actions{display:flex;gap:8px;flex-shrink:0;}
+.icon-btn{width:34px;height:34px;background:var(--glass2);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;font-size:14px;position:relative;}
+.icon-btn:hover{background:var(--gold-dim);border-color:var(--gold-bdr);}
+.req-btn{padding:5px 11px;background:var(--gold-dim);border:1px solid var(--gold-bdr);border-radius:6px;color:var(--gold);font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background 0.2s;}
+.req-btn:hover{background:rgba(241,196,15,0.25);}
+.msg-badge{position:absolute;top:-6px;right:-6px;background:var(--red);color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;padding:0 3px;display:none;align-items:center;justify-content:center;border:2px solid #040f08;font-family:monospace;line-height:1;z-index:2;}
+.msg-badge.show{display:flex;}
 
-/* SEARCH BOX */
-.search-box {
-  display: flex; gap: 8px; margin-bottom: 12px;
-}
-.search-inp {
-  flex: 1; padding: 10px 14px;
-  background: rgba(0,0,0,0.4);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: white; font-size: 14px;
-  font-family: 'Outfit', sans-serif; outline: none;
-}
-.search-inp:focus { border-color: var(--border-gold); }
-.search-btn {
-  padding: 10px 16px;
-  background: var(--gold-dim); border: 1px solid var(--border-gold);
-  border-radius: var(--radius-sm); color: var(--gold);
-  font-size: 13px; font-weight: 600; cursor: pointer;
-}
+/* SEARCH */
+.search-box{display:flex;gap:8px;margin-bottom:12px;}
+.search-inp{flex:1;padding:10px 14px;background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:var(--rsm);color:white;font-size:14px;font-family:'Outfit',sans-serif;outline:none;}
+.search-inp:focus{border-color:var(--gold-bdr);}
+.search-btn{padding:10px 16px;background:var(--gold-dim);border:1px solid var(--gold-bdr);border-radius:var(--rsm);color:var(--gold);font-size:13px;font-weight:600;cursor:pointer;}
+.empty{text-align:center;padding:24px;color:var(--text-dim);font-size:13px;}
 
-/* EMPTY STATE */
-.empty { text-align: center; padding: 24px; color: var(--text-dim); font-size: 13px; }
+/* SIDE MENU */
+.overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.overlay.open{opacity:1;pointer-events:all;}
+.side-menu{position:fixed;top:0;right:0;bottom:0;width:300px;z-index:201;background:linear-gradient(180deg,#071d10 0%,#040a06 100%);border-left:1px solid var(--border);transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);overflow-y:auto;display:flex;flex-direction:column;}
+.side-menu.open{transform:translateX(0);}
+.menu-profile{padding:28px 20px 20px;background:linear-gradient(135deg,rgba(15,92,46,0.4),transparent);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;}
+.menu-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--green-mid),var(--green-deep));border:2px solid var(--gold-bdr);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;font-family:'Cinzel',serif;color:var(--gold);flex-shrink:0;overflow:hidden;}
+.menu-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.menu-name{font-size:16px;font-weight:700;}
+.menu-uid{font-size:11px;color:var(--text-dim);margin-top:2px;font-family:monospace;}
+.menu-balance{margin:16px 20px;background:var(--gold-dim);border:1px solid var(--gold-bdr);border-radius:var(--radius);padding:14px 16px;text-align:center;}
+.menu-balance-label{font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;}
+.menu-balance-val{font-family:'Cinzel',serif;font-size:26px;font-weight:700;color:var(--gold);margin-top:4px;}
+.menu-items{padding:0 12px;flex:1;}
+.menu-item{display:flex;align-items:center;gap:14px;padding:13px 12px;border-radius:var(--rsm);cursor:pointer;transition:background 0.2s;font-size:14px;font-weight:500;color:var(--text-mid);}
+.menu-item:hover{background:var(--glass2);color:white;}
+.menu-item .mi-icon{font-size:18px;width:26px;text-align:center;}
+.menu-item.danger{color:#e74c3c;}
+.menu-footer{padding:16px 20px;border-top:1px solid var(--border);font-size:11px;color:var(--text-dim);text-align:center;}
 
-/* ─── SIDE MENU ─── */
-.overlay {
-  position: fixed; inset: 0; z-index: 200;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(4px);
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.3s;
-}
-.overlay.open { opacity: 1; pointer-events: all; }
+/* MODALS */
+.modal-bg{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.modal-bg.open{opacity:1;pointer-events:all;}
+.modal-sheet{width:100%;max-height:82vh;background:linear-gradient(180deg,#0a2e16 0%,#040a06 100%);border-top:1px solid var(--gold-bdr);border-radius:20px 20px 0 0;overflow-y:auto;transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);}
+.modal-sheet.open{transform:translateY(0);}
+.modal-header{padding:20px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(10,46,22,0.96);backdrop-filter:blur(10px);}
+.modal-title{font-family:'Cinzel',serif;font-size:16px;font-weight:700;color:var(--gold);}
+.close-btn{font-size:20px;cursor:pointer;color:var(--text-dim);padding:4px;}
+.modal-body{padding:16px;}
 
-.side-menu {
-  position: fixed; top: 0; right: 0; bottom: 0;
-  width: 300px; z-index: 201;
-  background: linear-gradient(180deg, #071d10 0%, #040a06 100%);
-  border-left: 1px solid var(--border);
-  transform: translateX(100%);
-  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
-  overflow-y: auto;
-  display: flex; flex-direction: column;
-}
-.side-menu.open { transform: translateX(0); }
+/* HISTORY */
+.history-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+.history-item:last-child{border-bottom:none;}
+.hist-card{width:36px;height:50px;border-radius:5px;background:#fafafa;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;border:1px solid #ddd;}
+.hist-info{flex:1;}
+.hist-vs{font-size:13px;font-weight:600;}
+.hist-time{font-size:11px;color:var(--text-dim);margin-top:2px;}
+.hist-result{font-family:'Cinzel',serif;font-size:14px;font-weight:700;}
+.win{color:#2ecc71;} .loss{color:#e74c3c;}
 
-.menu-profile {
-  padding: 28px 20px 20px;
-  background: linear-gradient(135deg, rgba(15,92,46,0.4), transparent);
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; gap: 14px;
-}
-.menu-avatar {
-  width: 56px; height: 56px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--green-mid), var(--green-deep));
-  border: 2px solid var(--border-gold);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px; font-weight: 700; font-family: 'Cinzel', serif;
-  color: var(--gold); flex-shrink: 0; overflow: hidden;
-}
-.menu-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-.menu-name { font-size: 16px; font-weight: 700; }
-.menu-uid { font-size: 11px; color: var(--text-dim); margin-top: 2px; font-family: monospace; }
+/* TOPUP */
+.topup-info{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:14px;font-size:13px;line-height:1.8;color:var(--text-mid);}
+.topup-info strong{color:var(--gold);}
+.amount-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.amount-chip{padding:10px 6px;text-align:center;background:var(--glass2);border:1px solid var(--border);border-radius:var(--rsm);cursor:pointer;font-size:13px;font-weight:600;transition:all 0.2s;}
+.amount-chip.on{background:var(--gold-dim);border-color:var(--gold-bdr);color:var(--gold);}
 
-.menu-balance {
-  margin: 16px 20px;
-  background: var(--gold-dim);
-  border: 1px solid var(--border-gold);
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  text-align: center;
-}
-.menu-balance-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
-.menu-balance-val {
-  font-family: 'Cinzel', serif;
-  font-size: 26px; font-weight: 700;
-  color: var(--gold);
-  margin-top: 4px;
-}
+/* TERMS */
+.terms-body{padding:16px;font-size:13px;line-height:1.9;color:var(--text-mid);}
+.terms-body h3{font-family:'Cinzel',serif;color:var(--gold);font-size:13px;margin:16px 0 6px;}
+.terms-body p{margin-bottom:10px;}
 
-.menu-items { padding: 0 12px; flex: 1; }
-.menu-item {
-  display: flex; align-items: center; gap: 14px;
-  padding: 13px 12px; border-radius: var(--radius-sm);
-  cursor: pointer; transition: background 0.2s;
-  font-size: 14px; font-weight: 500;
-  color: var(--text-mid);
-}
-.menu-item:hover { background: var(--glass2); color: white; }
-.menu-item .mi-icon { font-size: 18px; width: 26px; text-align: center; }
-.menu-item.danger { color: #e74c3c; }
+/* CHAT MODAL */
+.chat-modal{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.chat-modal.open{opacity:1;pointer-events:all;}
+.chat-sheet{width:100%;height:75vh;background:linear-gradient(180deg,#071d10 0%,#040a06 100%);border-top:1px solid var(--gold-bdr);border-radius:20px 20px 0 0;display:flex;flex-direction:column;transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);}
+.chat-sheet.open{transform:translateY(0);}
+.chat-header{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.chat-with{flex:1;min-width:0;}
+.chat-name{font-size:15px;font-weight:700;}
+.chat-status{font-size:11px;color:#2ecc71;}
+.chat-msgs{flex:1;overflow-y:auto;padding:14px 14px 6px;display:flex;flex-direction:column;gap:8px;}
+.msg-bubble{max-width:78%;padding:9px 13px;border-radius:14px;font-size:13px;line-height:1.5;}
+.msg-out{align-self:flex-end;background:var(--gold-dim);border:1px solid var(--gold-bdr);border-radius:14px 14px 2px 14px;}
+.msg-in{align-self:flex-start;background:var(--glass);border:1px solid var(--border);border-radius:14px 14px 14px 2px;}
+.msg-time{font-size:10px;color:var(--text-dim);margin-top:3px;}
+.msg-img{max-width:100%;border-radius:8px;margin-top:4px;cursor:pointer;}
+.chat-input-area{padding:10px 12px;border-top:1px solid var(--border);display:flex;align-items:flex-end;gap:8px;background:rgba(0,0,0,0.3);flex-shrink:0;}
+.chat-inp{flex:1;padding:9px 13px;background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:20px;color:white;font-size:14px;font-family:'Outfit',sans-serif;outline:none;resize:none;max-height:80px;min-height:38px;}
+.chat-inp:focus{border-color:var(--gold-bdr);}
+.attach-btn{width:36px;height:36px;border-radius:50%;background:var(--glass2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;flex-shrink:0;}
+.send-btn{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e6ac00);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.send-btn svg{width:14px;height:14px;}
 
-.menu-footer {
-  padding: 16px 20px;
-  border-top: 1px solid var(--border);
-  font-size: 11px; color: var(--text-dim);
-  text-align: center;
-}
+/* REQUEST POPUP */
+.req-popup{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-130px);z-index:400;width:calc(100% - 32px);max-width:360px;background:linear-gradient(135deg,#0f3d20,#071d10);border:1px solid var(--gold-bdr);border-radius:18px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,0.7);transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1),opacity 0.4s;opacity:0;}
+.req-popup.show{transform:translateX(-50%) translateY(0);opacity:1;}
+.req-popup-title{font-family:'Cinzel',serif;font-size:15px;color:var(--gold);margin-bottom:6px;}
+.req-popup-body{font-size:13px;color:var(--text-mid);margin-bottom:16px;}
+.req-popup-btns{display:flex;gap:10px;}
+.btn-accept{flex:1;padding:11px;background:linear-gradient(135deg,#2ecc71,#27ae60);border:none;border-radius:var(--rsm);color:white;font-size:14px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;}
+.btn-decline{flex:1;padding:11px;background:rgba(231,76,60,0.15);border:1px solid rgba(231,76,60,0.3);border-radius:var(--rsm);color:#e74c3c;font-size:14px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;}
 
-/* ─── GAME HISTORY MODAL ─── */
-.modal-bg {
-  position: fixed; inset: 0; z-index: 300;
-  background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
-  display: flex; align-items: flex-end;
-  opacity: 0; pointer-events: none; transition: opacity 0.3s;
-}
-.modal-bg.open { opacity: 1; pointer-events: all; }
-.modal-sheet {
-  width: 100%; max-height: 80vh;
-  background: linear-gradient(180deg, #0a2e16 0%, #040a06 100%);
-  border-top: 1px solid var(--border-gold);
-  border-radius: 20px 20px 0 0;
-  overflow-y: auto;
-  transform: translateY(100%);
-  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
-}
-.modal-sheet.open { transform: translateY(0); }
-.modal-header {
-  padding: 20px 20px 14px;
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0;
-  background: rgba(10,46,22,0.95); backdrop-filter: blur(10px);
-}
-.modal-title { font-family: 'Cinzel', serif; font-size: 16px; font-weight: 700; color: var(--gold); }
-.close-btn { font-size: 20px; cursor: pointer; color: var(--text-dim); padding: 4px; }
-.modal-body { padding: 16px; }
+/* GAME PAGE */
+#page-game{position:fixed;inset:0;z-index:500;background:radial-gradient(ellipse at 40% 40%,#1a7a40 0%,#0a4422 60%,#071d0f 100%);display:none;flex-direction:column;}
+#page-game.active{display:flex;}
+.game-topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(4,15,8,0.75);border-bottom:1px solid var(--border);flex-shrink:0;}
+.game-players{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-mid);}
+.game-vs{font-family:'Cinzel',serif;font-size:11px;font-weight:700;color:var(--text-dim);padding:2px 8px;background:var(--glass);border-radius:4px;}
+.quit-btn{padding:7px 16px;background:rgba(231,76,60,0.15);border:1px solid rgba(231,76,60,0.3);border-radius:var(--rsm);color:#e74c3c;font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;}
+.game-body{flex:1;overflow-y:auto;padding:14px;}
 
-/* HISTORY ITEM */
-.history-item {
-  display: flex; align-items: center; gap: 12px;
-  padding: 12px 0; border-bottom: 1px solid var(--border);
-}
-.history-item:last-child { border-bottom: none; }
-.hist-card {
-  width: 36px; height: 50px; border-radius: 5px;
-  background: #fafafa; display: flex; align-items: center; justify-content: center;
-  font-size: 16px; flex-shrink: 0;
-  border: 1px solid #ddd;
-}
-.hist-info { flex: 1; }
-.hist-vs { font-size: 13px; font-weight: 600; }
-.hist-time { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
-.hist-result { font-family: 'Cinzel', serif; font-size: 14px; font-weight: 700; }
-.win { color: #2ecc71; }
-.loss { color: #e74c3c; }
+/* GAME CHAT SIDE PANEL */
+.game-chat-panel{position:fixed;top:49px;right:0;bottom:0;width:270px;z-index:600;background:linear-gradient(180deg,#071d10 0%,#040a06 100%);border-left:1px solid var(--gold-bdr);display:flex;flex-direction:column;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);box-shadow:-6px 0 30px rgba(0,0,0,0.6);}
+.game-chat-panel.open{transform:translateX(0);}
+.gchat-header{padding:11px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-shrink:0;background:rgba(0,0,0,0.3);}
+.gchat-name{flex:1;font-size:13px;font-weight:700;}
+.gchat-close{width:26px;height:26px;border-radius:6px;background:var(--glass2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;color:var(--text-dim);}
+.gchat-msgs{flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:7px;}
+.gchat-input{display:flex;gap:6px;padding:8px 10px;border-top:1px solid var(--border);flex-shrink:0;}
+.gchat-inp{flex:1;padding:8px 12px;background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:20px;color:white;font-size:13px;font-family:'Outfit',sans-serif;outline:none;}
+.gchat-inp:focus{border-color:var(--gold-bdr);}
+.gchat-send{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e6ac00);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+/* Floating chat toggle */
+.gchat-toggle{position:fixed;top:50%;right:0;transform:translateY(-50%);z-index:601;width:34px;background:linear-gradient(180deg,#0f5c2e,#071d10);border:1px solid var(--gold-bdr);border-right:none;border-radius:10px 0 0 10px;padding:12px 0;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;box-shadow:-3px 0 16px rgba(0,0,0,0.4);transition:right 0.35s cubic-bezier(0.4,0,0.2,1);}
+.gchat-toggle-icon{font-size:15px;}
+.gchat-unread{background:var(--red);color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;padding:0 3px;display:none;align-items:center;justify-content:center;font-family:monospace;}
+.gchat-unread.show{display:flex;}
+.gchat-toggle-lbl{writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);font-size:8px;font-weight:700;color:var(--text-mid);letter-spacing:1px;text-transform:uppercase;}
 
-/* ─── CHAT MODAL ─── */
-.chat-modal {
-  position: fixed; inset: 0; z-index: 300;
-  background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
-  display: flex; align-items: flex-end;
-  opacity: 0; pointer-events: none; transition: opacity 0.3s;
-}
-.chat-modal.open { opacity: 1; pointer-events: all; }
-.chat-sheet {
-  width: 100%; height: 70vh;
-  background: linear-gradient(180deg, #071d10 0%, #040a06 100%);
-  border-top: 1px solid var(--border-gold);
-  border-radius: 20px 20px 0 0;
-  display: flex; flex-direction: column;
-  transform: translateY(100%);
-  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
-}
-.chat-sheet.open { transform: translateY(0); }
-.chat-header {
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; gap: 12px;
-}
-.chat-with { flex: 1; }
-.chat-name { font-size: 15px; font-weight: 700; }
-.chat-status { font-size: 11px; color: #2ecc71; }
-.chat-msgs { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
-.msg-bubble { max-width: 75%; padding: 10px 14px; border-radius: 14px; font-size: 14px; line-height: 1.5; }
-.msg-out { align-self: flex-end; background: var(--gold-dim); border: 1px solid var(--border-gold); border-radius: 14px 14px 2px 14px; }
-.msg-in { align-self: flex-start; background: var(--glass); border: 1px solid var(--border); border-radius: 14px 14px 14px 2px; }
-.msg-time { font-size: 10px; color: var(--text-dim); margin-top: 4px; }
-.chat-input-area {
-  padding: 12px 16px;
-  border-top: 1px solid var(--border);
-  display: flex; gap: 8px;
-  background: rgba(0,0,0,0.3);
-}
-.chat-inp {
-  flex: 1; padding: 10px 14px;
-  background: rgba(0,0,0,0.4); border: 1px solid var(--border);
-  border-radius: 22px; color: white;
-  font-size: 14px; font-family: 'Outfit', sans-serif; outline: none;
-}
-.chat-inp:focus { border-color: var(--border-gold); }
-.send-btn {
-  width: 40px; height: 40px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--gold), #e6ac00);
-  border: none; cursor: pointer; display: flex;
-  align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.send-btn svg { width: 16px; height: 16px; color: #0a1a05; }
+/* GAME CARD STYLES */
+@keyframes dealIn{from{opacity:0;transform:scale(0.5) translateY(-30px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes glow{0%,100%{box-shadow:0 0 8px rgba(241,196,15,0.5)}50%{box-shadow:0 0 22px rgba(241,196,15,1)}}
+@keyframes winBounce{0%,100%{transform:scale(1)}30%{transform:scale(1.08)}60%{transform:scale(0.97)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.g-panel{background:rgba(0,0,0,0.38);border-radius:10px;padding:12px 14px;border:1px solid rgba(255,255,255,0.12);}
+.g-phase{display:none;}
+.g-phase.active{display:block;animation:fadeIn 0.35s ease;}
+.g-btn-p{background:var(--gold);color:#1a1a1a;border:none;border-radius:8px;padding:12px 22px;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;cursor:pointer;width:100%;transition:background 0.2s;}
+.g-btn-p:hover{background:#ffd700;}
+.g-btn-p:disabled{background:#555;color:#999;cursor:not-allowed;}
+.g-btn-s{background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:12px 22px;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;cursor:pointer;width:100%;transition:background 0.2s;}
+.g-inp{width:100%;padding:9px 11px;border-radius:6px;border:1px solid rgba(255,255,255,0.2);background:rgba(0,0,0,0.45);color:white;font-size:14px;font-family:'Outfit',sans-serif;outline:none;}
+.g-inp:focus{border-color:rgba(241,196,15,0.5);}
+.g-sel{padding:10px 8px;border-radius:6px;border:1px solid rgba(255,255,255,0.2);background:rgba(0,0,0,0.5);color:white;font-size:15px;font-weight:700;font-family:'Outfit',sans-serif;flex:1;outline:none;}
+.g-card{border-radius:5px;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;position:relative;user-select:none;flex-shrink:0;}
+.g-card.deal-anim{animation:dealIn 0.25s ease;}
+.g-card.glow-anim{animation:dealIn 0.25s ease,glow 0.8s ease 0.25s 3;}
+.g-preset{flex:1;padding:6px 0;border-radius:6px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.7);cursor:pointer;font-size:12px;font-family:'Outfit',sans-serif;transition:all 0.15s;}
+.g-preset.on{background:rgba(241,196,15,0.2);color:var(--gold);border-color:rgba(241,196,15,0.4);}
+.g-h2{text-align:center;color:var(--gold);margin-bottom:12px;font-family:'Cinzel',serif;}
+.g-grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.g-progress-bar{background:rgba(0,0,0,0.2);border-radius:4px;height:5px;margin-bottom:14px;overflow:hidden;}
+.g-progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),#e67e22);transition:width 0.35s;}
+.g-win-badge{background:rgba(241,196,15,0.15);border:1px solid var(--gold);border-radius:8px;padding:10px 16px;text-align:center;animation:winBounce 0.6s ease 2;}
+.role-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+.role-dealer{background:rgba(52,152,219,0.15);border:1px solid rgba(52,152,219,0.3);color:#3498db;}
+.role-predictor{background:rgba(241,196,15,0.15);border:1px solid rgba(241,196,15,0.3);color:var(--gold);}
 
-/* ─── REQUEST POPUP ─── */
-.req-popup {
-  position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-120px);
-  z-index: 400; width: calc(100% - 32px); max-width: 360px;
-  background: linear-gradient(135deg, #0f3d20, #071d10);
-  border: 1px solid var(--border-gold);
-  border-radius: 18px; padding: 20px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.7);
-  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s;
-  opacity: 0;
-}
-.req-popup.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-.req-popup-title { font-family: 'Cinzel', serif; font-size: 15px; color: var(--gold); margin-bottom: 6px; }
-.req-popup-body { font-size: 13px; color: var(--text-mid); margin-bottom: 16px; }
-.req-popup-btns { display: flex; gap: 10px; }
-.btn-accept {
-  flex: 1; padding: 11px;
-  background: linear-gradient(135deg, #2ecc71, #27ae60);
-  border: none; border-radius: var(--radius-sm);
-  color: white; font-size: 14px; font-weight: 700;
-  cursor: pointer; font-family: 'Outfit', sans-serif;
-}
-.btn-decline {
-  flex: 1; padding: 11px;
-  background: rgba(231,76,60,0.15); border: 1px solid rgba(231,76,60,0.3);
-  border-radius: var(--radius-sm); color: #e74c3c;
-  font-size: 14px; font-weight: 700; cursor: pointer;
-  font-family: 'Outfit', sans-serif;
-}
+/* TOAST */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(10,30,16,0.96);border:1px solid var(--gold-bdr);border-radius:12px;padding:12px 20px;font-size:13px;color:var(--text-mid);z-index:9999;white-space:nowrap;transition:transform 0.35s,opacity 0.35s;opacity:0;pointer-events:none;}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
 
-/* ─── TOPUP MODAL ─── */
-.topup-sheet .modal-body { padding: 16px; }
-.topup-info {
-  background: var(--glass); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 14px; margin-bottom: 14px;
-  font-size: 13px; line-height: 1.8; color: var(--text-mid);
-}
-.topup-info strong { color: var(--gold); }
-.amount-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 14px; }
-.amount-chip {
-  padding: 10px 6px; text-align: center;
-  background: var(--glass2); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); cursor: pointer;
-  font-size: 13px; font-weight: 600; transition: all 0.2s;
-}
-.amount-chip.on { background: var(--gold-dim); border-color: var(--border-gold); color: var(--gold); }
-.amount-chip:hover { background: var(--glass2); border-color: var(--border-gold); }
+/* LOADER */
+.loader-overlay{position:fixed;inset:0;z-index:9000;background:#040f08;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;transition:opacity 0.5s;}
+.loader-overlay.hidden{opacity:0;pointer-events:none;}
+.loader-suits{font-size:36px;letter-spacing:12px;animation:lp 1.2s ease infinite;}
+@keyframes lp{0%,100%{opacity:0.3}50%{opacity:1}}
+.loader-text{font-family:'Cinzel',serif;font-size:22px;font-weight:700;color:var(--gold);letter-spacing:3px;}
 
-/* ─── TERMS MODAL ─── */
-.terms-body { padding: 16px; font-size: 13px; line-height: 1.9; color: var(--text-mid); }
-.terms-body h3 { font-family: 'Cinzel', serif; color: var(--gold); font-size: 13px; margin: 16px 0 6px; }
-.terms-body p { margin-bottom: 10px; }
-
-/* ─── GAME PAGE ─── */
-#page-game {
-  position: fixed; inset: 0; z-index: 500;
-  background: radial-gradient(ellipse at 40% 40%, #1a7a40 0%, #0a4422 60%, #071d0f 100%);
-  display: none; flex-direction: column;
-}
-#page-game.active { display: flex; }
-.game-topbar {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 16px;
-  background: rgba(4,15,8,0.7); border-bottom: 1px solid var(--border);
-}
-.game-players {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 13px; color: var(--text-mid);
-}
-.game-vs {
-  font-family: 'Cinzel', serif; font-size: 11px; font-weight: 700;
-  color: var(--text-dim); padding: 2px 8px;
-  background: var(--glass); border-radius: 4px;
-}
-.quit-btn {
-  padding: 8px 18px;
-  background: rgba(231,76,60,0.15); border: 1px solid rgba(231,76,60,0.3);
-  border-radius: var(--radius-sm); color: #e74c3c;
-  font-size: 13px; font-weight: 700; cursor: pointer;
-  font-family: 'Outfit', sans-serif;
-}
-.game-body { flex: 1; overflow-y: auto; padding: 16px; }
-
-/* Card game embedded styles */
-@keyframes dealIn { from{opacity:0;transform:scale(0.5) translateY(-30px)} to{opacity:1;transform:scale(1) translateY(0)} }
-@keyframes glow { 0%,100%{box-shadow:0 0 8px rgba(241,196,15,0.5)} 50%{box-shadow:0 0 22px rgba(241,196,15,1)} }
-@keyframes winBounce { 0%,100%{transform:scale(1)} 30%{transform:scale(1.08)} 60%{transform:scale(0.97)} }
-@keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-.g-panel { background:rgba(0,0,0,0.38);border-radius:10px;padding:12px 14px;border:1px solid rgba(255,255,255,0.12);animation:fadeIn 0.3s ease }
-.g-phase { display:none }
-.g-phase.active { display:block;animation:fadeIn 0.35s ease }
-.g-btn-p { background:var(--gold);color:#1a1a1a;border:none;border-radius:8px;padding:12px 22px;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;cursor:pointer;width:100%;transition:background 0.2s }
-.g-btn-p:hover { background:var(--gold-light) }
-.g-btn-s { background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:12px 22px;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;cursor:pointer;width:100%;transition:background 0.2s }
-.g-btn-s:hover { background:rgba(255,255,255,0.18) }
-.g-inp { width:100%;padding:9px 11px;border-radius:6px;border:1px solid rgba(255,255,255,0.2);background:rgba(0,0,0,0.45);color:white;font-size:14px;font-family:'Outfit',sans-serif;outline:none }
-.g-inp:focus { border-color:rgba(241,196,15,0.5) }
-.g-sel { padding:10px 8px;border-radius:6px;border:1px solid rgba(255,255,255,0.2);background:rgba(0,0,0,0.5);color:white;font-size:15px;font-weight:700;font-family:'Outfit',sans-serif;flex:1;outline:none }
-.g-card { border-radius:5px;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;position:relative;user-select:none;flex-shrink:0 }
-.g-card.deal-anim { animation:dealIn 0.25s ease }
-.g-card.glow-anim { animation:dealIn 0.25s ease,glow 0.8s ease 0.25s 3 }
-.g-preset { flex:1;padding:6px 0;border-radius:6px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.7);cursor:pointer;font-size:12px;font-family:'Outfit',sans-serif;transition:all 0.15s }
-.g-preset.on { background:rgba(241,196,15,0.2);color:var(--gold);border-color:rgba(241,196,15,0.4) }
-.g-preset:hover { background:rgba(255,255,255,0.12) }
-.g-h2 { text-align:center;color:var(--gold);margin-bottom:12px;font-family:'Cinzel',serif }
-.g-grid2 { display:grid;grid-template-columns:1fr 1fr;gap:10px }
-.g-progress-bar { background:rgba(0,0,0,0.2);border-radius:4px;height:5px;margin-bottom:14px;overflow:hidden }
-.g-progress-fill { height:100%;background:linear-gradient(90deg,var(--gold),#e67e22);transition:width 0.35s }
-.g-win-badge { background:rgba(241,196,15,0.15);border:1px solid var(--gold);border-radius:8px;padding:10px 16px;text-align:center;animation:winBounce 0.6s ease 2 }
-
-/* ─── TOAST ─── */
-.toast {
-  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px);
-  background: rgba(10,30,16,0.95); border: 1px solid var(--border-gold);
-  border-radius: 12px; padding: 12px 20px;
-  font-size: 13px; color: var(--text-mid);
-  z-index: 9999; white-space: nowrap;
-  transition: transform 0.35s, opacity 0.35s;
-  opacity: 0; pointer-events: none;
-}
-.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
-/* ─── LOADER ─── */
-.loader-overlay {
-  position: fixed; inset: 0; z-index: 9000;
-  background: #040f08;
-  display: flex; align-items: center; justify-content: center;
-  flex-direction: column; gap: 16px;
-  transition: opacity 0.5s;
-}
-.loader-overlay.hidden { opacity: 0; pointer-events: none; }
-.loader-suits { font-size: 36px; letter-spacing: 12px; animation: loader-pulse 1.2s ease infinite; }
-@keyframes loader-pulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
-.loader-text { font-family: 'Cinzel', serif; font-size: 22px; font-weight: 700; color: var(--gold); letter-spacing: 3px; }
-
-/* ─── CHAT ICON BADGE ─── */
-.icon-btn { position: relative; }
-.msg-badge {
-  position: absolute; top: -6px; right: -6px;
-  background: #e74c3c; color: white;
-  font-size: 9px; font-weight: 700;
-  min-width: 16px; height: 16px;
-  border-radius: 8px; padding: 0 4px;
-  display: none; align-items: center; justify-content: center;
-  border: 2px solid #040f08;
-  font-family: monospace; line-height: 1;
-  z-index: 2;
-}
-.msg-badge.show { display: flex; }
-
-/* ─── GAME SIDE CHAT PANEL ─── */
-/* Toggle button fixed on right edge */
-.game-chat-toggle {
-  position: fixed;
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
-  z-index: 601;
-  width: 38px;
-  background: linear-gradient(180deg, #0f5c2e, #071d10);
-  border: 1px solid var(--border-gold);
-  border-right: none;
-  border-radius: 10px 0 0 10px;
-  padding: 14px 0;
-  display: flex; flex-direction: column;
-  align-items: center; gap: 6px;
-  cursor: pointer;
-  transition: background 0.2s;
-  box-shadow: -3px 0 16px rgba(0,0,0,0.4);
-}
-.game-chat-toggle:hover { background: linear-gradient(180deg, #1a7a40, #0a3d1f); }
-.game-chat-toggle-icon { font-size: 17px; line-height: 1; }
-.game-chat-toggle-label {
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  transform: rotate(180deg);
-  font-size: 9px; font-weight: 700;
-  color: var(--text-mid); letter-spacing: 1px;
-  text-transform: uppercase;
-}
-.game-chat-unread {
-  background: #e74c3c; color: white;
-  font-size: 10px; font-weight: 700;
-  min-width: 18px; height: 18px; border-radius: 9px;
-  padding: 0 3px; display: none;
-  align-items: center; justify-content: center;
-  font-family: monospace; line-height: 1;
-}
-.game-chat-unread.show { display: flex; }
-
-/* Side panel slides in from right */
-.game-chat-panel {
-  position: fixed;
-  top: 56px; /* below topbar */
-  right: 0; bottom: 0;
-  width: 280px;
-  z-index: 600;
-  background: linear-gradient(180deg, #071d10 0%, #040a06 100%);
-  border-left: 1px solid var(--border-gold);
-  display: flex; flex-direction: column;
-  transform: translateX(100%);
-  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
-  box-shadow: -6px 0 30px rgba(0,0,0,0.5);
-}
-.game-chat-panel.expanded { transform: translateX(0); }
-/* Shift toggle button left when panel is open */
-.game-chat-panel.expanded ~ .game-chat-toggle,
-#page-game.active .game-chat-toggle.shifted {
-  right: 280px;
-}
-.game-chat-header {
-  padding: 12px 14px;
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; gap: 10px;
-  flex-shrink: 0;
-  background: rgba(0,0,0,0.3);
-}
-.game-chat-header-name { flex: 1; font-size: 13px; font-weight: 700; }
-.game-chat-close {
-  width: 28px; height: 28px; border-radius: 6px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; font-size: 13px; color: var(--text-dim);
-  flex-shrink: 0;
-}
-.game-chat-msgs {
-  flex: 1; overflow-y: auto; padding: 10px 12px;
-  display: flex; flex-direction: column; gap: 8px;
-  min-height: 0;
-}
-.game-chat-input {
-  display: flex; gap: 6px; padding: 8px 10px;
-  border-top: 1px solid var(--border); flex-shrink: 0;
-}
-.game-chat-inp {
-  flex: 1; padding: 8px 12px;
-  background: rgba(0,0,0,0.4); border: 1px solid var(--border);
-  border-radius: 20px; color: white;
-  font-size: 13px; font-family: 'Outfit', sans-serif; outline: none;
-}
-.game-chat-inp:focus { border-color: var(--border-gold); }
-.game-chat-send {
-  width: 34px; height: 34px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--gold), #e6ac00);
-  border: none; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px; flex-shrink: 0;
-}
-
-/* ─── RESPONSIVE ─── */
-@media (max-width: 380px) {
-  .side-menu { width: 280px; }
-  .balance-amount { font-size: 30px; }
-  .game-chat-panel { width: 240px; }
-}
+@media(max-width:380px){.side-menu{width:280px;}.balance-amount{font-size:30px;}.game-chat-panel{width:240px;}}
 </style>
 </head>
 <body>
@@ -710,16 +268,12 @@ body::before {
   <div class="loader-suits">♠ ♥ ♦ ♣</div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     LOGIN PAGE
-══════════════════════════════════════════════ -->
+<!-- ══ LOGIN PAGE ══ -->
 <div class="page" id="page-login">
   <div class="login-box">
     <div class="login-logo">DONKEY BET</div>
     <div class="login-suits">♠ ♥ ♦ ♣</div>
-    <p style="font-size:13px;color:var(--text-dim);margin-bottom:28px;line-height:1.6">
-      Sign in to play card games with friends and win real prizes
-    </p>
+    <p style="font-size:13px;color:var(--text-dim);margin-bottom:28px;line-height:1.6">Sign in to play card games with friends and win real prizes</p>
     <button class="btn-google" id="btn-google-login">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
         <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
@@ -729,95 +283,73 @@ body::before {
       </svg>
       Continue with Google
     </button>
-    <p style="font-size:11px;color:var(--text-dim);margin-top:20px">By continuing, you agree to our Terms & Privacy Policy</p>
+    <p style="font-size:11px;color:var(--text-dim);margin-top:20px">By continuing, you agree to our Terms &amp; Privacy Policy</p>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     SET USERNAME PAGE
-══════════════════════════════════════════════ -->
+<!-- ══ SET PLAYER NAME PAGE ══ -->
 <div class="page" id="page-username">
-  <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;">
   <div class="username-box">
-    <div class="section-title">Set Your Player Name</div>
-    <p style="font-size:13px;color:var(--text-dim);margin-bottom:20px;text-align:center;line-height:1.6">
-      Your Google name is pre-filled — edit it if you want a different player name.
-    </p>
-
-    <!-- Photo preview with change button -->
+    <div class="sec-title">Create Your Player Profile</div>
+    <p style="font-size:13px;color:var(--text-dim);margin-bottom:20px;text-align:center;line-height:1.6">Your Google name is pre-filled — edit if you want a different player name.</p>
+    <!-- Photo -->
     <div style="display:flex;justify-content:center;margin-bottom:6px;position:relative;width:fit-content;margin-left:auto;margin-right:auto;">
-      <div style="width:80px;height:80px;border-radius:50%;border:2px solid var(--border-gold);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:30px;font-family:'Cinzel',serif;color:var(--gold);background:var(--glass);" id="username-preview-avatar">?</div>
-      <label for="photo-upload" style="position:absolute;bottom:0;right:0;width:26px;height:26px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid #040f08;font-size:12px;" title="Change photo">📷</label>
-      <input type="file" id="photo-upload" accept="image/*" style="display:none" onchange="previewPhoto(this)">
+      <div style="width:84px;height:84px;border-radius:50%;border:2px solid var(--gold-bdr);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:30px;font-family:'Cinzel',serif;color:var(--gold);background:var(--glass);" id="un-avatar">?</div>
+      <label for="photo-upload" style="position:absolute;bottom:0;right:0;width:28px;height:28px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid #040f08;font-size:13px;" title="Change photo">📷</label>
+      <input type="file" id="photo-upload" accept="image/*" style="display:none">
     </div>
-    <p style="font-size:11px;color:var(--text-dim);text-align:center;margin-bottom:18px;">Tap 📷 to use a different photo</p>
-
+    <p style="font-size:11px;color:var(--text-dim);text-align:center;margin-bottom:20px;">Tap 📷 to change photo</p>
     <label style="font-size:11px;color:var(--text-dim);margin-bottom:5px;display:block;letter-spacing:1px;text-transform:uppercase;">Player Name</label>
     <input class="inp" id="inp-username" placeholder="Enter player name..." maxlength="20">
-    <button class="btn-primary" onclick="saveUsername()">Enter Game →</button>
-  </div>
+    <button class="btn-primary" id="btn-save-username">Enter Game →</button>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     MAIN PAGE
-══════════════════════════════════════════════ -->
+<!-- ══ MAIN PAGE ══ -->
 <div class="page" id="page-main">
-
-  <!-- TOP BAR -->
   <div class="topbar">
-    <div style="display:flex;align-items:center;gap:10px">
-      <div class="topbar-logo">♠ DONKEY BET</div>
-    </div>
-    <div style="display:flex;align-items:center;gap:10px">
-      <div id="topbar-online" style="width:8px;height:8px;border-radius:50%;background:#2ecc71;box-shadow:0 0 6px #2ecc71"></div>
+    <div class="topbar-logo">♠ DONKEY BET</div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div id="topbar-online" style="width:8px;height:8px;border-radius:50%;background:#2ecc71;box-shadow:0 0 6px #2ecc71;"></div>
       <div class="menu-btn" onclick="openMenu()">
-        <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
-          <path d="M1 1h16M1 7h16M1 13h16" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
+        <svg width="18" height="14" viewBox="0 0 18 14" fill="none"><path d="M1 1h16M1 7h16M1 13h16" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <div class="topbar-badge" id="topbar-badge">0</div>
       </div>
     </div>
   </div>
-
-  <!-- MAIN CONTENT -->
   <div class="main-content">
-
-    <!-- BALANCE CARD -->
     <div class="balance-card">
       <div class="balance-label">Your Balance</div>
       <div class="balance-amount" id="main-balance">Rs. 0</div>
       <div class="balance-sub" id="main-uid">Loading...</div>
     </div>
-
-    <!-- SEARCH OPPONENT -->
+    <!-- Zero balance warning -->
+    <div class="zero-balance-banner" id="zero-banner" style="display:none;">
+      <div class="zbb-icon">⚠️</div>
+      <div class="zbb-text">Your balance is empty. Top up to play games!</div>
+      <button class="zbb-btn" onclick="openTopUp()">Top Up</button>
+    </div>
+    <!-- Search -->
     <div>
-      <div class="sec-header">
-        <div class="sec-title">⚔ Find Opponent</div>
-      </div>
+      <div class="sec-header"><div class="sec-label">⚔ Find Opponent</div></div>
       <div class="search-box">
         <input class="search-inp" id="search-inp" placeholder="Search player name or ID..." oninput="searchPlayers()">
         <button class="search-btn" onclick="searchPlayers()">Search</button>
       </div>
       <div id="search-results"></div>
     </div>
-
-    <!-- ONLINE PLAYERS -->
+    <!-- Players -->
     <div>
       <div class="sec-header">
-        <div class="sec-title">🟢 Online Players</div>
+        <div class="sec-label">🟢 Online Players</div>
         <div class="sec-link" onclick="refreshPlayers()">Refresh</div>
       </div>
-      <div class="players-list" id="players-list">
-        <div class="empty">Loading players...</div>
-      </div>
+      <div class="players-list" id="players-list"><div class="empty">Loading players...</div></div>
     </div>
-
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     GAME PAGE
-══════════════════════════════════════════════ -->
+<!-- ══ GAME PAGE ══ -->
 <div class="page" id="page-game">
   <div class="game-topbar">
     <div class="game-players">
@@ -827,40 +359,31 @@ body::before {
     </div>
     <button class="quit-btn" onclick="quitGame()">✕ Quit</button>
   </div>
-  <div class="game-body" id="game-body">
-    <!-- Game HTML injected here -->
-  </div>
-
-  <!-- CHAT SIDE PANEL (slides in from right) -->
-  <div class="game-chat-panel" id="game-chat-panel">
-    <div class="game-chat-header">
-      <span style="font-size:15px;">💬</span>
-      <div class="game-chat-header-name" id="game-chat-tab-name">Chat</div>
-      <div class="game-chat-close" onclick="toggleGameChat()">✕</div>
+  <div class="game-body" id="game-body"></div>
+  <!-- Side chat panel -->
+  <div class="game-chat-panel" id="gchat-panel">
+    <div class="gchat-header">
+      <span style="font-size:14px;">💬</span>
+      <div class="gchat-name" id="gchat-name">Chat</div>
+      <div class="gchat-close" onclick="toggleGameChat()">✕</div>
     </div>
-    <div class="game-chat-msgs" id="game-chat-msgs">
-      <div style="text-align:center;color:var(--text-dim);font-size:12px;padding:20px;">No messages yet</div>
-    </div>
-    <div class="game-chat-input">
-      <input class="game-chat-inp" id="game-chat-inp" placeholder="Send a message..." onkeydown="if(event.key==='Enter')sendGameMsg()">
-      <button class="game-chat-send" onclick="sendGameMsg()">➤</button>
+    <div class="gchat-msgs" id="gchat-msgs"><div style="text-align:center;color:var(--text-dim);font-size:12px;padding:20px;">No messages yet</div></div>
+    <div class="gchat-input">
+      <input class="gchat-inp" id="gchat-inp" placeholder="Message..." onkeydown="if(event.key==='Enter')sendGameMsg()">
+      <button class="gchat-send" onclick="sendGameMsg()">➤</button>
     </div>
   </div>
-
-  <!-- FLOATING TOGGLE BUTTON on right edge -->
-  <div class="game-chat-toggle" id="game-chat-toggle-btn" onclick="toggleGameChat()">
-    <div class="game-chat-unread" id="game-chat-unread" style="margin-bottom:4px">0</div>
-    <div class="game-chat-toggle-icon">💬</div>
-    <div class="game-chat-toggle-label">Chat</div>
+  <!-- Floating toggle -->
+  <div class="gchat-toggle" id="gchat-toggle" onclick="toggleGameChat()">
+    <div class="gchat-unread" id="gchat-unread">0</div>
+    <div class="gchat-toggle-icon">💬</div>
+    <div class="gchat-toggle-lbl">Chat</div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     SIDE MENU
-══════════════════════════════════════════════ -->
+<!-- ══ SIDE MENU ══ -->
 <div class="overlay" id="overlay" onclick="closeMenu()"></div>
 <div class="side-menu" id="side-menu">
-
   <div class="menu-profile">
     <div class="menu-avatar" id="menu-avatar">?</div>
     <div>
@@ -868,68 +391,43 @@ body::before {
       <div class="menu-uid" id="menu-uid">ID: ...</div>
     </div>
   </div>
-
   <div class="menu-balance">
     <div class="menu-balance-label">Balance</div>
     <div class="menu-balance-val" id="menu-balance">Rs. 0</div>
   </div>
-
   <div class="menu-items">
-    <div class="menu-item" onclick="openHistory()">
-      <span class="mi-icon">📋</span> Game History
-    </div>
-    <div class="menu-item" onclick="openTopUp()">
-      <span class="mi-icon">💳</span> Top Up
-    </div>
-    <div class="menu-item" onclick="openSupport()">
-      <span class="mi-icon">💬</span> Customer Support
-    </div>
-    <div class="menu-item" onclick="openTerms()">
-      <span class="mi-icon">📜</span> Terms & Privacy Policy
-    </div>
-    <div class="menu-item danger" onclick="signOut()">
-      <span class="mi-icon">🚪</span> Sign Out
-    </div>
+    <div class="menu-item" onclick="openHistory()"><span class="mi-icon">📋</span> Game History</div>
+    <div class="menu-item" onclick="openTopUp()"><span class="mi-icon">💳</span> Top Up</div>
+    <div class="menu-item" onclick="openWithdraw()"><span class="mi-icon">💸</span> Withdraw</div>
+    <div class="menu-item" onclick="openSupport()"><span class="mi-icon">💬</span> Customer Support</div>
+    <div class="menu-item" onclick="openTerms()"><span class="mi-icon">📜</span> Terms &amp; Privacy</div>
+    <div class="menu-item danger" onclick="signOut()"><span class="mi-icon">🚪</span> Sign Out</div>
   </div>
-
   <div class="menu-footer">Donkey Bet v1.0 · Play Responsibly</div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     GAME HISTORY MODAL
-══════════════════════════════════════════════ -->
-<div class="modal-bg" id="modal-history" onclick="e=>e.target===this&&closeModal('history')">
+<!-- ══ GAME HISTORY MODAL ══ -->
+<div class="modal-bg" id="modal-history">
   <div class="modal-sheet" id="sheet-history">
     <div class="modal-header">
       <div class="modal-title">📋 Game History</div>
       <div class="close-btn" onclick="closeModal('history')">✕</div>
     </div>
-    <div class="modal-body" id="history-body">
-      <div class="empty">No games played yet</div>
-    </div>
+    <div class="modal-body" id="history-body"><div class="empty">No games played yet</div></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     TOP UP MODAL
-══════════════════════════════════════════════ -->
-<div class="modal-bg" id="modal-topup" onclick="e=>e.target===this&&closeModal('topup')">
-  <div class="modal-sheet topup-sheet" id="sheet-topup">
+<!-- ══ TOP UP MODAL ══ -->
+<div class="modal-bg" id="modal-topup">
+  <div class="modal-sheet" id="sheet-topup">
     <div class="modal-header">
       <div class="modal-title">💳 Top Up</div>
       <div class="close-btn" onclick="closeModal('topup')">✕</div>
     </div>
     <div class="modal-body">
-      <div class="topup-info">
-        <strong>How to Top Up:</strong><br>
-        1. Select amount below<br>
-        2. Transfer to admin's bank account<br>
-        3. Send proof via Customer Support<br>
-        4. Admin will credit your account<br><br>
-        <strong>Admin Bank:</strong> Contact Support for details
-      </div>
-      <div class="sec-title" style="font-size:12px;margin-bottom:10px">Select Amount (Rs.)</div>
-      <div class="amount-grid" id="topup-grid">
+      <div class="topup-info"><strong>How to Top Up:</strong><br>1. Select amount below<br>2. Transfer to admin's bank account<br>3. Send payment proof via Customer Support<br>4. Admin will credit your account<br><br><strong>Admin Bank:</strong> Contact Support for bank details</div>
+      <div style="font-family:'Cinzel',serif;font-size:12px;color:var(--text-mid);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">Select Amount (Rs.)</div>
+      <div class="amount-grid">
         <div class="amount-chip" onclick="selectTopup(500,this)">500</div>
         <div class="amount-chip" onclick="selectTopup(1000,this)">1,000</div>
         <div class="amount-chip" onclick="selectTopup(2000,this)">2,000</div>
@@ -943,63 +441,70 @@ body::before {
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     TERMS MODAL
-══════════════════════════════════════════════ -->
-<div class="modal-bg" id="modal-terms" onclick="e=>e.target===this&&closeModal('terms')">
+<!-- ══ WITHDRAW MODAL ══ -->
+<div class="modal-bg" id="modal-withdraw">
+  <div class="modal-sheet" id="sheet-withdraw">
+    <div class="modal-header">
+      <div class="modal-title">💸 Withdraw</div>
+      <div class="close-btn" onclick="closeModal('withdraw')">✕</div>
+    </div>
+    <div class="modal-body">
+      <div class="topup-info"><strong>How to Withdraw:</strong><br>1. Enter the amount you want to withdraw<br>2. Provide your bank account details<br>3. Admin will process within 24 hours<br><br><strong>Available Balance:</strong> <span id="withdraw-bal" style="color:var(--gold);font-weight:700;">Rs. 0</span></div>
+      <label style="font-size:11px;color:var(--text-dim);display:block;margin-bottom:6px;letter-spacing:1px;text-transform:uppercase;">Withdraw Amount (Rs.)</label>
+      <input class="inp" id="withdraw-amount" type="number" min="100" placeholder="Enter amount...">
+      <label style="font-size:11px;color:var(--text-dim);display:block;margin-bottom:6px;letter-spacing:1px;text-transform:uppercase;">Bank Account Number</label>
+      <input class="inp" id="withdraw-bank" placeholder="e.g. 1234567890">
+      <label style="font-size:11px;color:var(--text-dim);display:block;margin-bottom:6px;letter-spacing:1px;text-transform:uppercase;">Bank Name</label>
+      <input class="inp" id="withdraw-bankname" placeholder="e.g. Commercial Bank">
+      <label style="font-size:11px;color:var(--text-dim);display:block;margin-bottom:6px;letter-spacing:1px;text-transform:uppercase;">Account Holder Name</label>
+      <input class="inp" id="withdraw-holder" placeholder="Full name on account" style="margin-bottom:16px;">
+      <button class="btn-primary" onclick="submitWithdraw()">Submit Withdraw Request</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TERMS MODAL ══ -->
+<div class="modal-bg" id="modal-terms">
   <div class="modal-sheet" id="sheet-terms">
     <div class="modal-header">
-      <div class="modal-title">📜 Terms & Privacy Policy</div>
+      <div class="modal-title">📜 Terms &amp; Privacy Policy</div>
       <div class="close-btn" onclick="closeModal('terms')">✕</div>
     </div>
     <div class="terms-body">
-      <h3>1. Acceptance of Terms</h3>
-      <p>By accessing and using Donkey Bet, you agree to these terms. You must be 18+ to participate.</p>
-      <h3>2. Game Rules</h3>
-      <p>All games are based on a standard 52-card deck. The named card determines the winner. Decisions are final once cards are dealt. Bets cannot be altered after dealing begins.</p>
-      <h3>3. Financial Transactions</h3>
-      <p>All top-ups are processed manually through the admin. We are not responsible for delays in processing. Withdrawals must be requested through Customer Support. Balances are non-transferable between accounts.</p>
-      <h3>4. Responsible Gaming</h3>
-      <p>Play responsibly. Set personal limits. We reserve the right to suspend accounts showing signs of problematic play. Contact support if you need help managing your gameplay.</p>
-      <h3>5. Privacy Policy</h3>
-      <p>We collect your Google account name, email, and profile photo solely for authentication and account management. Your data is stored securely on Firebase and never sold to third parties.</p>
-      <h3>6. Account Suspension</h3>
-      <p>We reserve the right to suspend or terminate accounts that violate these terms, engage in fraudulent activity, or abuse the platform.</p>
+      <h3>1. Acceptance of Terms</h3><p>By using Donkey Bet, you confirm you are 18+ and agree to these terms.</p>
+      <h3>2. Game Rules</h3><p>Games use a standard 52-card deck. The player who sends the game request is the Dealer. The opponent Predicts the card. If the named card goes to the Predictor, the Predictor wins. If it goes to the Dealer, the Dealer wins. All decisions are final once dealing begins.</p>
+      <h3>3. Financial Transactions</h3><p>Top-ups and withdrawals are processed manually by the admin. We are not responsible for processing delays. Balances are non-transferable.</p>
+      <h3>4. Responsible Gaming</h3><p>Set personal limits. Contact support for help managing gameplay. We reserve the right to suspend problem accounts.</p>
+      <h3>5. Privacy Policy</h3><p>We collect your Google name, email, and photo for authentication only. Data is stored on Firebase and never sold.</p>
       <p style="margin-top:20px;color:var(--text-dim);font-size:12px">Last updated: 2025 · Donkey Bet</p>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     CHAT MODAL
-══════════════════════════════════════════════ -->
+<!-- ══ CHAT MODAL ══ -->
 <div class="chat-modal" id="chat-modal">
   <div class="chat-sheet" id="chat-sheet">
     <div class="chat-header">
-      <div class="avatar" id="chat-avatar" style="width:36px;height:36px;font-size:13px">?</div>
+      <div class="avatar" id="chat-avatar" style="width:36px;height:36px;font-size:13px;">?</div>
       <div class="chat-with">
         <div class="chat-name" id="chat-name">Player</div>
         <div class="chat-status" id="chat-status">● Online</div>
       </div>
       <div class="close-btn" onclick="closeChat()">✕</div>
     </div>
-    <div class="chat-msgs" id="chat-msgs">
-      <div class="empty" style="margin:auto">Start a conversation...</div>
-    </div>
+    <div class="chat-msgs" id="chat-msgs"><div class="empty" style="margin:auto">Start a conversation...</div></div>
     <div class="chat-input-area">
-      <input class="chat-inp" id="chat-inp" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendMsg()">
+      <label class="attach-btn" for="chat-file-inp" title="Send photo">📎</label>
+      <input type="file" id="chat-file-inp" accept="image/*,video/*,.pdf,.doc,.docx" style="display:none">
+      <textarea class="chat-inp" id="chat-inp" placeholder="Type a message..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg();}"></textarea>
       <button class="send-btn" onclick="sendMsg()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#0a1a05" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0a1a05" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       </button>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     GAME REQUEST POPUP
-══════════════════════════════════════════════ -->
+<!-- ══ GAME REQUEST POPUP ══ -->
 <div class="req-popup" id="req-popup">
   <div class="req-popup-title">⚔ Game Request!</div>
   <div class="req-popup-body" id="req-popup-body">Player wants to play with you</div>
@@ -1009,782 +514,799 @@ body::before {
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- ═══════════════════════════════════════════
+<!-- ══════════════════════════════════════
      FIREBASE + APP LOGIC
-══════════════════════════════════════════════ -->
+══════════════════════════════════════════ -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut as fbSignOut }
   from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-import { getDatabase, ref, set, get, update, onValue, off, push, serverTimestamp, onDisconnect, query, orderByChild, equalTo }
+import { getDatabase, ref, set, get, update, onValue, off, push, onDisconnect }
   from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCh8ATjBERok1XPOhPameciyPalntsPWg8",
-  authDomain: "donkey-bet.firebaseapp.com",
-  databaseURL: "https://donkey-bet-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "donkey-bet",
-  storageBucket: "donkey-bet.firebasestorage.app",
-  messagingSenderId: "709170827454",
-  appId: "1:709170827454:web:200a3ac74bbad45ff90eef"
+const FB = {
+  apiKey:"AIzaSyCh8ATjBERok1XPOhPameciyPalntsPWg8",
+  authDomain:"donkey-bet.firebaseapp.com",
+  databaseURL:"https://donkey-bet-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId:"donkey-bet",
+  storageBucket:"donkey-bet.firebasestorage.app",
+  messagingSenderId:"709170827454",
+  appId:"1:709170827454:web:200a3ac74bbad45ff90eef"
 };
+const fbApp = initializeApp(FB);
+const auth  = getAuth(fbApp);
+const db    = getDatabase(fbApp);
+const gProvider = new GoogleAuthProvider();
+const CLD_CLOUD = 'dnvx958gz';
+const CLD_PRESET = 'donkey_bet'; // must be unsigned preset in Cloudinary dashboard
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
-const provider = new GoogleAuthProvider();
-
-let currentUser = null;
-let currentProfile = null;
+// ── STATE ────────────────────────────────────
+let CU = null;        // currentUser (Firebase Auth)
+let CP = null;        // currentProfile (DB record)
 let chatWithUid = null;
-let chatWithName = null;
-let pendingRequest = null;
-let chatMsgsRef = null;
-let chatListener = null;
-let playersListener = null;
-let balanceListener = null;
-let requestsListener = null;
-let selectedTopupAmount = null;
+let chatMsgsRef = null, chatListener = null;
+let playersRef = null, playersListener = null;
+let balListener = null;
+let reqListener = null;
+let pendingReq = null;
+let selTopup = null;
 let gameState = null;
+let gchatOpen = false;
+let gchatRef = null, gchatListener = null;
+let gchatUnread = 0;
+let unreadCounts = {}, unreadRefs = {};
+let pendingPhotoFile = null;
+let pendingPhotoURL  = '';
 
-// ─── HELPERS ────────────────────────────────
-function toast(msg, dur = 2500) {
+// ── HELPERS ──────────────────────────────────
+window.toast = (msg, dur=2600) => {
   const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), dur);
-}
-
-function generateUID() {
-  return 'DB' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substring(2,5).toUpperCase();
-}
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'), dur);
+};
 
 function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  const el = document.getElementById('id' in arguments ? id : 'page-' + id);
-  if (el) el.classList.add('active');
-  document.getElementById('page-' + id)?.classList.add('active');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id)?.classList.add('active');
 }
 
-function uploadToCloudinary(file) {
+// Short UID: 2 random digits + 5 uppercase letters → e.g. "73KXWPQ"
+function genUID() {
+  const digits = String(Math.floor(Math.random()*90)+10);
+  const letters = Array.from({length:5},()=>'ABCDEFGHJKLMNPQRSTUVWXYZ'[Math.floor(Math.random()*24)]).join('');
+  return digits + letters;
+}
+
+async function uploadCloudinary(file) {
   const fd = new FormData();
   fd.append('file', file);
-  fd.append('upload_preset', 'donkey_bet');
-  return fetch('https://api.cloudinary.com/v1_1/dnvx958gz/image/upload', { method: 'POST', body: fd })
-    .then(r => r.json()).then(d => d.secure_url);
+  fd.append('upload_preset', CLD_PRESET);
+  const r = await fetch(`https://api.cloudinary.com/v1_1/${CLD_CLOUD}/auto/upload`, {method:'POST', body:fd});
+  const d = await r.json();
+  if (d.error) throw new Error(d.error.message);
+  return d.secure_url;
 }
 
-// ─── AUTH STATE ─────────────────────────────
-onAuthStateChanged(auth, async (user) => {
-  document.getElementById('loader').classList.add('hidden');
-  if (!user) {
-    showPage('login');
-    return;
-  }
-  currentUser = user;
-
-  // Check if profile exists
-  const snap = await get(ref(db, `users/${user.uid}`));
-  if (!snap.exists()) {
-    // New user — show username page
-    // 1. Auto-load Gmail photo
-    const avatarEl = document.getElementById('username-preview-avatar');
-    window._pendingPhotoFile = null;
-    if (user.photoURL) {
-      avatarEl.innerHTML = `<img src="${user.photoURL}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
-      window._pendingPhotoURL = user.photoURL; // use Gmail photo by default
-    } else {
-      avatarEl.textContent = (user.displayName || 'U')[0].toUpperCase();
-      window._pendingPhotoURL = '';
-    }
-    // 2. Pre-fill Gmail display name — user can edit or clear it
-    const nameInp = document.getElementById('inp-username');
-    nameInp.value = user.displayName || '';
-    // Focus + select so user can immediately type a new name
-    setTimeout(() => { nameInp.focus(); nameInp.select(); }, 350);
-    showPage('username');
-  } else {
-    currentProfile = snap.val();
-    loadMain();
-  }
-});
-
-// ─── PHOTO PREVIEW ───────────────────────────
-window.previewPhoto = (input) => {
-  const file = input.files[0];
-  if (!file) return;
-  window._pendingPhotoFile = file;
-  window._pendingPhotoURL = null;
-  const reader = new FileReader();
-  reader.onload = e => {
-    document.getElementById('username-preview-avatar').innerHTML =
-      `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
-  };
-  reader.readAsDataURL(file);
-};
-
-// ─── GOOGLE LOGIN ────────────────────────────
-window.googleLogin = async () => {
-  try {
-    await signInWithPopup(auth, provider);
-  } catch(e) {
-    toast('Login failed: ' + e.message);
-  }
-};
-document.getElementById('btn-google-login').addEventListener('click', window.googleLogin);
-
-// ─── SAVE USERNAME ───────────────────────────
-window.saveUsername = async () => {
-  const name = document.getElementById('inp-username').value.trim();
-  if (!name || name.length < 2) { toast('Enter a valid name (min 2 chars)'); return; }
-
-  const uid = generateUID();
-  let photoURL = '';
-
-  // Priority: custom uploaded file > gmail photo
-  if (window._pendingPhotoFile) {
-    try {
-      toast('Uploading photo...');
-      photoURL = await uploadToCloudinary(window._pendingPhotoFile);
-    } catch(e) {
-      // fallback to gmail photo if upload fails
-      photoURL = window._pendingPhotoURL || currentUser.photoURL || '';
-    }
-  } else {
-    // Use Gmail photo directly
-    photoURL = window._pendingPhotoURL || currentUser.photoURL || '';
-  }
-
-  const profile = {
-    name, uid, email: currentUser.email,
-    photoURL, balance: 0, createdAt: Date.now(), online: true
-  };
-  await set(ref(db, `users/${currentUser.uid}`), profile);
-  currentProfile = profile;
-  setOnlineStatus(true);
-  loadMain();
-};
-
-// ─── SET ONLINE STATUS ───────────────────────
-function setOnlineStatus(online) {
-  const r = ref(db, `users/${currentUser.uid}/online`);
+function setOnline(online) {
+  const r = ref(db, `users/${CU.uid}/online`);
   set(r, online);
   if (online) onDisconnect(r).set(false);
 }
 
-// ─── LOAD MAIN ───────────────────────────────
-function loadMain() {
+// ── AUTH STATE ───────────────────────────────
+onAuthStateChanged(auth, async user => {
+  document.getElementById('loader').classList.add('hidden');
+  if (!user) { showPage('login'); return; }
+  CU = user;
+  const snap = await get(ref(db, `users/${CU.uid}`));
+  if (!snap.exists()) {
+    // New user — setup username page
+    pendingPhotoURL  = CU.photoURL || '';
+    pendingPhotoFile = null;
+    const av = document.getElementById('un-avatar');
+    if (CU.photoURL) {
+      av.innerHTML = `<img src="${CU.photoURL}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+    } else {
+      av.textContent = (CU.displayName||'U')[0].toUpperCase();
+    }
+    const ni = document.getElementById('inp-username');
+    ni.value = CU.displayName || '';
+    setTimeout(()=>{ ni.focus(); ni.select(); }, 320);
+    showPage('username');
+  } else {
+    CP = snap.val();
+    enterMain();
+  }
+});
+
+// Photo preview
+document.getElementById('photo-upload').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  pendingPhotoFile = file;
+  pendingPhotoURL  = '';
+  const reader = new FileReader();
+  reader.onload = ev => {
+    document.getElementById('un-avatar').innerHTML =
+      `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+  };
+  reader.readAsDataURL(file);
+});
+
+// Save username
+document.getElementById('btn-save-username').addEventListener('click', async () => {
+  const name = document.getElementById('inp-username').value.trim();
+  if (!name || name.length < 2) { toast('Enter at least 2 characters'); return; }
+  const btn = document.getElementById('btn-save-username');
+  btn.disabled = true; btn.textContent = 'Saving...';
+
+  let photoURL = '';
+  try {
+    if (pendingPhotoFile) {
+      toast('Uploading photo...');
+      photoURL = await uploadCloudinary(pendingPhotoFile);
+    } else {
+      photoURL = pendingPhotoURL || CU.photoURL || '';
+    }
+  } catch(err) {
+    console.warn('Photo upload failed, using Google photo:', err);
+    photoURL = CU.photoURL || '';
+  }
+
+  const uid = genUID();
+  CP = { name, uid, email:CU.email, photoURL, balance:0, createdAt:Date.now(), online:true };
+  await set(ref(db, `users/${CU.uid}`), CP);
+  btn.disabled = false; btn.textContent = 'Enter Game →';
+  setOnline(true);
+  enterMain();
+});
+
+// Google login
+document.getElementById('btn-google-login').addEventListener('click', async () => {
+  try { await signInWithPopup(auth, gProvider); }
+  catch(e) { toast('Login failed: ' + e.message); }
+});
+
+// ── ENTER MAIN ───────────────────────────────
+function enterMain() {
   showPage('main');
-  setOnlineStatus(true);
-  updateMainUI();
+  setOnline(true);
+  renderMainUI();
   listenBalance();
   listenPlayers();
   listenRequests();
 }
 
-function updateMainUI() {
-  const p = currentProfile;
-  document.getElementById('main-balance').textContent = `Rs. ${(p.balance||0).toLocaleString()}`;
-  document.getElementById('main-uid').textContent = `ID: ${p.uid} · ${p.email}`;
-  document.getElementById('menu-name').textContent = p.name;
-  document.getElementById('menu-uid').textContent = `ID: ${p.uid}`;
-  document.getElementById('menu-balance').textContent = `Rs. ${(p.balance||0).toLocaleString()}`;
-
-  // Avatar
-  const avatarHTML = p.photoURL
+function renderMainUI() {
+  const p = CP;
+  const bal = p.balance || 0;
+  document.getElementById('main-balance').textContent = `Rs. ${bal.toLocaleString()}`;
+  document.getElementById('main-uid').textContent     = `ID: ${p.uid}`;
+  document.getElementById('menu-name').textContent    = p.name;
+  document.getElementById('menu-uid').textContent     = `ID: ${p.uid}`;
+  document.getElementById('menu-balance').textContent = `Rs. ${bal.toLocaleString()}`;
+  document.getElementById('withdraw-bal').textContent = `Rs. ${bal.toLocaleString()}`;
+  const avHtml = p.photoURL
     ? `<img src="${p.photoURL}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`
     : p.name[0].toUpperCase();
-  document.getElementById('menu-avatar').innerHTML = avatarHTML;
+  document.getElementById('menu-avatar').innerHTML = avHtml;
+  updateZeroBanner(bal);
+}
+
+function updateZeroBanner(bal) {
+  document.getElementById('zero-banner').style.display = bal <= 0 ? 'flex' : 'none';
 }
 
 function listenBalance() {
-  if (balanceListener) off(ref(db, `users/${currentUser.uid}/balance`), 'value', balanceListener);
-  balanceListener = onValue(ref(db, `users/${currentUser.uid}/balance`), snap => {
+  if (balListener) off(ref(db,`users/${CU.uid}/balance`),'value',balListener);
+  balListener = onValue(ref(db,`users/${CU.uid}/balance`), snap => {
     const bal = snap.val() || 0;
-    currentProfile.balance = bal;
+    CP.balance = bal;
     document.getElementById('main-balance').textContent = `Rs. ${bal.toLocaleString()}`;
     document.getElementById('menu-balance').textContent = `Rs. ${bal.toLocaleString()}`;
+    document.getElementById('withdraw-bal').textContent = `Rs. ${bal.toLocaleString()}`;
+    updateZeroBanner(bal);
   });
 }
 
-// ─── UNREAD MESSAGE TRACKING ─────────────────
-let unreadCounts = {}; // uid -> count
-let unreadListeners = {}; // uid -> listener ref
-
-function listenUnreadForUser(uid) {
-  if (unreadListeners[uid]) return; // already listening
-  const chatId = [currentUser.uid, uid].sort().join('_');
-  const msgRef = ref(db, `chats/${chatId}/messages`);
-  const lastSeenKey = `lastSeen_${chatId}`;
-  const lastSeen = parseInt(localStorage.getItem(lastSeenKey) || '0');
-
-  unreadListeners[uid] = onValue(msgRef, snap => {
-    const data = snap.val() || {};
-    const msgs = Object.values(data);
-    const unread = msgs.filter(m => m.from !== currentUser.uid && m.timestamp > lastSeen).length;
-    unreadCounts[uid] = unread;
-    updateAllBadges();
-  });
-}
-
-function markAsRead(uid) {
-  const chatId = [currentUser.uid, uid].sort().join('_');
-  const lastSeenKey = `lastSeen_${chatId}`;
-  localStorage.setItem(lastSeenKey, Date.now().toString());
-  unreadCounts[uid] = 0;
-  updateAllBadges();
-}
-
-function updateAllBadges() {
-  // Update individual chat icon badges in player cards
-  Object.entries(unreadCounts).forEach(([uid, count]) => {
-    const badge = document.querySelector(`.msg-badge[data-uid="${uid}"]`);
-    if (badge) {
-      badge.textContent = count > 9 ? '9+' : count;
-      badge.classList.toggle('show', count > 0);
-    }
-  });
-}
-
-// ─── PLAYERS LIST ────────────────────────────
+// ── PLAYERS ──────────────────────────────────
 function listenPlayers() {
-  if (playersListener) off(ref(db, 'users'), 'value', playersListener);
-  playersListener = onValue(ref(db, 'users'), snap => {
+  if (playersRef && playersListener) off(playersRef,'value',playersListener);
+  playersRef = ref(db,'users');
+  playersListener = onValue(playersRef, snap => {
     const data = snap.val() || {};
     renderPlayers(data);
-    // Start listening for unread msgs from each user
-    Object.keys(data).forEach(uid => {
-      if (uid !== currentUser.uid) listenUnreadForUser(uid);
-    });
-    // Also listen for admin messages
-    listenUnreadForUser('admin');
+    Object.keys(data).forEach(uid => { if(uid!==CU.uid) listenUnread(uid); });
+    listenUnread('admin');
   });
 }
+window.refreshPlayers = ()=>listenPlayers();
 
 function renderPlayers(data) {
   const list = document.getElementById('players-list');
-  const users = Object.entries(data).filter(([uid]) => uid !== currentUser.uid);
-  if (!users.length) { list.innerHTML = '<div class="empty">No other players registered yet</div>'; return; }
-
-  list.innerHTML = users.map(([uid, p]) => {
-    const unread = unreadCounts[uid] || 0;
-    return `
-    <div class="player-card">
-      <div class="avatar" style="position:relative">
-        ${p.photoURL ? `<img src="${p.photoURL}">` : `<span>${(p.name||'?')[0].toUpperCase()}</span>`}
-        <div class="online-dot ${p.online ? '' : 'offline'}"></div>
-      </div>
-      <div class="player-info">
-        <div class="player-name">${p.name}</div>
-        <div class="player-id">ID: ${p.uid} · ${p.online ? '<span style="color:#2ecc71">Online</span>' : '<span style="color:#888">Offline</span>'}</div>
-      </div>
-      <div class="player-actions">
-        <div class="req-btn" onclick="sendGameRequest('${uid}','${p.name}')">⚔ Play</div>
-        <div class="icon-btn" onclick="openChat('${uid}','${p.name}','${p.photoURL||''}','${p.online}')">
-          💬
-          <div class="msg-badge ${unread>0?'show':''}" data-uid="${uid}">${unread > 9 ? '9+' : unread}</div>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
+  const users = Object.entries(data).filter(([uid])=>uid!==CU.uid);
+  if (!users.length) { list.innerHTML='<div class="empty">No other players yet</div>'; return; }
+  list.innerHTML = users.map(([uid,p])=>playerCardHTML(uid,p)).join('');
 }
 
-// ─── SEARCH PLAYERS ──────────────────────────
+function playerCardHTML(uid, p) {
+  const unread = unreadCounts[uid]||0;
+  const ph = p.photoURL ? `<img src="${p.photoURL}">` : `<span>${(p.name||'?')[0].toUpperCase()}</span>`;
+  return `<div class="player-card">
+    <div class="avatar" style="position:relative">${ph}<div class="online-dot ${p.online?'':'offline'}"></div></div>
+    <div class="player-info">
+      <div class="player-name">${p.name}</div>
+      <div class="player-id">ID: ${p.uid} · ${p.online?'<span style="color:#2ecc71">Online</span>':'<span style="color:#888">Offline</span>'}</div>
+    </div>
+    <div class="player-actions">
+      <div class="req-btn" onclick="sendGameReq('${uid}','${esc(p.name)}')">⚔ Play</div>
+      <div class="icon-btn" onclick="openChat('${uid}','${esc(p.name)}','${p.photoURL||''}','${p.online}')">
+        💬<div class="msg-badge ${unread>0?'show':''}" data-uid="${uid}">${unread>9?'9+':unread}</div>
+      </div>
+    </div>
+  </div>`;
+}
+function esc(s){return (s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;');}
+
+// Search
 window.searchPlayers = async () => {
   const q = document.getElementById('search-inp').value.trim().toLowerCase();
-  const results = document.getElementById('search-results');
-  if (!q) { results.innerHTML = ''; return; }
-
-  const snap = await get(ref(db, 'users'));
-  const data = snap.val() || {};
-  const matches = Object.entries(data).filter(([uid, p]) =>
-    uid !== currentUser.uid &&
-    (p.name?.toLowerCase().includes(q) || p.uid?.toLowerCase().includes(q))
+  const res = document.getElementById('search-results');
+  if (!q) { res.innerHTML=''; return; }
+  const snap = await get(ref(db,'users'));
+  const data = snap.val()||{};
+  const matches = Object.entries(data).filter(([uid,p])=>
+    uid!==CU.uid && (p.name?.toLowerCase().includes(q)||p.uid?.toLowerCase().includes(q))
   );
-
-  if (!matches.length) { results.innerHTML = '<div class="empty">No players found</div>'; return; }
-  results.innerHTML = matches.map(([uid, p]) => {
-    const unread = unreadCounts[uid] || 0;
-    return `
-    <div class="player-card" style="margin-bottom:8px">
-      <div class="avatar" style="position:relative">
-        ${p.photoURL ? `<img src="${p.photoURL}">` : `<span>${(p.name||'?')[0].toUpperCase()}</span>`}
-        <div class="online-dot ${p.online ? '' : 'offline'}"></div>
-      </div>
-      <div class="player-info">
-        <div class="player-name">${p.name}</div>
-        <div class="player-id">ID: ${p.uid}</div>
-      </div>
-      <div class="player-actions">
-        <div class="req-btn" onclick="sendGameRequest('${uid}','${p.name}')">⚔ Play</div>
-        <div class="icon-btn" onclick="openChat('${uid}','${p.name}','${p.photoURL||''}','${p.online}')">
-          💬
-          <div class="msg-badge ${unread>0?'show':''}" data-uid="${uid}">${unread > 9 ? '9+' : unread}</div>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
+  if (!matches.length) { res.innerHTML='<div class="empty">No players found</div>'; return; }
+  res.innerHTML = matches.map(([uid,p])=>`<div style="margin-bottom:8px">${playerCardHTML(uid,p)}</div>`).join('');
 };
 
-window.refreshPlayers = () => listenPlayers();
-
-// ─── GAME REQUESTS ───────────────────────────
-window.sendGameRequest = async (toUid, toName) => {
-  const reqRef = push(ref(db, `requests/${toUid}`));
-  await set(reqRef, {
-    from: currentUser.uid,
-    fromName: currentProfile.name,
-    fromPhoto: currentProfile.photoURL || '',
-    timestamp: Date.now(),
-    status: 'pending'
+// ── UNREAD TRACKING ───────────────────────────
+function listenUnread(uid) {
+  if (unreadRefs[uid]) return;
+  const chatId = [CU.uid, uid].sort().join('_');
+  const r = ref(db, `chats/${chatId}/messages`);
+  unreadRefs[uid] = onValue(r, snap => {
+    const msgs = Object.values(snap.val()||{});
+    const lastSeen = parseInt(localStorage.getItem('ls_'+chatId)||'0');
+    const count = msgs.filter(m=>m.from!==CU.uid && (m.timestamp||0)>lastSeen).length;
+    unreadCounts[uid] = count;
+    updateBadges();
   });
-  toast(`Game request sent to ${toName}!`);
+}
+function markRead(uid) {
+  const chatId = [CU.uid,uid].sort().join('_');
+  localStorage.setItem('ls_'+chatId, Date.now().toString());
+  unreadCounts[uid]=0; updateBadges();
+}
+function updateBadges() {
+  Object.entries(unreadCounts).forEach(([uid,c])=>{
+    const b = document.querySelector(`.msg-badge[data-uid="${uid}"]`);
+    if(b){b.textContent=c>9?'9+':c; b.classList.toggle('show',c>0);}
+  });
+  const total = Object.values(unreadCounts).reduce((s,c)=>s+c,0);
+  const tb = document.getElementById('topbar-badge');
+  if(tb){tb.textContent=total>9?'9+':total; tb.classList.toggle('show',total>0);}
+}
+
+// ── GAME REQUESTS ─────────────────────────────
+window.sendGameReq = async (toUid, toName) => {
+  if ((CP.balance||0) <= 0) {
+    toast('Top up your balance to play!');
+    openTopUp(); return;
+  }
+  const r = push(ref(db,`requests/${toUid}`));
+  await set(r, { from:CU.uid, fromName:CP.name, fromPhoto:CP.photoURL||'', timestamp:Date.now(), status:'pending' });
+  toast(`Request sent to ${toName}!`);
 };
 
 function listenRequests() {
-  if (requestsListener) off(ref(db, `requests/${currentUser.uid}`), 'child_added', requestsListener);
-  requestsListener = onValue(ref(db, `requests/${currentUser.uid}`), snap => {
+  if (reqListener) off(ref(db,`requests/${CU.uid}`),'value',reqListener);
+  reqListener = onValue(ref(db,`requests/${CU.uid}`), snap => {
     const data = snap.val();
     if (!data) return;
-    const entries = Object.entries(data);
-    const pending = entries.find(([,v]) => v.status === 'pending');
+    const pending = Object.entries(data).find(([,v])=>v.status==='pending');
     if (pending) {
-      const [reqKey, reqData] = pending;
-      pendingRequest = { key: reqKey, ...reqData };
-      showRequestPopup(reqData.fromName);
+      const [key,rd] = pending;
+      pendingReq = {key,...rd};
+      document.getElementById('req-popup-body').textContent = `${rd.fromName} wants to play with you!`;
+      document.getElementById('req-popup').classList.add('show');
     }
   });
-}
-
-function showRequestPopup(fromName) {
-  document.getElementById('req-popup-body').textContent = `${fromName} wants to play a card game with you!`;
-  document.getElementById('req-popup').classList.add('show');
 }
 
 window.acceptRequest = async () => {
   document.getElementById('req-popup').classList.remove('show');
-  if (!pendingRequest) return;
-  await update(ref(db, `requests/${currentUser.uid}/${pendingRequest.key}`), { status: 'accepted' });
-  startGame(pendingRequest.from, pendingRequest.fromName, false);
+  if (!pendingReq) return;
+  if ((CP.balance||0) <= 0) { toast('Top up to accept game requests!'); openTopUp(); return; }
+  await update(ref(db,`requests/${CU.uid}/${pendingReq.key}`),{status:'accepted'});
+  // Requester is DEALER, acceptor (us) is PREDICTOR
+  startGame(pendingReq.from, pendingReq.fromName, false); // false = we are predictor
 };
-
 window.declineRequest = async () => {
   document.getElementById('req-popup').classList.remove('show');
-  if (!pendingRequest) return;
-  await update(ref(db, `requests/${currentUser.uid}/${pendingRequest.key}`), { status: 'declined' });
-  pendingRequest = null;
+  if (!pendingReq) return;
+  await update(ref(db,`requests/${CU.uid}/${pendingReq.key}`),{status:'declined'});
+  pendingReq = null;
 };
 
-// ─── GAME ────────────────────────────────────
-function startGame(opponentUid, opponentName, isDealer) {
-  gameState = {
-    opponentUid, opponentName, isDealer,
-    myBalance: currentProfile.balance,
-    opBalance: 0
-  };
-  document.getElementById('g-p0name').textContent = currentProfile.name;
-  document.getElementById('g-p1name').textContent = opponentName;
+// ── GAME ─────────────────────────────────────
+function startGame(oppUid, oppName, weAreDealer) {
+  if ((CP.balance||0) <= 0) { toast('No balance — top up to play!'); openTopUp(); return; }
+  gameState = { opponentUid:oppUid, opponentName:oppName, weAreDealer };
+  document.getElementById('g-p0name').textContent = CP.name;
+  document.getElementById('g-p1name').textContent = oppName;
   document.getElementById('page-game').classList.add('active');
-  injectGame(currentProfile.name, opponentName, currentProfile.balance);
-  setupGameChat(opponentUid, opponentName);
+  injectGame(CP.name, oppName, CP.balance, weAreDealer);
+  setupGChat(oppUid, oppName);
   closeMenu();
 }
 
 window.quitGame = () => {
   document.getElementById('page-game').classList.remove('active');
-  // Reset chat panel + toggle button
-  const panel = document.getElementById('game-chat-panel');
-  const toggleBtn = document.getElementById('game-chat-toggle-btn');
-  if (panel) panel.classList.remove('expanded');
-  if (toggleBtn) toggleBtn.style.right = '0px';
-  gameChatOpen = false;
-  if (gameChatRef && gameChatListener) { off(gameChatRef, 'value', gameChatListener); gameChatListener=null; }
-  gameState = null;
+  const panel = document.getElementById('gchat-panel');
+  const toggle = document.getElementById('gchat-toggle');
+  if(panel) panel.classList.remove('open');
+  if(toggle) toggle.style.right='0';
+  gchatOpen=false;
+  if(gchatRef&&gchatListener){off(gchatRef,'value',gchatListener);gchatListener=null;}
+  gameState=null;
+  if(G.timer) clearTimeout(G.timer);
   toast('Game ended');
 };
 
-function injectGame(name0, name1, balance) {
-  document.getElementById('game-body').innerHTML = `
-<div style="max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:14px">
+// ── INJECT GAME UI ────────────────────────────
+function injectGame(name0, name1, bal, weAreDealer) {
+  // name0 = us, name1 = opponent
+  // weAreDealer = true → we deal, opponent predicts
+  // weAreDealer = false → opponent deals, we predict (choose card)
+  const dealerName    = weAreDealer ? name0 : name1;
+  const predictorName = weAreDealer ? name1 : name0;
 
-  <!-- BETTING PHASE -->
-  <div class="g-phase active" id="g-ph-betting">
-    <h2 class="g-h2" style="font-size:19px">♦ Place Bet & Name Card ♦</h2>
-    <div class="g-grid2" style="margin-bottom:14px">
-      <div class="g-panel" style="text-align:center">
-        <div style="font-size:11px;color:rgba(255,255,255,0.45)">${name0} (You)</div>
-        <div style="color:var(--gold);font-size:17px;font-weight:700" id="gbb0">Rs. ${balance.toLocaleString()}</div>
+  document.getElementById('game-body').innerHTML = `
+<div style="max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:14px;">
+
+  <!-- ROLES INFO -->
+  <div class="g-panel" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+    <div><span class="role-badge role-dealer">🃏 Dealer</span> <span style="font-size:13px;color:rgba(255,255,255,0.7)">${dealerName}</span></div>
+    <div style="color:var(--text-dim)">·</div>
+    <div><span class="role-badge role-predictor">🎯 Predictor</span> <span style="font-size:13px;color:rgba(255,255,255,0.7)">${predictorName}</span></div>
+  </div>
+  <div class="g-panel" style="font-size:12px;color:rgba(255,255,255,0.5);line-height:1.6;">
+    <strong style="color:rgba(255,255,255,0.75)">Rules:</strong>
+    ${predictorName} names a card. If it goes to ${predictorName} → <span style="color:#2ecc71">${predictorName} wins</span>.
+    If it goes to ${dealerName} → <span style="color:var(--gold)">${dealerName} wins</span>.
+  </div>
+
+  <!-- PHASE: BETTING & CARD NAMING -->
+  <div class="g-phase active" id="g-ph-bet">
+    <h2 class="g-h2" style="font-size:19px;">♦ Place Bet &amp; Name a Card ♦</h2>
+    <div class="g-grid2" style="margin-bottom:14px;">
+      <div class="g-panel" style="text-align:center;">
+        <div style="font-size:11px;color:rgba(255,255,255,0.4);">${name0} (You)</div>
+        <div style="color:var(--gold);font-size:17px;font-weight:700;" id="gbb0">Rs. ${bal.toLocaleString()}</div>
       </div>
-      <div class="g-panel" style="text-align:center">
-        <div style="font-size:11px;color:rgba(255,255,255,0.45)">${name1}</div>
-        <div style="color:var(--gold);font-size:17px;font-weight:700" id="gbb1">Rs. —</div>
+      <div class="g-panel" style="text-align:center;">
+        <div style="font-size:11px;color:rgba(255,255,255,0.4);">${name1}</div>
+        <div style="color:var(--gold);font-size:17px;font-weight:700;" id="gbb1">Rs. —</div>
       </div>
     </div>
-    <div class="g-panel" style="margin-bottom:12px">
-      <label style="font-size:12px;color:rgba(255,255,255,0.4);display:block;margin-bottom:3px">Bet Amount (Rs.)</label>
-      <input type="number" class="g-inp" id="g-bet-inp" value="100" min="10" step="10"
-        style="font-size:22px;font-weight:700;color:var(--gold);text-align:center" oninput="gSyncBet()">
-      <div style="display:flex;gap:6px;margin-top:8px">
+    <div class="g-panel" style="margin-bottom:12px;">
+      <label style="font-size:12px;color:rgba(255,255,255,0.4);display:block;margin-bottom:3px;">Bet Amount (Rs.)</label>
+      <input type="number" class="g-inp" id="g-bet" value="100" min="10" step="10" style="font-size:22px;font-weight:700;color:var(--gold);text-align:center;" oninput="gSyncBet()">
+      <div style="display:flex;gap:6px;margin-top:8px;">
         <button class="g-preset" onclick="gSetBet(50)">50</button>
         <button class="g-preset" onclick="gSetBet(100)">100</button>
         <button class="g-preset" onclick="gSetBet(500)">500</button>
         <button class="g-preset" onclick="gSetBet(1000)">1000</button>
       </div>
     </div>
-    <div class="g-panel" style="margin-bottom:14px">
-      <p style="font-size:13px;color:rgba(255,255,255,0.85);margin-bottom:10px">
-        <span style="color:var(--gold)">${name0}</span> — Name a card:
+
+    <!-- Card naming: only PREDICTOR picks the card -->
+    ${!weAreDealer ? `
+    <div class="g-panel" style="margin-bottom:14px;">
+      <p style="font-size:13px;color:rgba(255,255,255,0.85);margin-bottom:10px;">
+        <span style="color:var(--gold);">${name0}</span> — Name a card to predict:
       </p>
-      <div style="display:flex;gap:10px;margin-bottom:12px">
-        <select class="g-sel" id="g-named-rank" onchange="gUpdatePreview()">
-          <option value="A">Ace</option>
-          <option value="2">2</option><option value="3">3</option><option value="4">4</option>
-          <option value="5">5</option><option value="6">6</option><option value="7">7</option>
-          <option value="8">8</option><option value="9">9</option><option value="10">10</option>
-          <option value="J">Jack</option><option value="Q">Queen</option><option value="K">King</option>
+      <div style="display:flex;gap:10px;margin-bottom:12px;">
+        <select class="g-sel" id="g-rank" onchange="gUpdatePreview()">
+          <option value="A">Ace</option><option value="2">2</option><option value="3">3</option>
+          <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+          <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+          <option value="10">10</option><option value="J">Jack</option><option value="Q">Queen</option>
+          <option value="K">King</option>
         </select>
-        <select class="g-sel" id="g-named-suit" onchange="gUpdatePreview()">
-          <option value="♠">♠ Spades</option>
-          <option value="♥">♥ Hearts</option>
-          <option value="♦">♦ Diamonds</option>
-          <option value="♣">♣ Clubs</option>
+        <select class="g-sel" id="g-suit" onchange="gUpdatePreview()">
+          <option value="♠">♠ Spades</option><option value="♥">♥ Hearts</option>
+          <option value="♦">♦ Diamonds</option><option value="♣">♣ Clubs</option>
         </select>
       </div>
-      <div style="display:flex;align-items:center;gap:12px;background:rgba(0,0,0,0.2);border-radius:8px;padding:10px">
-        <div id="g-named-preview"></div>
+      <div style="display:flex;align-items:center;gap:12px;background:rgba(0,0,0,0.2);border-radius:8px;padding:10px;">
+        <div id="g-preview"></div>
         <div>
-          <div style="color:var(--gold);font-weight:700" id="g-named-label"></div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px" id="g-named-rule"></div>
+          <div style="color:var(--gold);font-weight:700;" id="g-preview-lbl"></div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;" id="g-preview-rule"></div>
         </div>
       </div>
-    </div>
-    <button class="g-btn-p" onclick="gStartDealing()">Deal Cards →</button>
+    </div>` : `
+    <div class="g-panel" style="margin-bottom:14px;text-align:center;">
+      <div style="font-size:13px;color:rgba(255,255,255,0.6);">You are the <span style="color:#3498db;font-weight:700;">Dealer</span>.<br>
+      <strong style="color:rgba(255,255,255,0.8);">${name1}</strong> will name the card to predict.</div>
+      <div id="g-dealer-named" style="margin-top:10px;font-size:13px;color:var(--text-dim);">Waiting for opponent to set bet...</div>
+    </div>`}
+
+    <button class="g-btn-p" id="g-deal-btn" onclick="gStartDealing()">Deal Cards →</button>
   </div>
 
-  <!-- DEALING PHASE -->
-  <div class="g-phase" id="g-ph-dealing">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-      <h2 class="g-h2" style="margin:0;font-size:18px;text-align:left">♠ Dealing...</h2>
-      <span style="font-size:13px;color:rgba(255,255,255,0.5)" id="g-d-count">0 / 52</span>
+  <!-- PHASE: DEALING -->
+  <div class="g-phase" id="g-ph-deal">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <h2 class="g-h2" style="margin:0;font-size:18px;text-align:left;">♠ Dealing...</h2>
+      <span style="font-size:13px;color:rgba(255,255,255,0.5);" id="g-count">0/52</span>
     </div>
-    <div class="g-progress-bar"><div class="g-progress-fill" id="g-d-progress" style="width:0%"></div></div>
-    <div class="g-panel" style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-      <div id="g-d-named-card"></div>
-      <div style="flex:1">
-        <div style="font-size:11px;color:rgba(255,255,255,0.35)">Looking for</div>
-        <div style="color:var(--gold);font-weight:700" id="g-d-named-label"></div>
+    <div class="g-progress-bar"><div class="g-progress-fill" id="g-prog" style="width:0%"></div></div>
+    <div class="g-panel" style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+      <div id="g-named-card"></div>
+      <div style="flex:1;">
+        <div style="font-size:11px;color:rgba(255,255,255,0.35);">Looking for</div>
+        <div style="color:var(--gold);font-weight:700;" id="g-named-lbl"></div>
       </div>
-      <div style="text-align:right">
-        <div style="font-size:11px;color:rgba(255,255,255,0.35)">Bet</div>
-        <div style="color:var(--gold)" id="g-d-bet"></div>
+      <div style="text-align:right;">
+        <div style="font-size:11px;color:rgba(255,255,255,0.35);">Bet</div>
+        <div style="color:var(--gold);" id="g-bet-disp"></div>
       </div>
     </div>
-    <div style="text-align:center;min-height:115px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:14px">
-      <div id="g-d-cur-label" style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:4px"></div>
-      <div id="g-d-cur-card"></div>
-      <div id="g-d-found-msg" style="color:var(--gold);font-weight:700;margin-top:8px;font-size:15px;display:none">Found it! 🎯</div>
+    <div style="text-align:center;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:14px;">
+      <div id="g-cur-lbl" style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:4px;"></div>
+      <div id="g-cur-card"></div>
+      <div id="g-found-msg" style="color:var(--gold);font-weight:700;margin-top:8px;font-size:15px;display:none;">Found it! 🎯</div>
     </div>
     <div class="g-grid2">
-      <div class="g-panel">
-        <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:6px">${name0}</div>
-        <div style="display:flex;gap:3px;flex-wrap:wrap;min-height:54px" id="g-d-hand0"></div>
-      </div>
-      <div class="g-panel">
-        <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:6px">${name1}</div>
-        <div style="display:flex;gap:3px;flex-wrap:wrap;min-height:54px" id="g-d-hand1"></div>
-      </div>
+      <div class="g-panel"><div style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:6px;">${name0}</div><div style="display:flex;gap:3px;flex-wrap:wrap;min-height:54px;" id="g-hand0"></div></div>
+      <div class="g-panel"><div style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:6px;">${name1}</div><div style="display:flex;gap:3px;flex-wrap:wrap;min-height:54px;" id="g-hand1"></div></div>
     </div>
   </div>
 
-  <!-- RESULT PHASE -->
+  <!-- PHASE: RESULT -->
   <div class="g-phase" id="g-ph-result">
-    <div class="g-win-badge" style="margin-bottom:14px">
-      <div style="font-family:'Cinzel',serif;font-size:22px;color:var(--gold)" id="g-r-title">Winner!</div>
-      <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:4px" id="g-r-desc"></div>
+    <div class="g-win-badge" style="margin-bottom:14px;">
+      <div style="font-family:'Cinzel',serif;font-size:22px;color:var(--gold);" id="g-r-title">Winner!</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:4px;" id="g-r-desc"></div>
     </div>
-    <div style="display:flex;justify-content:center;margin-bottom:14px" id="g-r-card"></div>
-    <div class="g-panel" style="margin-bottom:14px">
-      <div id="g-r-win-txt" style="font-size:15px;font-weight:700;margin-bottom:4px"></div>
-      <div id="g-r-lose-txt" style="font-size:15px;font-weight:700"></div>
+    <div style="display:flex;justify-content:center;margin-bottom:14px;" id="g-r-card"></div>
+    <div class="g-panel" style="margin-bottom:14px;">
+      <div id="g-r-w" style="font-size:15px;font-weight:700;margin-bottom:4px;"></div>
+      <div id="g-r-l" style="font-size:15px;font-weight:700;"></div>
     </div>
-    <div class="g-grid2" style="margin-bottom:14px" id="g-r-bals"></div>
+    <div class="g-grid2" style="margin-bottom:14px;" id="g-r-bals"></div>
     <div class="g-grid2">
-      <button class="g-btn-p" onclick="gPlayAgain()">Play Again</button>
+      <button class="g-btn-p" id="g-play-again" onclick="gPlayAgain()">Play Again</button>
       <button class="g-btn-s" onclick="quitGame()">Quit</button>
     </div>
   </div>
 
 </div>`;
-
-  // Init game logic
-  gInit(name0, name1, balance);
+  gInit(name0, name1, bal, weAreDealer);
 }
 
-// ─── GAME LOGIC (embedded) ───────────────────
+// ── GAME LOGIC ────────────────────────────────
 const SUITS=['♠','♥','♦','♣'];
 const SNAMES=['Spades','Hearts','Diamonds','Clubs'];
 const RANKS=['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
 const rn=r=>({A:'Ace',J:'Jack',Q:'Queen',K:'King'}[r]||r);
 const sn=s=>SNAMES[SUITS.indexOf(s)];
-const red=s=>s==='♥'||s==='♦';
+const isRed=s=>s==='♥'||s==='♦';
+let G={names:['',''],bals:[0,0],bet:100,nR:'A',nS:'♠',timer:null,weDealer:false};
+let deck=[],dIdx=0,hands=[[],[]];
 
-let G={names:['',''],balances:[0,0],bet:100,nR:'A',nS:'♠',timer:null};
-let deck=[],idx=0,hands=[[],[]];
-
-function gInit(n0,n1,b0){
-  G.names=[n0,n1]; G.balances=[b0,0]; G.bet=100;
-  gUpdatePreview();
+function gInit(n0,n1,b0,weDealer){
+  G={names:[n0,n1],bals:[b0,0],bet:100,nR:'A',nS:'♠',timer:null,weDealer};
+  if(!weDealer) gUpdatePreview();
 }
-
 function mkDeck(){const d=[];SUITS.forEach(s=>RANKS.forEach(r=>d.push({r,s})));return d;}
 function shuffle(a){const d=[...a];for(let i=d.length-1;i>0;i--){const j=~~(Math.random()*(i+1));[d[i],d[j]]=[d[j],d[i]];}return d;}
+function gPhase(id){document.querySelectorAll('.g-phase').forEach(p=>p.classList.remove('active'));document.getElementById('g-ph-'+id)?.classList.add('active');}
 
-function gShowPhase(id){
-  document.querySelectorAll('.g-phase').forEach(p=>p.classList.remove('active'));
-  document.getElementById('g-ph-'+id)?.classList.add('active');
-}
-
-function gCardHTML(r,s,hl,sm){
-  const w=sm?40:62,h=sm?54:84,fs=sm?10:16,ss=sm?14:22;
-  const col=red(s)?'#c0392b':'#1a1a2e';
+function gCard(r,s,hl,sm){
+  const w=sm?38:60,h=sm?52:82,fs=sm?9:15,ss=sm?13:20;
+  const col=isRed(s)?'#c0392b':'#1a1a2e';
   const bg=hl?'#fffde7':'#fafafa';
   const brd=hl?'2.5px solid var(--gold)':'1px solid #ccc';
   const cls='g-card '+(hl?'glow-anim':'deal-anim');
   const shd=hl?'0 0 12px rgba(241,196,15,0.6)':'1px 1px 3px rgba(0,0,0,0.3)';
-  return `<div class="${cls}" style="width:${w}px;height:${h}px;background:${bg};border:${brd};border-radius:5px;color:${col};box-shadow:${shd};font-family:'Cinzel',serif;position:relative;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">
-    <span style="position:absolute;top:2px;left:3px;font-size:${fs}px;font-weight:700">${r}</span>
-    <span style="font-size:${ss}px">${s}</span>
-    <span style="position:absolute;bottom:2px;right:3px;font-size:${fs}px;font-weight:700;transform:rotate(180deg)">${r}</span>
+  return `<div class="${cls}" style="width:${w}px;height:${h}px;background:${bg};border:${brd};border-radius:5px;color:${col};box-shadow:${shd};font-family:'Cinzel',serif;position:relative;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
+    <span style="position:absolute;top:2px;left:3px;font-size:${fs}px;font-weight:700;">${r}</span>
+    <span style="font-size:${ss}px;">${s}</span>
+    <span style="position:absolute;bottom:2px;right:3px;font-size:${fs}px;font-weight:700;transform:rotate(180deg);">${r}</span>
   </div>`;
 }
 
-window.gSyncBet=()=>{G.bet=Math.max(10,+document.getElementById('g-bet-inp').value);gUpdatePresets();}
-window.gUpdatePresets=()=>{
-  document.querySelectorAll('.g-preset').forEach((b,i)=>{
-    b.classList.toggle('on',[50,100,500,1000][i]===G.bet);
-  });
-}
-window.gSetBet=(v)=>{G.bet=v;document.getElementById('g-bet-inp').value=v;gUpdatePresets();}
+window.gSyncBet=()=>{G.bet=Math.max(10,+document.getElementById('g-bet').value);gSyncPresets();}
+window.gSyncPresets=()=>{document.querySelectorAll('.g-preset').forEach((b,i)=>b.classList.toggle('on',[50,100,500,1000][i]===G.bet));}
+window.gSetBet=(v)=>{G.bet=v;document.getElementById('g-bet').value=v;gSyncPresets();}
 
 window.gUpdatePreview=()=>{
-  G.nR=document.getElementById('g-named-rank')?.value||'A';
-  G.nS=document.getElementById('g-named-suit')?.value||'♠';
-  const suit=document.getElementById('g-named-suit');
-  if(suit) suit.style.color=red(G.nS)?'#e74c3c':'white';
-  const prev=document.getElementById('g-named-preview');
-  if(prev) prev.innerHTML=gCardHTML(G.nR,G.nS,true,'md');
-  const lbl=document.getElementById('g-named-label');
+  G.nR=document.getElementById('g-rank')?.value||'A';
+  G.nS=document.getElementById('g-suit')?.value||'♠';
+  const suit=document.getElementById('g-suit');
+  if(suit) suit.style.color=isRed(G.nS)?'#e74c3c':'white';
+  const prev=document.getElementById('g-preview');
+  if(prev) prev.innerHTML=gCard(G.nR,G.nS,true,false);
+  const lbl=document.getElementById('g-preview-lbl');
   if(lbl) lbl.textContent=`${rn(G.nR)} of ${sn(G.nS)}`;
-  const rule=document.getElementById('g-named-rule');
-  if(rule) rule.innerHTML=`Goes to ${G.names[1]} → <span style="color:#2ecc71">${G.names[1]} wins!</span><br>Goes to ${G.names[0]} → <span style="color:var(--gold)">${G.names[0]} wins!</span>`;
+  const rule=document.getElementById('g-preview-rule');
+  if(rule) rule.innerHTML=`→ ${G.names[1]} gets it: <span style="color:#2ecc71">${G.names[0]} wins!</span><br>→ ${G.names[0]} gets it: <span style="color:var(--gold)">${G.names[1]} wins!</span>`;
+  // Wait — rule: if predictor (name0 when weDealer=false) gets the named card they WIN
+  // Let me re-state: Predictor names card. If named card goes to Predictor → Predictor wins.
+  if(rule && !G.weDealer){
+    rule.innerHTML=`If ${G.names[0]} gets named card: <span style="color:#2ecc71">${G.names[0]} wins!</span><br>If ${G.names[1]} gets named card: <span style="color:var(--gold)">${G.names[1]} wins!</span>`;
+  }
 }
 
 window.gStartDealing=()=>{
-  G.nR=document.getElementById('g-named-rank').value;
-  G.nS=document.getElementById('g-named-suit').value;
-  G.bet=Math.max(10,+document.getElementById('g-bet-inp').value);
-  if(G.bet>G.balances[0]){toast('Bet exceeds your balance!');return;}
-  deck=shuffle(mkDeck()); idx=0; hands=[[],[]];
-  document.getElementById('g-d-named-label').textContent=`${rn(G.nR)} ${G.nS}`;
-  document.getElementById('g-d-named-card').innerHTML=gCardHTML(G.nR,G.nS,true,'sm');
-  document.getElementById('g-d-bet').textContent='Rs. '+G.bet.toLocaleString();
-  document.getElementById('g-d-hand0').innerHTML='';
-  document.getElementById('g-d-hand1').innerHTML='';
-  document.getElementById('g-d-cur-card').innerHTML='';
-  document.getElementById('g-d-cur-label').textContent='';
-  document.getElementById('g-d-found-msg').style.display='none';
-  document.getElementById('g-d-count').textContent='0 / 52';
-  document.getElementById('g-d-progress').style.width='0%';
-  gShowPhase('dealing');
-  gDealNext();
+  G.bet=Math.max(10,+document.getElementById('g-bet').value);
+  if(G.bet>(CP.balance||0)){toast('Bet exceeds your balance!');return;}
+
+  // If we are dealer, opponent named card — for simulation use random
+  if(G.weDealer){G.nR=RANKS[~~(Math.random()*13)];G.nS=SUITS[~~(Math.random()*4)];}
+  else{G.nR=document.getElementById('g-rank').value;G.nS=document.getElementById('g-suit').value;}
+
+  deck=shuffle(mkDeck()); dIdx=0; hands=[[],[]];
+  document.getElementById('g-named-lbl').textContent=`${rn(G.nR)} ${G.nS}`;
+  document.getElementById('g-named-card').innerHTML=gCard(G.nR,G.nS,true,true);
+  document.getElementById('g-bet-disp').textContent='Rs.'+G.bet.toLocaleString();
+  ['g-hand0','g-hand1','g-cur-card'].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML='';});
+  document.getElementById('g-cur-lbl').textContent='';
+  document.getElementById('g-found-msg').style.display='none';
+  document.getElementById('g-count').textContent='0/52';
+  document.getElementById('g-prog').style.width='0%';
+  gPhase('deal'); gDealNext();
 }
 
 function gDealNext(){
-  if(idx>=deck.length){gShowResult(0);return;}
-  const card=deck[idx];
-  const pi=idx%2;
+  if(dIdx>=deck.length){gResult(0);return;}
+  const card=deck[dIdx];
+  const pi=dIdx%2;
   const isNamed=card.r===G.nR&&card.s===G.nS;
-  document.getElementById('g-d-count').textContent=(idx+1)+' / 52';
-  document.getElementById('g-d-progress').style.width=((idx+1)/52*100)+'%';
-  document.getElementById('g-d-cur-label').textContent='→ '+G.names[pi];
-  document.getElementById('g-d-cur-card').innerHTML=gCardHTML(card.r,card.s,isNamed,'md');
-  if(isNamed) document.getElementById('g-d-found-msg').style.display='block';
-  hands[pi]=([...hands[pi],card]).slice(-5);
-  const el=document.getElementById('g-d-hand'+pi);
-  if(el) el.innerHTML=hands[pi].map(c=>gCardHTML(c.r,c.s,c.r===G.nR&&c.s===G.nS,'sm')).join('');
-  if(isNamed){G.timer=setTimeout(()=>gShowResult(pi),750);return;}
-  idx++;
-  G.timer=setTimeout(gDealNext,330);
+  document.getElementById('g-count').textContent=(dIdx+1)+'/52';
+  document.getElementById('g-prog').style.width=((dIdx+1)/52*100)+'%';
+  document.getElementById('g-cur-lbl').textContent='→ '+G.names[pi];
+  document.getElementById('g-cur-card').innerHTML=gCard(card.r,card.s,isNamed,false);
+  if(isNamed) document.getElementById('g-found-msg').style.display='block';
+  hands[pi]=[...hands[pi],card].slice(-5);
+  const el=document.getElementById('g-hand'+pi);
+  if(el) el.innerHTML=hands[pi].map(c=>gCard(c.r,c.s,c.r===G.nR&&c.s===G.nS,true)).join('');
+  if(isNamed){G.timer=setTimeout(()=>gResult(pi),750);return;}
+  dIdx++; G.timer=setTimeout(gDealNext,320);
 }
 
-function gShowResult(winner){
-  const loser=1-winner;
-  G.balances[winner]+=G.bet;
-  G.balances[loser]-=G.bet;
+function gResult(namedWentTo){
+  // namedWentTo: 0=player0(us), 1=player1(opponent)
+  // Predictor wins if the named card goes to them
+  // If weDealer: predictor is opponent (index 1), so predictor wins if namedWentTo===1
+  // If !weDealer: predictor is us (index 0), so predictor wins if namedWentTo===0
+  const predictorIdx = G.weDealer ? 1 : 0;
+  const predictorWins = namedWentTo === predictorIdx;
+  const winner = predictorWins ? predictorIdx : (1-predictorIdx);
+  const loser  = 1-winner;
 
-  // Save result to Firebase
-  if(currentUser && gameState) {
-    const histRef = push(ref(db, `gameHistory/${currentUser.uid}`));
-    set(histRef, {
-      opponent: gameState.opponentName,
-      opponentUid: gameState.opponentUid,
-      result: winner===0 ? 'win' : 'loss',
-      amount: G.bet,
-      namedCard: `${rn(G.nR)} of ${sn(G.nS)}`,
-      timestamp: Date.now()
-    });
-    // Update balance
-    const newBal = (currentProfile.balance||0) + (winner===0 ? G.bet : -G.bet);
-    update(ref(db, `users/${currentUser.uid}`), { balance: newBal });
-    currentProfile.balance = newBal;
+  G.bals[winner]+=G.bet; G.bals[loser]-=G.bet;
+
+  // Save to Firebase
+  if(CU && gameState){
+    const hr=push(ref(db,`gameHistory/${CU.uid}`));
+    set(hr,{opponent:gameState.opponentName,opponentUid:gameState.opponentUid,
+      result:winner===0?'win':'loss',amount:G.bet,
+      namedCard:`${rn(G.nR)} of ${sn(G.nS)}`,timestamp:Date.now()});
+    const nb=(CP.balance||0)+(winner===0?G.bet:-G.bet);
+    update(ref(db,`users/${CU.uid}`),{balance:Math.max(0,nb)});
+    CP.balance=Math.max(0,nb);
   }
 
-  const title=document.getElementById('g-r-title');
-  title.textContent=(winner===1?'🎉 ':'')+G.names[winner]+' Wins!'+(winner===1?' 🎉':'');
-  document.getElementById('g-r-desc').textContent=`${rn(G.nR)} of ${sn(G.nS)} went to ${G.names[winner]}`;
-  document.getElementById('g-r-card').innerHTML=gCardHTML(G.nR,G.nS,true,'md');
-  document.getElementById('g-r-win-txt').innerHTML=`<span style="color:#2ecc71">+Rs.${G.bet.toLocaleString()} ↑ ${G.names[winner]}</span>`;
-  document.getElementById('g-r-lose-txt').innerHTML=`<span style="color:#e74c3c">−Rs.${G.bet.toLocaleString()} ↓ ${G.names[loser]}</span>`;
+  document.getElementById('g-r-title').textContent=`${G.names[winner]} Wins! 🎉`;
+  document.getElementById('g-r-desc').textContent=`${rn(G.nR)} of ${sn(G.nS)} went to ${G.names[namedWentTo]}`;
+  document.getElementById('g-r-card').innerHTML=gCard(G.nR,G.nS,true,false);
+  document.getElementById('g-r-w').innerHTML=`<span style="color:#2ecc71">+Rs.${G.bet.toLocaleString()} ↑ ${G.names[winner]}</span>`;
+  document.getElementById('g-r-l').innerHTML=`<span style="color:#e74c3c">−Rs.${G.bet.toLocaleString()} ↓ ${G.names[loser]}</span>`;
   document.getElementById('g-r-bals').innerHTML=[0,1].map(i=>`
-    <div class="g-panel" style="text-align:center;border:${i===winner?'1px solid var(--gold)':'1px solid rgba(255,255,255,0.1)'}">
-      <div style="font-size:11px;color:rgba(255,255,255,0.4)">${G.names[i]}</div>
-      <div style="color:var(--gold);font-size:17px;font-weight:700">Rs. ${G.balances[i].toLocaleString()}</div>
-      <div style="font-size:11px;margin-top:2px;color:${i===winner?'#2ecc71':'#e74c3c'}">${i===winner?'+':'-'}${G.bet}</div>
+    <div class="g-panel" style="text-align:center;border:${i===winner?'1px solid var(--gold)':'1px solid rgba(255,255,255,0.1)'};">
+      <div style="font-size:11px;color:rgba(255,255,255,0.4);">${G.names[i]}</div>
+      <div style="color:var(--gold);font-size:17px;font-weight:700;">Rs. ${G.bals[i].toLocaleString()}</div>
+      <div style="font-size:11px;color:${i===winner?'#2ecc71':'#e74c3c'};margin-top:2px;">${i===winner?'+':'-'}${G.bet}</div>
     </div>`).join('');
-  gShowPhase('result');
-}
 
+  // Check if we're broke after this round
+  const paBtn=document.getElementById('g-play-again');
+  if(paBtn && (CP.balance||0)<=0){
+    paBtn.disabled=true; paBtn.textContent='No Balance';
+  }
+  gPhase('result');
+}
 window.gPlayAgain=()=>{
-  document.getElementById('gbb0').textContent='Rs. '+G.balances[0].toLocaleString();
-  gShowPhase('betting');
+  if((CP.balance||0)<=0){toast('Top up to play again!');return;}
+  document.getElementById('gbb0').textContent='Rs.'+(CP.balance||0).toLocaleString();
+  if(!G.weDealer) gUpdatePreview();
+  gPhase('bet');
+};
+
+// ── GAME CHAT ─────────────────────────────────
+function setupGChat(oppUid, oppName) {
+  gchatOpen=false; gchatUnread=0;
+  document.getElementById('gchat-name').textContent=`Chat · ${oppName}`;
+  document.getElementById('gchat-msgs').innerHTML='<div style="text-align:center;color:var(--text-dim);font-size:12px;padding:20px;">No messages yet</div>';
+  if(gchatRef&&gchatListener){off(gchatRef,'value',gchatListener);gchatListener=null;}
+  const chatId=[CU.uid,oppUid].sort().join('_');
+  gchatRef=ref(db,`chats/${chatId}/messages`);
+  const lsKey='ls_'+chatId;
+  gchatListener=onValue(gchatRef,snap=>{
+    const msgs=Object.values(snap.val()||{}).sort((a,b)=>a.timestamp-b.timestamp);
+    const el=document.getElementById('gchat-msgs');
+    if(!msgs.length){el.innerHTML='<div style="text-align:center;color:var(--text-dim);font-size:12px;padding:20px;">No messages yet</div>';return;}
+    el.innerHTML=msgs.map(m=>{
+      const mine=m.from===CU.uid;
+      const d=new Date(m.timestamp);
+      const timeStr=`${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
+      if(m.type==='image') return `<div class="msg-bubble ${mine?'msg-out':'msg-in'}" style="max-width:85%;"><img src="${m.url}" class="msg-img"><div class="msg-time">${timeStr}</div></div>`;
+      return `<div class="msg-bubble ${mine?'msg-out':'msg-in'}" style="max-width:85%;font-size:13px;"><div>${m.text||''}</div><div class="msg-time">${timeStr}</div></div>`;
+    }).join('');
+    el.scrollTop=el.scrollHeight;
+    if(!gchatOpen){
+      const ls=parseInt(localStorage.getItem(lsKey)||'0');
+      gchatUnread=msgs.filter(m=>m.from!==CU.uid&&(m.timestamp||0)>ls).length;
+      updateGChatBadge();
+    }
+  });
 }
 
-// ─── MENU ────────────────────────────────────
-window.openMenu = () => {
-  document.getElementById('overlay').classList.add('open');
-  document.getElementById('side-menu').classList.add('open');
-};
-window.closeMenu = () => {
-  document.getElementById('overlay').classList.remove('open');
-  document.getElementById('side-menu').classList.remove('open');
+function updateGChatBadge(){
+  const b=document.getElementById('gchat-unread');
+  if(b){b.textContent=gchatUnread>9?'9+':gchatUnread;b.classList.toggle('show',gchatUnread>0);}
+}
+
+window.toggleGameChat=()=>{
+  const panel=document.getElementById('gchat-panel');
+  const toggle=document.getElementById('gchat-toggle');
+  gchatOpen=!gchatOpen;
+  panel.classList.toggle('open',gchatOpen);
+  if(toggle) toggle.style.right=gchatOpen?((panel.offsetWidth||270)+'px'):'0';
+  if(gchatOpen){
+    gchatUnread=0; updateGChatBadge();
+    if(gameState){const chatId=[CU.uid,gameState.opponentUid].sort().join('_');localStorage.setItem('ls_'+chatId,Date.now().toString());}
+    setTimeout(()=>{const el=document.getElementById('gchat-msgs');if(el)el.scrollTop=el.scrollHeight;document.getElementById('gchat-inp')?.focus();},380);
+  }
 };
 
-// ─── MODALS ──────────────────────────────────
-function openModal(id) {
-  const bg = document.getElementById('modal-'+id);
-  const sheet = document.getElementById('sheet-'+id);
-  bg.classList.add('open');
-  setTimeout(()=>sheet.classList.add('open'),10);
+window.sendGameMsg=async()=>{
+  const inp=document.getElementById('gchat-inp');
+  const text=inp.value.trim();
+  if(!text||!gameState?.opponentUid)return;
+  inp.value='';
+  const chatId=[CU.uid,gameState.opponentUid].sort().join('_');
+  await push(ref(db,`chats/${chatId}/messages`),{from:CU.uid,text,timestamp:Date.now()});
+};
+
+// ── MENU ─────────────────────────────────────
+window.openMenu=()=>{document.getElementById('overlay').classList.add('open');document.getElementById('side-menu').classList.add('open');};
+window.closeMenu=()=>{document.getElementById('overlay').classList.remove('open');document.getElementById('side-menu').classList.remove('open');};
+
+// ── MODALS ────────────────────────────────────
+function openModal(id){
   closeMenu();
+  document.getElementById('modal-'+id).classList.add('open');
+  setTimeout(()=>document.getElementById('sheet-'+id).classList.add('open'),10);
 }
-window.closeModal = (id) => {
-  const bg = document.getElementById('modal-'+id);
-  const sheet = document.getElementById('sheet-'+id);
-  sheet.classList.remove('open');
-  setTimeout(()=>bg.classList.remove('open'),350);
+window.closeModal=(id)=>{
+  document.getElementById('sheet-'+id).classList.remove('open');
+  setTimeout(()=>document.getElementById('modal-'+id).classList.remove('open'),350);
 };
+// Close on backdrop click
+['history','topup','withdraw','terms'].forEach(id=>{
+  document.getElementById('modal-'+id)?.addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal(id);});
+});
 
-// ─── HISTORY ─────────────────────────────────
-window.openHistory = async () => {
+// ── HISTORY ──────────────────────────────────
+window.openHistory=async()=>{
   openModal('history');
-  const snap = await get(ref(db, `gameHistory/${currentUser.uid}`));
-  const data = snap.val() || {};
-  const entries = Object.values(data).sort((a,b)=>b.timestamp-a.timestamp);
-  const body = document.getElementById('history-body');
-  if (!entries.length) { body.innerHTML = '<div class="empty">No games yet</div>'; return; }
-  body.innerHTML = entries.map(h => {
-    const d = new Date(h.timestamp);
-    const isWin = h.result === 'win';
-    const cardSuit = h.namedCard?.split(' of ')?.[1];
-    const cardRank = h.namedCard?.split(' of ')?.[0]?.[0] || '?';
-    const isRed = cardSuit === 'Hearts' || cardSuit === 'Diamonds';
+  const snap=await get(ref(db,`gameHistory/${CU.uid}`));
+  const data=snap.val()||{};
+  const entries=Object.values(data).sort((a,b)=>b.timestamp-a.timestamp);
+  const body=document.getElementById('history-body');
+  if(!entries.length){body.innerHTML='<div class="empty">No games yet</div>';return;}
+  body.innerHTML=entries.map(h=>{
+    const d=new Date(h.timestamp);
+    const isWin=h.result==='win';
+    const suitName=h.namedCard?.split(' of ')?.[1];
+    const rank=h.namedCard?.split(' of ')?.[0]?.[0]||'?';
+    const red=suitName==='Hearts'||suitName==='Diamonds';
     return `<div class="history-item">
-      <div class="hist-card" style="color:${isRed?'#c0392b':'#1a1a2e'}">${cardRank}</div>
-      <div class="hist-info">
-        <div class="hist-vs">vs ${h.opponent}</div>
-        <div class="hist-time">${h.namedCard} · ${d.toLocaleDateString()}</div>
-      </div>
+      <div class="hist-card" style="color:${red?'#c0392b':'#1a1a2e'}">${rank}</div>
+      <div class="hist-info"><div class="hist-vs">vs ${h.opponent}</div><div class="hist-time">${h.namedCard||''} · ${d.toLocaleDateString()}</div></div>
       <div>
         <div class="hist-result ${isWin?'win':'loss'}">${isWin?'+':'-'}Rs.${(h.amount||0).toLocaleString()}</div>
-        <div style="font-size:11px;color:var(--text-dim);text-align:right">${isWin?'WIN':'LOSS'}</div>
+        <div style="font-size:11px;color:var(--text-dim);text-align:right;">${isWin?'WIN':'LOSS'}</div>
       </div>
     </div>`;
   }).join('');
 };
 
-// ─── TOP UP ──────────────────────────────────
-window.openTopUp = () => { openModal('topup'); selectedTopupAmount = null; };
-window.selectTopup = (amount, el) => {
+// ── TOP UP ────────────────────────────────────
+window.openTopUp=()=>{openModal('topup');selTopup=null;};
+window.selectTopup=(amount,el)=>{
   document.querySelectorAll('.amount-chip').forEach(c=>c.classList.remove('on'));
-  el.classList.add('on');
-  selectedTopupAmount = amount;
-  document.getElementById('topup-custom').value = '';
+  el.classList.add('on'); selTopup=amount;
+  document.getElementById('topup-custom').value='';
 };
-window.submitTopup = async () => {
-  const custom = +document.getElementById('topup-custom').value;
-  const amount = custom || selectedTopupAmount;
-  if (!amount || amount < 100) { toast('Please select or enter a valid amount'); return; }
-
-  await push(ref(db, `topupRequests`), {
-    uid: currentUser.uid,
-    userName: currentProfile.name,
-    userId: currentProfile.uid,
-    amount,
-    status: 'pending',
-    timestamp: Date.now()
-  });
-
-  // Also open support chat
+window.submitTopup=async()=>{
+  const custom=+document.getElementById('topup-custom').value;
+  const amount=custom||selTopup;
+  if(!amount||amount<100){toast('Select or enter a valid amount');return;}
+  await push(ref(db,'topupRequests'),{uid:CU.uid,userName:CP.name,userId:CP.uid,amount,status:'pending',timestamp:Date.now()});
   closeModal('topup');
-  toast(`Top up request of Rs.${amount.toLocaleString()} sent to admin!`);
+  toast(`Top up request Rs.${amount.toLocaleString()} sent!`);
   openSupport();
 };
 
-// ─── SUPPORT ─────────────────────────────────
-window.openSupport = () => {
-  openChat('admin', 'Admin Support', '', true);
-  closeMenu();
+// ── WITHDRAW ─────────────────────────────────
+window.openWithdraw=()=>{
+  document.getElementById('withdraw-bal').textContent=`Rs. ${(CP.balance||0).toLocaleString()}`;
+  openModal('withdraw');
+};
+window.submitWithdraw=async()=>{
+  const amount=+document.getElementById('withdraw-amount').value;
+  const bank=document.getElementById('withdraw-bank').value.trim();
+  const bankName=document.getElementById('withdraw-bankname').value.trim();
+  const holder=document.getElementById('withdraw-holder').value.trim();
+  if(!amount||amount<100){toast('Enter a valid amount (min Rs.100)');return;}
+  if(amount>(CP.balance||0)){toast('Amount exceeds your balance');return;}
+  if(!bank||!bankName||!holder){toast('Fill in all bank details');return;}
+  await push(ref(db,'withdrawRequests'),{
+    uid:CU.uid,userName:CP.name,userId:CP.uid,
+    amount,bank,bankName,holder,
+    status:'pending',timestamp:Date.now()
+  });
+  closeModal('withdraw');
+  toast(`Withdraw request Rs.${amount.toLocaleString()} sent!`);
 };
 
-// ─── TERMS ───────────────────────────────────
-window.openTerms = () => openModal('terms');
+// ── CUSTOMER SUPPORT ──────────────────────────
+window.openSupport=()=>{openChat('admin','Admin Support','',true);};
 
-// ─── CHAT ────────────────────────────────────
-window.openChat = (uid, name, photo, online) => {
-  chatWithUid = uid;
-  chatWithName = name;
-  markAsRead(uid); // clear unread badge
-  document.getElementById('chat-name').textContent = name;
-  document.getElementById('chat-status').textContent = online === true || online === 'true' ? '● Online' : '○ Offline';
-  document.getElementById('chat-status').style.color = online === true || online === 'true' ? '#2ecc71' : '#888';
-  document.getElementById('chat-avatar').innerHTML = photo
-    ? `<img src="${photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`
-    : (name[0]||'?').toUpperCase();
+// ── TERMS ─────────────────────────────────────
+window.openTerms=()=>openModal('terms');
 
-  // Listen to chat messages
-  if (chatMsgsRef && chatListener) off(chatMsgsRef, 'value', chatListener);
-  const chatId = [currentUser.uid, uid].sort().join('_');
-  chatMsgsRef = ref(db, `chats/${chatId}/messages`);
-  chatListener = onValue(chatMsgsRef, snap => {
-    const data = snap.val() || {};
-    const msgs = Object.values(data).sort((a,b)=>a.timestamp-b.timestamp);
-    const el = document.getElementById('chat-msgs');
-    if (!msgs.length) { el.innerHTML = '<div class="empty" style="margin:auto">Start a conversation...</div>'; }
-    else {
-      el.innerHTML = msgs.map(m => {
-        const isMine = m.from === currentUser.uid;
-        const d = new Date(m.timestamp);
-        return `<div class="msg-bubble ${isMine?'msg-out':'msg-in'}">
-          <div>${m.text}</div>
-          <div class="msg-time">${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}</div>
-        </div>`;
-      }).join('');
-      el.scrollTop = el.scrollHeight;
-    }
-    markAsRead(uid); // mark as read while chat is open
+// ── CHAT ─────────────────────────────────────
+window.openChat=(uid,name,photo,online)=>{
+  chatWithUid=uid; markRead(uid);
+  document.getElementById('chat-name').textContent=name;
+  const onl=online===true||online==='true';
+  document.getElementById('chat-status').textContent=onl?'● Online':'○ Offline';
+  document.getElementById('chat-status').style.color=onl?'#2ecc71':'#888';
+  document.getElementById('chat-avatar').innerHTML=photo
+    ?`<img src="${photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`
+    :(name[0]||'?').toUpperCase();
+
+  if(chatMsgsRef&&chatListener){off(chatMsgsRef,'value',chatListener);chatListener=null;}
+  const chatId=[CU.uid,uid].sort().join('_');
+  chatMsgsRef=ref(db,`chats/${chatId}/messages`);
+  chatListener=onValue(chatMsgsRef,snap=>{
+    const msgs=Object.values(snap.val()||{}).sort((a,b)=>a.timestamp-b.timestamp);
+    const el=document.getElementById('chat-msgs');
+    if(!msgs.length){el.innerHTML='<div class="empty" style="margin:auto">Start a conversation...</div>';return;}
+    el.innerHTML=msgs.map(m=>{
+      const mine=m.from===CU.uid;
+      const d=new Date(m.timestamp);
+      const t=`${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
+      if(m.type==='image')
+        return `<div class="msg-bubble ${mine?'msg-out':'msg-in'}"><img src="${m.url}" class="msg-img" onclick="window.open('${m.url}','_blank')"><div class="msg-time">${t}</div></div>`;
+      if(m.type==='file')
+        return `<div class="msg-bubble ${mine?'msg-out':'msg-in'}"><a href="${m.url}" target="_blank" style="color:var(--gold);text-decoration:none;">📎 ${m.fileName||'File'}</a><div class="msg-time">${t}</div></div>`;
+      return `<div class="msg-bubble ${mine?'msg-out':'msg-in'}"><div>${m.text||''}</div><div class="msg-time">${t}</div></div>`;
+    }).join('');
+    el.scrollTop=el.scrollHeight;
+    markRead(uid);
   });
 
   document.getElementById('chat-modal').classList.add('open');
@@ -1792,116 +1314,47 @@ window.openChat = (uid, name, photo, online) => {
   closeMenu();
 };
 
-window.closeChat = () => {
+window.closeChat=()=>{
   document.getElementById('chat-sheet').classList.remove('open');
   setTimeout(()=>document.getElementById('chat-modal').classList.remove('open'),350);
-  if (chatMsgsRef && chatListener) { off(chatMsgsRef, 'value', chatListener); chatListener=null; }
+  if(chatMsgsRef&&chatListener){off(chatMsgsRef,'value',chatListener);chatListener=null;}
 };
 
-window.sendMsg = async () => {
-  const inp = document.getElementById('chat-inp');
-  const text = inp.value.trim();
-  if (!text) return;
-  inp.value = '';
-  const chatId = [currentUser.uid, chatWithUid].sort().join('_');
-  await push(ref(db, `chats/${chatId}/messages`), {
-    from: currentUser.uid,
-    text,
-    timestamp: Date.now()
-  });
+// File attachment handler
+document.getElementById('chat-file-inp').addEventListener('change', async e=>{
+  const file=e.target.files[0];
+  if(!file||!chatWithUid)return;
+  e.target.value='';
+  toast('Uploading...');
+  try{
+    const url=await uploadCloudinary(file);
+    const chatId=[CU.uid,chatWithUid].sort().join('_');
+    const isImage=file.type.startsWith('image/');
+    await push(ref(db,`chats/${chatId}/messages`),{
+      from:CU.uid,
+      type:isImage?'image':'file',
+      url,
+      fileName:file.name,
+      timestamp:Date.now()
+    });
+    toast('File sent!');
+  }catch(err){toast('Upload failed: '+err.message);}
+});
+
+window.sendMsg=async()=>{
+  const inp=document.getElementById('chat-inp');
+  const text=inp.value.trim();
+  if(!text||!chatWithUid)return;
+  inp.value='';
+  const chatId=[CU.uid,chatWithUid].sort().join('_');
+  await push(ref(db,`chats/${chatId}/messages`),{from:CU.uid,text,timestamp:Date.now()});
 };
 
-// ─── GAME CHAT ───────────────────────────────
-let gameChatRef = null;
-let gameChatListener = null;
-let gameChatUnread = 0;
-let gameChatOpen = false;
-
-function setupGameChat(opponentUid, opponentName) {
-  gameChatUnread = 0;
-  gameChatOpen = false;
-  document.getElementById('game-chat-tab-name').textContent = `Chat · ${opponentName}`;
-  document.getElementById('game-chat-msgs').innerHTML = '<div style="text-align:center;color:var(--text-dim);font-size:12px;padding:16px;">No messages yet</div>';
-
-  if (gameChatRef && gameChatListener) off(gameChatRef, 'value', gameChatListener);
-  const chatId = [currentUser.uid, opponentUid].sort().join('_');
-  gameChatRef = ref(db, `chats/${chatId}/messages`);
-  const lastSeenKey = `lastSeen_${chatId}`;
-
-  gameChatListener = onValue(gameChatRef, snap => {
-    const data = snap.val() || {};
-    const msgs = Object.values(data).sort((a,b)=>a.timestamp-b.timestamp);
-    const el = document.getElementById('game-chat-msgs');
-    if (!msgs.length) { el.innerHTML = '<div style="text-align:center;color:var(--text-dim);font-size:12px;padding:16px;">No messages yet</div>'; return; }
-    el.innerHTML = msgs.map(m => {
-      const isMine = m.from === currentUser.uid;
-      const d = new Date(m.timestamp);
-      return `<div class="msg-bubble ${isMine?'msg-out':'msg-in'}" style="max-width:85%;font-size:13px;">
-        <div>${m.text}</div>
-        <div class="msg-time">${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}</div>
-      </div>`;
-    }).join('');
-    el.scrollTop = el.scrollHeight;
-
-    // Count unread if panel closed
-    if (!gameChatOpen) {
-      const lastSeen = parseInt(localStorage.getItem(lastSeenKey) || '0');
-      const newUnread = msgs.filter(m => m.from !== currentUser.uid && m.timestamp > lastSeen).length;
-      gameChatUnread = newUnread;
-      updateGameChatBadge();
-    }
-  });
-}
-
-function updateGameChatBadge() {
-  const b = document.getElementById('game-chat-unread');
-  const show = gameChatUnread > 0;
-  const txt = gameChatUnread > 9 ? '9+' : String(gameChatUnread);
-  if (b) { b.textContent = txt; b.classList.toggle('show', show); }
-}
-
-window.toggleGameChat = () => {
-  const panel = document.getElementById('game-chat-panel');
-  const toggleBtn = document.getElementById('game-chat-toggle-btn');
-  gameChatOpen = !gameChatOpen;
-  panel.classList.toggle('expanded', gameChatOpen);
-  // Shift toggle button left when panel opens
-  if (gameChatOpen) {
-    toggleBtn.style.right = (panel.offsetWidth || 280) + 'px';
-    gameChatUnread = 0;
-    updateGameChatBadge();
-    if (gameState?.opponentUid) {
-      const chatId = [currentUser.uid, gameState.opponentUid].sort().join('_');
-      localStorage.setItem(`lastSeen_${chatId}`, Date.now().toString());
-    }
-    setTimeout(() => {
-      const el = document.getElementById('game-chat-msgs');
-      if (el) el.scrollTop = el.scrollHeight;
-      document.getElementById('game-chat-inp')?.focus();
-    }, 380);
-  } else {
-    toggleBtn.style.right = '0px';
-  }
-};
-
-window.sendGameMsg = async () => {
-  const inp = document.getElementById('game-chat-inp');
-  const text = inp.value.trim();
-  if (!text || !gameState?.opponentUid) return;
-  inp.value = '';
-  const chatId = [currentUser.uid, gameState.opponentUid].sort().join('_');
-  await push(ref(db, `chats/${chatId}/messages`), {
-    from: currentUser.uid,
-    text,
-    timestamp: Date.now()
-  });
-};
-
-// ─── SIGN OUT ────────────────────────────────
-window.signOut = async () => {
-  setOnlineStatus(false);
+// ── SIGN OUT ─────────────────────────────────
+window.signOut=async()=>{
+  setOnline(false);
   await fbSignOut(auth);
-  currentUser = null; currentProfile = null;
+  CU=null; CP=null;
   closeMenu();
   showPage('login');
   toast('Signed out');
