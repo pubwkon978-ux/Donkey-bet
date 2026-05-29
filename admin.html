@@ -468,13 +468,6 @@ tbody tr:hover { background: var(--panel); }
 /* SECTION GRID */
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
-/* MINI USER ROW in topup */
-.user-bal-edit {
-  display: flex; align-items: center; gap: 10px;
-  padding: 8px 0; border-bottom: 1px solid var(--border);
-}
-.user-bal-edit:last-child { border-bottom: none; }
-
 /* Animations */
 @keyframes fadeSlide { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
 .section.active { animation: fadeSlide 0.3s ease; }
@@ -758,7 +751,7 @@ const firebaseConfig = {
   appId: "1:709170827454:web:200a3ac74bbad45ff90eef"
 };
 
-const ADMIN_PASS = "donkeybet@admin2025"; // Change this!
+const ADMIN_PASS = "donkeybet@admin2025";
 const ADMIN_UID  = "admin";
 
 const app = initializeApp(firebaseConfig);
@@ -815,7 +808,6 @@ window.adminSignOut = () => {
   document.getElementById('li-err').textContent = '';
 };
 
-// Allow pressing enter
 document.getElementById('li-pass').addEventListener('keydown', e => { if(e.key==='Enter') window.adminLogin(); });
 
 // ── CLOCK ─────────────────────────────────────
@@ -1035,7 +1027,6 @@ window.approveTopup = async (key, uid, amount) => {
   const newBal = curBal + amount;
   await update(ref(db, `users/${uid}`), { balance: newBal });
   await update(ref(db, `topupRequests/${key}`), { status: 'approved', approvedAt: Date.now() });
-  // Notify user via chat
   const chatId = [ADMIN_UID, uid].sort().join('_');
   await push(ref(db, `chats/${chatId}/messages`), {
     from: ADMIN_UID,
@@ -1093,7 +1084,6 @@ window.filterHistory = () => {
 
 // ── ADMIN CHAT ────────────────────────────────
 function listenChatUsers() {
-  // Listen for any chat changes
   onValue(ref(db, 'chats'), snap => {
     renderChatUserList(snap.val() || {});
   });
@@ -1110,11 +1100,11 @@ function renderChatUserList(chatsData) {
     const lastMsg = chatMsgs.sort((a,b) => b.timestamp-a.timestamp)[0];
     const isActive = chatWithUid === uid;
     return `<div class="chat-user-item ${isActive?'active':''}" onclick="openAdminChat('${uid}','${escHtml(u.name||'Player')}')">
-      <div class="av" style="width:36px;height:36px;font-size:13px;flex-shrink:0">
+      <div class="av" style="width:36px;height:36px;font-size:13px;flex-shrink:0;position:relative">
         ${u.photoURL ? `<img src="${u.photoURL}">` : (u.name||'?')[0].toUpperCase()}
         <div style="position:absolute;bottom:0;right:0;width:8px;height:8px;border-radius:50%;background:${u.online?'var(--green)':'#555'};border:2px solid var(--bg)"></div>
       </div>
-      <div style="flex:1;min-width:0;position:relative">
+      <div style="flex:1;min-width:0">
         <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${u.name||'—'}</div>
         <div style="font-size:11px;color:var(--txt-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${lastMsg?.text || 'No messages'}</div>
       </div>
@@ -1129,7 +1119,6 @@ window.openAdminChat = (uid, name) => {
   chatWithUid = uid;
   chatWithName = name;
 
-  // Update header
   const u = allUsers[uid] || {};
   document.getElementById('chat-win-header').innerHTML = `
     <div class="av" style="width:36px;height:36px;font-size:13px">
@@ -1142,7 +1131,6 @@ window.openAdminChat = (uid, name) => {
     <button class="tbl-btn primary" onclick="openBalModal('${uid}')">💰 Edit Balance</button>
   `;
 
-  // Listen messages
   if (chatMsgRef && chatMsgListener) off(chatMsgRef, 'value', chatMsgListener);
   const chatId = [ADMIN_UID, uid].sort().join('_');
   chatMsgRef = ref(db, `chats/${chatId}/messages`);
@@ -1162,7 +1150,6 @@ window.openAdminChat = (uid, name) => {
     el.scrollTop = el.scrollHeight;
   });
 
-  // Navigate to chat section
   goTo('chat', document.querySelector('[onclick*="chat"]'));
   document.getElementById('chat-inp').focus();
 };
@@ -1181,9 +1168,7 @@ window.adminSendMsg = async () => {
   });
 };
 
-window.filterChatUsers = () => {
-  // Simple client-side filter on existing list items (full re-render triggers on data)
-};
+window.filterChatUsers = () => {};
 </script>
 </body>
 </html>
