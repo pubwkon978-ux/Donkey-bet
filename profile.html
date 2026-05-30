@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Donkey Bet · Create Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green-deep: #0a3d1f;
+  --green-mid:  #0f5c2e;
+  --gold:       #f1c40f;
+  --gold-dim:   rgba(241,196,15,0.14);
+  --gold-bdr:   rgba(241,196,15,0.3);
+  --red:        #e74c3c;
+  --white:      #ffffff;
+  --glass:      rgba(0,0,0,0.35);
+  --glass2:     rgba(255,255,255,0.06);
+  --border:     rgba(255,255,255,0.1);
+  --text-dim:   rgba(255,255,255,0.42);
+  --text-mid:   rgba(255,255,255,0.68);
+  --radius:     14px;
+  --rsm:        8px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{min-height:100vh;}
+body{
+  font-family:'Outfit',sans-serif;
+  background:radial-gradient(ellipse at 60% 10%,#163d28 0%,#071d10 55%,#020a05 100%);
+  color:#fff;overflow-x:hidden;
+  display:flex;align-items:flex-start;justify-content:center;padding:28px 20px 40px;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;
+}
+
+/* Page loader */
+.page-loader{
+  position:fixed;inset:0;z-index:999;
+  background:#040f08;display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:14px;transition:opacity 0.5s;
+}
+.page-loader.hidden{opacity:0;pointer-events:none;}
+.loader-logo{font-family:'Cinzel',serif;font-size:24px;font-weight:700;color:var(--gold);letter-spacing:3px;}
+.loader-suits{font-size:30px;letter-spacing:10px;animation:lp 1.2s ease infinite;}
+@keyframes lp{0%,100%{opacity:0.3}50%{opacity:1}}
+
+/* Floating suits BG */
+.bg-suit{position:fixed;opacity:0.025;pointer-events:none;z-index:0;animation:floatSuit 10s ease-in-out infinite;}
+.bg-suit.s1{font-size:160px;top:-20px;right:-30px;animation-delay:0s;}
+.bg-suit.s2{font-size:100px;bottom:60px;left:-20px;animation-delay:3s;}
+@keyframes floatSuit{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+
+/* Main card */
+.profile-card{
+  position:relative;z-index:1;
+  width:100%;max-width:420px;
+  background:rgba(4,14,8,0.65);
+  border:1px solid var(--gold-bdr);
+  border-radius:24px;padding:36px 28px 32px;
+  backdrop-filter:blur(24px);
+  box-shadow:0 32px 80px rgba(0,0,0,0.55), inset 0 1px 0 rgba(241,196,15,0.12);
+  animation:slideUp 0.65s cubic-bezier(0.34,1.2,0.64,1) both;
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+
+/* Header */
+.pc-header{text-align:center;margin-bottom:32px;}
+.pc-back{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:12px;color:var(--text-dim);cursor:pointer;margin-bottom:20px;
+  background:var(--glass2);border:1px solid var(--border);border-radius:20px;
+  padding:5px 12px;transition:color 0.2s,background 0.2s;
+}
+.pc-back:hover{color:var(--gold);background:var(--gold-dim);}
+.pc-title{font-family:'Cinzel',serif;font-size:20px;font-weight:700;color:var(--gold);margin-bottom:6px;}
+.pc-sub{font-size:13px;color:var(--text-dim);line-height:1.6;}
+
+/* Step indicator */
+.steps{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:28px;}
+.step{display:flex;align-items:center;gap:0;}
+.step-dot{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;flex-shrink:0;
+  border:2px solid var(--border);color:var(--text-dim);
+  transition:all 0.3s;
+}
+.step-dot.done{background:var(--green-mid);border-color:var(--green-mid);color:#fff;}
+.step-dot.active{background:var(--gold);border-color:var(--gold);color:#0a1a05;}
+.step-line{width:40px;height:2px;background:var(--border);margin:0 4px;}
+.step-line.done{background:var(--green-mid);}
+.step-label{font-size:10px;color:var(--text-dim);text-align:center;margin-top:4px;letter-spacing:0.5px;}
+
+/* Avatar section */
+.avatar-section{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:28px;}
+.avatar-wrap{position:relative;width:96px;height:96px;cursor:pointer;}
+.avatar-img{
+  width:96px;height:96px;border-radius:50%;
+  background:linear-gradient(135deg,var(--green-mid),var(--green-deep));
+  border:2px solid var(--gold-bdr);overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  font-size:36px;font-weight:700;font-family:'Cinzel',serif;color:var(--gold);
+  transition:border-color 0.2s;
+}
+.avatar-img img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.avatar-edit{
+  position:absolute;bottom:2px;right:2px;
+  width:30px;height:30px;border-radius:50%;
+  background:var(--gold);border:2px solid #040f08;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,0.4);
+  transition:transform 0.2s;
+}
+.avatar-edit:hover{transform:scale(1.1);}
+.avatar-hint{font-size:11px;color:var(--text-dim);}
+
+/* Form fields */
+.field{margin-bottom:16px;}
+.field-label{font-size:11px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px;}
+.inp{
+  width:100%;padding:13px 16px;
+  background:rgba(0,0,0,0.45);
+  border:1px solid var(--border);border-radius:var(--rsm);
+  color:white;font-size:15px;font-family:'Outfit',sans-serif;
+  outline:none;transition:border-color 0.2s,background 0.2s;
+}
+.inp:focus{border-color:var(--gold-bdr);background:rgba(0,0,0,0.55);}
+.inp::placeholder{color:var(--text-dim);}
+.inp-hint{font-size:11px;color:var(--text-dim);margin-top:5px;}
+
+/* char counter */
+.char-count{font-size:11px;color:var(--text-dim);text-align:right;margin-top:4px;}
+.char-count.warn{color:var(--gold);}
+
+/* Random name button */
+.random-btn{
+  width:100%;padding:10px;
+  background:var(--glass2);border:1px solid var(--border);border-radius:var(--rsm);
+  color:var(--text-mid);font-size:13px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:background 0.2s,border-color 0.2s;font-family:'Outfit',sans-serif;
+  margin-bottom:20px;
+}
+.random-btn:hover{background:var(--gold-dim);border-color:var(--gold-bdr);color:var(--gold);}
+
+/* Submit btn */
+.btn-enter{
+  width:100%;padding:15px;
+  background:linear-gradient(135deg,var(--gold) 0%,#e6ac00 100%);
+  border:none;border-radius:var(--rsm);
+  color:#0a1a05;font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;
+  cursor:pointer;transition:transform 0.18s cubic-bezier(0.34,1.4,0.64,1),box-shadow 0.18s,opacity 0.2s;
+  box-shadow:0 4px 20px rgba(241,196,15,0.25);
+  display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.btn-enter:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 28px rgba(241,196,15,0.35);}
+.btn-enter:active{transform:scale(0.98);}
+.btn-enter:disabled{opacity:0.55;cursor:not-allowed;}
+
+.btn-enter .arrow{transition:transform 0.2s;}
+.btn-enter:hover .arrow{transform:translateX(4px);}
+
+/* Rules callout */
+.rules-box{
+  background:var(--gold-dim);border:1px solid var(--gold-bdr);border-radius:var(--rsm);
+  padding:12px 14px;font-size:12px;color:var(--text-mid);line-height:1.8;margin-bottom:20px;
+}
+.rules-box strong{color:var(--gold);}
+
+/* Error */
+.err-box{
+  background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.3);
+  border-radius:var(--rsm);padding:10px 14px;font-size:12px;color:#e74c3c;
+  margin-bottom:14px;display:none;
+}
+.err-box.show{display:block;}
+
+/* Spinner */
+.spinner{display:inline-block;width:16px;height:16px;border:2.5px solid rgba(10,26,5,0.3);border-top-color:#0a1a05;border-radius:50%;animation:spin 0.7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:28px;left:50%;
+  transform:translateX(-50%) translateY(70px);
+  background:rgba(10,30,16,0.96);border:1px solid var(--gold-bdr);
+  border-radius:12px;padding:12px 20px;font-size:13px;color:var(--text-mid);
+  z-index:9999;white-space:nowrap;transition:transform 0.35s,opacity 0.35s;
+  opacity:0;pointer-events:none;
+}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+.toast.error{border-color:rgba(231,76,60,0.5);}
+.toast.success{border-color:rgba(46,204,113,0.5);}
+
+/* Upload progress */
+.upload-progress{
+  height:3px;background:var(--border);border-radius:2px;margin-top:8px;overflow:hidden;display:none;
+}
+.upload-progress.show{display:block;}
+.upload-fill{height:100%;background:var(--gold);width:0%;transition:width 0.3s;border-radius:2px;}
+</style>
+</head>
+<body>
+
+<div class="page-loader" id="page-loader">
+  <div class="loader-logo">DONKEY BET</div>
+  <div class="loader-suits">♠ ♥ ♦ ♣</div>
+</div>
+
+<div class="bg-suit s1">♠</div>
+<div class="bg-suit s2">♣</div>
+
+<div class="profile-card">
+  <!-- Back -->
+  <div class="pc-header">
+    <div class="pc-back" onclick="goBack()">← Back to Login</div>
+    <div class="pc-title">Create Your Profile</div>
+    <div class="pc-sub">Set up your player identity before entering the game</div>
+  </div>
+
+  <!-- Steps -->
+  <div style="text-align:center;margin-bottom:24px;">
+    <div class="steps">
+      <div class="step">
+        <div>
+          <div class="step-dot done">✓</div>
+          <div class="step-label">Sign In</div>
+        </div>
+      </div>
+      <div class="step-line done"></div>
+      <div class="step">
+        <div>
+          <div class="step-dot active">2</div>
+          <div class="step-label">Profile</div>
+        </div>
+      </div>
+      <div class="step-line"></div>
+      <div class="step">
+        <div>
+          <div class="step-dot">3</div>
+          <div class="step-label">Game</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Avatar -->
+  <div class="avatar-section">
+    <div class="avatar-wrap" onclick="document.getElementById('photo-upload').click()">
+      <div class="avatar-img" id="avatar-preview">?</div>
+      <div class="avatar-edit">📷</div>
+    </div>
+    <div class="avatar-hint">Tap to change photo</div>
+    <div class="upload-progress" id="upload-progress">
+      <div class="upload-fill" id="upload-fill"></div>
+    </div>
+    <input type="file" id="photo-upload" accept="image/*" style="display:none">
+  </div>
+
+  <!-- Name field -->
+  <div class="field">
+    <label class="field-label" for="inp-username">Player Name</label>
+    <input class="inp" id="inp-username" placeholder="Your display name..." maxlength="20" autocomplete="off" oninput="onNameInput()">
+    <div class="char-count" id="char-count">0 / 20</div>
+  </div>
+
+  <!-- Random name button -->
+  <button class="random-btn" onclick="randomName()">🎲 Suggest a random player name</button>
+
+  <!-- Rules reminder -->
+  <div class="rules-box">
+    <strong>Game Rules (Quick):</strong> Dealer deals cards one by one from a 52-card deck. The Predictor names a card before dealing. If that card appears in the predictor's half — Predictor wins. If not — Dealer wins.
+  </div>
+
+  <div class="err-box" id="err-box">Please enter a valid name (2–20 characters)</div>
+
+  <button class="btn-enter" id="btn-enter" onclick="saveProfile()">
+    <span>Enter the Game</span>
+    <span class="arrow">→</span>
+  </button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut as fbSignOut }
+  from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { getDatabase, ref, set, get }
+  from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+const FB = {
+  apiKey:"AIzaSyCh8ATjBERok1XPOhPameciyPalntsPWg8",
+  authDomain:"donkey-bet.firebaseapp.com",
+  databaseURL:"https://donkey-bet-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId:"donkey-bet",
+  storageBucket:"donkey-bet.firebasestorage.app",
+  messagingSenderId:"709170827454",
+  appId:"1:709170827454:web:200a3ac74bbad45ff90eef"
+};
+const app  = initializeApp(FB);
+const auth = getAuth(app);
+const db   = getDatabase(app);
+
+const CLD_CLOUD  = 'dnvx958gz';
+const CLD_PRESET = 'donkey_bet';
+
+let CU = null;
+let pendingPhotoFile = null;
+let pendingPhotoURL  = '';
+
+// Random name suggestions
+const nameAdj  = ['Lucky','Swift','Golden','Shadow','Wild','Royal','Mighty','Bold','Clever','Sharp','Silent','Fierce'];
+const nameNoun = ['Ace','King','Joker','Blade','Storm','Fox','Wolf','Hawk','Tiger','Shark','Eagle','Viper'];
+
+window.randomName = () => {
+  const adj  = nameAdj[Math.floor(Math.random()*nameAdj.length)];
+  const noun = nameNoun[Math.floor(Math.random()*nameNoun.length)];
+  const num  = Math.floor(Math.random()*99)+1;
+  const name = `${adj}${noun}${num}`;
+  const inp  = document.getElementById('inp-username');
+  inp.value  = name;
+  onNameInput();
+  inp.focus();
+};
+
+window.onNameInput = () => {
+  const v = document.getElementById('inp-username').value;
+  const cc = document.getElementById('char-count');
+  cc.textContent = `${v.length} / 20`;
+  cc.classList.toggle('warn', v.length >= 15);
+  document.getElementById('err-box').classList.remove('show');
+};
+
+window.goBack = async () => {
+  await fbSignOut(auth).catch(()=>{});
+  window.location.href = 'login.html';
+};
+
+function toast(msg, type='') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show' + (type?' '+type:'');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+function genUID() {
+  const digits  = String(Math.floor(Math.random()*90)+10);
+  const letters = Array.from({length:5}, ()=>'ABCDEFGHJKLMNPQRSTUVWXYZ'[Math.floor(Math.random()*24)]).join('');
+  return digits+letters;
+}
+
+async function uploadCloudinary(file) {
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', CLD_PRESET);
+  // Simulate progress
+  const prog = document.getElementById('upload-progress');
+  const fill = document.getElementById('upload-fill');
+  prog.classList.add('show');
+  let pct = 0;
+  const tick = setInterval(() => {
+    pct = Math.min(pct + Math.random()*15, 85);
+    fill.style.width = pct + '%';
+  }, 200);
+  const r = await fetch(`https://api.cloudinary.com/v1_1/${CLD_CLOUD}/auto/upload`, { method:'POST', body:fd });
+  clearInterval(tick);
+  fill.style.width = '100%';
+  setTimeout(() => prog.classList.remove('show'), 600);
+  const d = await r.json();
+  if (d.error) throw new Error(d.error.message);
+  return d.secure_url;
+}
+
+// Photo upload handler
+document.getElementById('photo-upload').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  pendingPhotoFile = file;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const prev = document.getElementById('avatar-preview');
+    prev.innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+  };
+  reader.readAsDataURL(file);
+  e.target.value = '';
+});
+
+window.saveProfile = async () => {
+  const name = document.getElementById('inp-username').value.trim();
+  if (!name || name.length < 2) {
+    document.getElementById('err-box').classList.add('show');
+    document.getElementById('inp-username').focus();
+    return;
+  }
+  if (!CU) { toast('Session expired. Please sign in again.', 'error'); return; }
+
+  const btn = document.getElementById('btn-enter');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> Setting up...';
+
+  let photoURL = '';
+  try {
+    if (pendingPhotoFile) {
+      toast('Uploading photo...');
+      photoURL = await uploadCloudinary(pendingPhotoFile);
+      toast('Photo uploaded!', 'success');
+    } else {
+      photoURL = pendingPhotoURL || CU.photoURL || '';
+    }
+  } catch(err) {
+    console.warn('Photo upload failed:', err);
+    photoURL = CU.photoURL || '';
+    toast('Photo upload failed — using default', 'error');
+  }
+
+  const uid = genUID();
+  const profile = {
+    name, uid, email: CU.email, photoURL,
+    balance:0, lockedBalance:0, totalWins:0, totalLosses:0,
+    createdAt: Date.now(), online: true
+  };
+
+  try {
+    await set(ref(db, `users/${CU.uid}`), profile);
+    toast('Profile created! Entering game...', 'success');
+    setTimeout(() => { window.location.href = 'game.html'; }, 900);
+  } catch(err) {
+    btn.disabled = false;
+    btn.innerHTML = '<span>Enter the Game</span><span class="arrow">→</span>';
+    toast('Failed to save profile. Try again.', 'error');
+  }
+};
+
+// Auth check
+onAuthStateChanged(auth, async user => {
+  document.getElementById('page-loader').classList.add('hidden');
+  if (!user) { window.location.href = 'login.html'; return; }
+  CU = user;
+
+  // If profile already exists → go straight to game
+  const snap = await get(ref(db, `users/${CU.uid}`));
+  if (snap.exists()) { window.location.href = 'game.html'; return; }
+
+  // Pre-fill from Google
+  pendingPhotoURL = user.photoURL || '';
+  const prev = document.getElementById('avatar-preview');
+  if (user.photoURL) {
+    prev.innerHTML = `<img src="${user.photoURL}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+  } else {
+    prev.textContent = (user.displayName||'U')[0].toUpperCase();
+  }
+  const ni = document.getElementById('inp-username');
+  ni.value = user.displayName || '';
+  onNameInput();
+  setTimeout(() => { ni.focus(); ni.select(); }, 400);
+});
+</script>
+</body>
+</html>

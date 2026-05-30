@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Donkey Bet · Sign In</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green-deep: #0a3d1f;
+  --green-mid:  #0f5c2e;
+  --gold:       #f1c40f;
+  --gold-dim:   rgba(241,196,15,0.14);
+  --gold-bdr:   rgba(241,196,15,0.3);
+  --red:        #e74c3c;
+  --white:      #ffffff;
+  --glass:      rgba(0,0,0,0.35);
+  --glass2:     rgba(255,255,255,0.06);
+  --border:     rgba(255,255,255,0.1);
+  --text-dim:   rgba(255,255,255,0.42);
+  --text-mid:   rgba(255,255,255,0.68);
+  --radius:     14px;
+  --rsm:        8px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{
+  font-family:'Outfit',sans-serif;
+  background:radial-gradient(ellipse at 30% 20%,#1a6b38 0%,#0a3d1f 50%,#040f08 100%);
+  min-height:100vh;color:#fff;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;padding:24px;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;
+}
+
+/* Floating suit decorations */
+.bg-suit{position:fixed;font-size:80px;opacity:0.035;pointer-events:none;z-index:0;animation:floatSuit 8s ease-in-out infinite;}
+.bg-suit:nth-child(1){top:8%;left:5%;animation-delay:0s;}
+.bg-suit:nth-child(2){top:15%;right:8%;animation-delay:2s;font-size:60px;}
+.bg-suit:nth-child(3){bottom:20%;left:10%;animation-delay:4s;font-size:50px;}
+.bg-suit:nth-child(4){bottom:10%;right:6%;animation-delay:1s;font-size:70px;}
+@keyframes floatSuit{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-18px) rotate(8deg)}}
+
+/* Corner ornament lines */
+.corner{position:fixed;width:80px;height:80px;border-color:var(--gold-bdr);border-style:solid;opacity:0.4;pointer-events:none;z-index:0;}
+.corner-tl{top:20px;left:20px;border-width:2px 0 0 2px;}
+.corner-tr{top:20px;right:20px;border-width:2px 2px 0 0;}
+.corner-bl{bottom:20px;left:20px;border-width:0 0 2px 2px;}
+.corner-br{bottom:20px;right:20px;border-width:0 2px 2px 0;}
+
+.login-box{
+  position:relative;z-index:1;
+  width:100%;max-width:380px;
+  background:rgba(0,0,0,0.52);
+  border:1px solid var(--gold-bdr);border-radius:22px;
+  padding:44px 32px 36px;text-align:center;
+  backdrop-filter:blur(24px);
+  box-shadow:0 32px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(241,196,15,0.15);
+  animation:boxIn 0.7s cubic-bezier(0.34,1.2,0.64,1) both;
+}
+@keyframes boxIn{from{opacity:0;transform:translateY(30px) scale(0.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+.logo-icon{font-size:48px;margin-bottom:6px;animation:lp 2.4s ease-in-out infinite;}
+@keyframes lp{0%,100%{opacity:0.7}50%{opacity:1;text-shadow:0 0 30px rgba(241,196,15,0.8)}}
+
+.login-logo{
+  font-family:'Cinzel',serif;font-size:32px;font-weight:900;
+  color:var(--gold);letter-spacing:4px;margin-bottom:4px;
+  text-shadow:0 0 40px rgba(241,196,15,0.35);
+}
+.login-suits{font-size:20px;letter-spacing:10px;margin-bottom:8px;opacity:0.5;}
+.login-tagline{font-size:13px;color:var(--text-dim);margin-bottom:36px;line-height:1.6;}
+
+/* Divider */
+.divider{display:flex;align-items:center;gap:12px;margin-bottom:22px;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.divider span{font-size:11px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;}
+
+.btn-google{
+  width:100%;display:flex;align-items:center;justify-content:center;gap:12px;
+  padding:15px 20px;background:white;color:#1a1a1a;border:none;border-radius:var(--radius);
+  font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;cursor:pointer;
+  transition:transform 0.18s cubic-bezier(0.34,1.4,0.64,1),box-shadow 0.18s;
+  box-shadow:0 4px 24px rgba(0,0,0,0.35);
+  position:relative;overflow:hidden;
+}
+.btn-google::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0.18) 100%);
+  opacity:0;transition:opacity 0.2s;
+}
+.btn-google:hover{transform:translateY(-2px) scale(1.01);box-shadow:0 8px 32px rgba(0,0,0,0.45);}
+.btn-google:hover::after{opacity:1;}
+.btn-google:active{transform:scale(0.98);}
+.btn-google svg{width:20px;height:20px;flex-shrink:0;}
+
+.btn-loading{opacity:0.7;pointer-events:none;}
+.spinner{display:inline-block;width:18px;height:18px;border:2.5px solid rgba(0,0,0,0.15);border-top-color:#333;border-radius:50%;animation:spin 0.7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.privacy-note{font-size:11px;color:var(--text-dim);margin-top:20px;line-height:1.6;}
+.privacy-note a{color:var(--gold);text-decoration:none;opacity:0.8;}
+
+/* Error */
+.err-box{
+  background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.3);
+  border-radius:var(--rsm);padding:10px 14px;font-size:12px;color:#e74c3c;
+  margin-top:14px;display:none;text-align:left;line-height:1.5;
+}
+.err-box.show{display:block;}
+
+/* Loader */
+.page-loader{
+  position:fixed;inset:0;z-index:999;
+  background:#040f08;display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:14px;transition:opacity 0.5s;
+}
+.page-loader.hidden{opacity:0;pointer-events:none;}
+.loader-logo{font-family:'Cinzel',serif;font-size:24px;font-weight:700;color:var(--gold);letter-spacing:3px;}
+.loader-suits{font-size:30px;letter-spacing:10px;animation:lp 1.2s ease infinite;}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:28px;left:50%;
+  transform:translateX(-50%) translateY(70px);
+  background:rgba(10,30,16,0.96);border:1px solid var(--gold-bdr);
+  border-radius:12px;padding:12px 20px;font-size:13px;color:var(--text-mid);
+  z-index:9999;white-space:nowrap;transition:transform 0.35s,opacity 0.35s;
+  opacity:0;pointer-events:none;
+}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+.toast.error{border-color:rgba(231,76,60,0.5);}
+</style>
+</head>
+<body>
+
+<!-- Page Loader -->
+<div class="page-loader" id="page-loader">
+  <div class="loader-logo">DONKEY BET</div>
+  <div class="loader-suits">♠ ♥ ♦ ♣</div>
+</div>
+
+<!-- BG decorations -->
+<div class="bg-suit">♠</div>
+<div class="bg-suit">♥</div>
+<div class="bg-suit">♣</div>
+<div class="bg-suit">♦</div>
+<div class="corner corner-tl"></div>
+<div class="corner corner-tr"></div>
+<div class="corner corner-bl"></div>
+<div class="corner corner-br"></div>
+
+<!-- Login Box -->
+<div class="login-box">
+  <div class="logo-icon">♠</div>
+  <div class="login-logo">DONKEY BET</div>
+  <div class="login-suits">♥ ♦ ♣</div>
+  <p class="login-tagline">Play card games with friends.<br>Win real prizes.</p>
+
+  <div class="divider"><span>Sign in to play</span></div>
+
+  <button class="btn-google" id="btn-google-login">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+      <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+      <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+      <path fill="#FBBC05" d="M10.53 28.59c-.49-1.47-.77-3.04-.77-4.59s.27-3.12.74-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+      <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.89C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+    </svg>
+    Continue with Google
+  </button>
+
+  <div class="err-box" id="err-box">⚠ Login failed. Please try again.</div>
+
+  <p class="privacy-note">By signing in, you agree to our <a href="#">Terms of Service</a> &amp; <a href="#">Privacy Policy</a>. Must be 18+ to play.</p>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { getDatabase, ref, get }
+  from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+const FB = {
+  apiKey:"AIzaSyCh8ATjBERok1XPOhPameciyPalntsPWg8",
+  authDomain:"donkey-bet.firebaseapp.com",
+  databaseURL:"https://donkey-bet-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId:"donkey-bet",
+  storageBucket:"donkey-bet.firebasestorage.app",
+  messagingSenderId:"709170827454",
+  appId:"1:709170827454:web:200a3ac74bbad45ff90eef"
+};
+
+const app      = initializeApp(FB);
+const auth     = getAuth(app);
+const db       = getDatabase(app);
+const provider = new GoogleAuthProvider();
+
+function toast(msg, type='') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show' + (type ? ' '+type : '');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+// Check auth state on load
+onAuthStateChanged(auth, async user => {
+  document.getElementById('page-loader').classList.add('hidden');
+  if (!user) return;
+
+  // Already logged in — check profile
+  const snap = await get(ref(db, `users/${user.uid}`));
+  if (!snap.exists()) {
+    window.location.href = 'profile.html';
+  } else {
+    window.location.href = 'game.html';
+  }
+});
+
+// Google login button
+document.getElementById('btn-google-login').addEventListener('click', async () => {
+  const btn = document.getElementById('btn-google-login');
+  btn.innerHTML = '<div class="spinner"></div> Signing in...';
+  btn.classList.add('btn-loading');
+  document.getElementById('err-box').classList.remove('show');
+  try {
+    await signInWithPopup(auth, provider);
+    // onAuthStateChanged will handle redirect
+  } catch(e) {
+    btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style="width:20px;height:20px"><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="#FBBC05" d="M10.53 28.59c-.49-1.47-.77-3.04-.77-4.59s.27-3.12.74-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.89C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/></svg> Continue with Google`;
+    btn.classList.remove('btn-loading');
+    const errEl = document.getElementById('err-box');
+    errEl.textContent = '⚠ ' + (e.message || 'Login failed. Please try again.');
+    errEl.classList.add('show');
+    toast('Login failed', 'error');
+  }
+});
+</script>
+</body>
+</html>
