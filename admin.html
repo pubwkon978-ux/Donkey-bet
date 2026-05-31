@@ -2,15 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Donkey Bet · Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ══ VARIABLES (mirrors index.html) ══════════════════════ */
 :root {
   --green-deep: #0a3d1f;
   --green-mid:  #0f5c2e;
-  --green-hi:   #1a7a40;
   --gold:       #f1c40f;
   --gold-dim:   rgba(241,196,15,0.13);
   --gold-bdr:   rgba(241,196,15,0.3);
@@ -20,8 +18,6 @@
   --blue:       #3498db;
   --blue-dim:   rgba(52,152,219,0.13);
   --bg:         #040f08;
-  --surface:    #070f09;
-  --surface2:   #0a1a0d;
   --glass:      rgba(255,255,255,0.04);
   --glass2:     rgba(255,255,255,0.07);
   --border:     rgba(255,255,255,0.09);
@@ -29,292 +25,165 @@
   --txt:        #e8ede9;
   --txt-mid:    rgba(232,237,233,0.6);
   --txt-dim:    rgba(232,237,233,0.32);
-  --sidebar-w:  230px;
-  --topbar-h:   54px;
+  --sidebar-w:  236px;
+  --topbar-h:   56px;
   --radius:     12px;
   --rsm:        8px;
-  --shadow:     0 8px 32px rgba(0,0,0,0.5);
 }
-
-/* ══ RESET ═══════════════════════════════════════════════ */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{
   font-family:'Outfit',sans-serif;
   background:var(--bg);
   color:var(--txt);
-  height:100vh;
-  overflow:hidden;
-  display:flex;
+  height:100vh;overflow:hidden;display:flex;
 }
-/* Noise texture — same as index.html */
 body::before{
   content:'';position:fixed;inset:0;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
   pointer-events:none;z-index:0;
 }
-
 ::-webkit-scrollbar{width:4px;height:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:4px;}
 
-/* ══ LOGIN ════════════════════════════════════════════════ */
+/* ═══ LOGIN ═══ */
 #login-screen{
   position:fixed;inset:0;z-index:2000;
-  background:radial-gradient(ellipse at 50% 30%,#1e5c32 0%,#071d10 70%);
+  background:radial-gradient(ellipse at 40% 20%,#1a6b38 0%,#0a3d1f 50%,#040f08 100%);
   display:flex;align-items:center;justify-content:center;padding:24px;
 }
 .login-card{
   width:100%;max-width:380px;
-  background:rgba(0,0,0,0.52);
-  border:1px solid var(--gold-bdr);
-  border-radius:20px;padding:44px 32px;
-  text-align:center;backdrop-filter:blur(20px);
+  background:rgba(0,0,0,0.55);
+  border:1px solid var(--gold-bdr);border-radius:22px;
+  padding:44px 32px 36px;text-align:center;
+  backdrop-filter:blur(24px);
+  box-shadow:0 32px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(241,196,15,0.12);
+  animation:cardIn 0.6s cubic-bezier(0.34,1.2,0.64,1) both;
 }
-.login-logo{
-  font-family:'Cinzel',serif;font-size:32px;font-weight:900;
-  color:var(--gold);letter-spacing:3px;
-  text-shadow:0 0 30px rgba(241,196,15,0.35);
-  margin-bottom:6px;
-}
-.login-suits{font-size:20px;letter-spacing:8px;opacity:0.6;margin-bottom:6px;}
-.login-sub{
-  font-size:10px;letter-spacing:4px;text-transform:uppercase;
-  color:var(--txt-dim);font-family:'DM Mono',monospace;
-  margin-bottom:36px;
-}
+@keyframes cardIn{from{opacity:0;transform:translateY(24px) scale(0.97)}to{opacity:1;transform:none}}
+.login-logo{font-family:'Cinzel',serif;font-size:30px;font-weight:900;color:var(--gold);letter-spacing:3px;text-shadow:0 0 30px rgba(241,196,15,0.35);margin-bottom:4px;}
+.login-suits{font-size:18px;letter-spacing:8px;opacity:0.55;margin-bottom:6px;}
+.login-sub{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--txt-dim);font-family:'DM Mono',monospace;margin-bottom:34px;}
 .login-inp{
   width:100%;padding:13px 16px;margin-bottom:12px;
-  background:rgba(0,0,0,0.45);
-  border:1px solid var(--border2);
-  border-radius:var(--rsm);color:var(--txt);
-  font-size:15px;font-family:'Outfit',sans-serif;outline:none;
-  text-align:center;transition:border-color 0.2s;
+  background:rgba(0,0,0,0.45);border:1px solid var(--border2);border-radius:var(--rsm);
+  color:var(--txt);font-size:16px;font-family:'Outfit',sans-serif;outline:none;
+  text-align:center;transition:border-color 0.2s;letter-spacing:4px;
 }
 .login-inp:focus{border-color:var(--gold-bdr);}
 .login-btn{
   width:100%;padding:14px;
   background:linear-gradient(135deg,var(--gold),#d4a900);
-  border:none;border-radius:var(--rsm);
-  color:#0a1a05;font-family:'Outfit',sans-serif;
-  font-size:15px;font-weight:700;cursor:pointer;
-  transition:opacity 0.2s,transform 0.15s;
+  border:none;border-radius:var(--rsm);color:#0a1a05;
+  font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;cursor:pointer;
+  transition:opacity 0.2s,transform 0.15s;box-shadow:0 4px 20px rgba(241,196,15,0.25);
 }
-.login-btn:active{transform:scale(0.98);opacity:0.9;}
+.login-btn:active{transform:scale(0.98);}
 .login-err{font-size:12px;color:var(--red);margin-top:10px;min-height:18px;}
 
-/* ══ SIDEBAR ══════════════════════════════════════════════ */
+/* ═══ SIDEBAR ═══ */
 .sidebar{
-  width:var(--sidebar-w);
+  width:var(--sidebar-w);flex-shrink:0;
   background:linear-gradient(180deg,#071d10 0%,#040a06 100%);
   border-right:1px solid var(--border);
-  display:flex;flex-direction:column;
-  flex-shrink:0;z-index:10;
-  position:relative;
+  display:flex;flex-direction:column;z-index:10;position:relative;
 }
-/* Ambient glow on sidebar top */
 .sidebar::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:200px;
-  background:radial-gradient(ellipse at 50% 0%,rgba(241,196,15,0.06),transparent 70%);
+  content:'';position:absolute;top:0;left:0;right:0;height:180px;
+  background:radial-gradient(ellipse at 50% 0%,rgba(241,196,15,0.07),transparent 70%);
   pointer-events:none;
 }
-
-.sidebar-logo{
-  padding:24px 18px 20px;
-  border-bottom:1px solid var(--border);
-  position:relative;
-}
-.logo-mark{
-  font-family:'Cinzel',serif;font-size:14px;font-weight:900;
-  color:var(--gold);letter-spacing:2px;
-  text-shadow:0 0 16px rgba(241,196,15,0.3);
-}
-.logo-sub{
-  font-size:9px;color:var(--txt-dim);letter-spacing:4px;
-  text-transform:uppercase;margin-top:3px;
-  font-family:'DM Mono',monospace;
-}
+.sidebar-logo{padding:22px 18px 18px;border-bottom:1px solid var(--border);}
+.logo-mark{font-family:'Cinzel',serif;font-size:14px;font-weight:900;color:var(--gold);letter-spacing:2px;text-shadow:0 0 16px rgba(241,196,15,0.3);}
+.logo-sub{font-size:9px;color:var(--txt-dim);letter-spacing:4px;text-transform:uppercase;margin-top:3px;font-family:'DM Mono',monospace;}
 .logo-admin-pill{
-  display:inline-flex;align-items:center;gap:4px;
-  margin-top:8px;padding:3px 8px;
-  background:var(--red-dim);border:1px solid rgba(231,76,60,0.25);
-  border-radius:20px;font-size:9px;font-weight:700;
-  color:var(--red);letter-spacing:1px;text-transform:uppercase;
-  font-family:'DM Mono',monospace;
+  display:inline-flex;align-items:center;gap:4px;margin-top:8px;padding:3px 8px;
+  background:var(--red-dim);border:1px solid rgba(231,76,60,0.25);border-radius:20px;
+  font-size:9px;font-weight:700;color:var(--red);letter-spacing:1px;text-transform:uppercase;font-family:'DM Mono',monospace;
 }
 .logo-admin-pill::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--red);box-shadow:0 0 4px var(--red);}
 
-.sidebar-nav{flex:1;padding:10px 10px;overflow-y:auto;}
-.nav-section{
-  font-size:9px;font-weight:600;color:var(--txt-dim);
-  letter-spacing:2.5px;text-transform:uppercase;
-  padding:14px 10px 6px;font-family:'DM Mono',monospace;
-}
+.sidebar-nav{flex:1;padding:8px 10px;overflow-y:auto;}
+.nav-section{font-size:9px;font-weight:600;color:var(--txt-dim);letter-spacing:2.5px;text-transform:uppercase;padding:14px 10px 6px;font-family:'DM Mono',monospace;}
 .nav-item{
-  display:flex;align-items:center;gap:10px;
-  padding:9px 12px;border-radius:var(--rsm);
-  cursor:pointer;font-size:13px;font-weight:500;
-  color:var(--txt-mid);transition:all 0.18s;
-  margin-bottom:2px;position:relative;
+  display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--rsm);
+  cursor:pointer;font-size:13px;font-weight:500;color:var(--txt-mid);
+  transition:all 0.18s;margin-bottom:2px;position:relative;
 }
 .nav-item:hover{background:var(--glass2);color:var(--txt);}
-.nav-item.active{
-  background:var(--gold-dim);
-  color:var(--gold);
-  border:1px solid var(--gold-bdr);
-}
-.nav-item.active::before{
-  content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);
-  width:3px;height:60%;background:var(--gold);border-radius:0 2px 2px 0;
-  box-shadow:0 0 8px var(--gold);
-}
+.nav-item.active{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-bdr);}
+.nav-item.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:60%;background:var(--gold);border-radius:0 2px 2px 0;box-shadow:0 0 8px var(--gold);}
 .nav-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0;}
 .nav-badge{
-  margin-left:auto;
-  background:var(--red);color:white;
-  font-size:9px;font-weight:700;
-  padding:2px 6px;border-radius:10px;
-  font-family:'DM Mono',monospace;
-  display:none;
+  margin-left:auto;background:var(--red);color:white;
+  font-size:9px;font-weight:700;padding:2px 6px;border-radius:10px;
+  font-family:'DM Mono',monospace;display:none;
 }
 .nav-badge.show{display:block;}
 
-.sidebar-footer{
-  padding:14px 16px;
-  border-top:1px solid var(--border);
-}
+.sidebar-footer{padding:14px 16px;border-top:1px solid var(--border);}
 .admin-status{
-  display:flex;align-items:center;gap:8px;
-  padding:10px 12px;
-  background:var(--glass);border:1px solid var(--border);
-  border-radius:var(--rsm);margin-bottom:10px;
+  display:flex;align-items:center;gap:8px;padding:10px 12px;
+  background:var(--glass);border:1px solid var(--border);border-radius:var(--rsm);margin-bottom:10px;
 }
-.admin-dot{
-  width:7px;height:7px;border-radius:50%;
-  background:var(--green-win);
-  box-shadow:0 0 6px var(--green-win);
-  flex-shrink:0;
-  animation:pulse 2s ease infinite;
-}
+.admin-dot{width:7px;height:7px;border-radius:50%;background:var(--green-win);box-shadow:0 0 6px var(--green-win);flex-shrink:0;animation:pulse 2s ease infinite;}
 @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 6px var(--green-win)}50%{opacity:0.6;box-shadow:0 0 12px var(--green-win)}}
-.admin-label{font-size:12px;font-weight:600;color:var(--txt-mid);}
-.admin-sub{font-size:10px;color:var(--txt-dim);font-family:'DM Mono',monospace;margin-top:1px;}
-.signout-btn{
-  width:100%;padding:9px;border-radius:var(--rsm);
-  background:var(--red-dim);border:1px solid rgba(231,76,60,0.2);
-  color:var(--red);font-size:12px;font-weight:600;cursor:pointer;
-  font-family:'Outfit',sans-serif;transition:background 0.2s;
-}
+.signout-btn{width:100%;padding:9px;border-radius:var(--rsm);background:var(--red-dim);border:1px solid rgba(231,76,60,0.2);color:var(--red);font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:background 0.2s;}
 .signout-btn:hover{background:rgba(231,76,60,0.22);}
 
-/* ══ MAIN AREA ════════════════════════════════════════════ */
-.main{
-  flex:1;display:flex;flex-direction:column;
-  overflow:hidden;background:var(--bg);position:relative;z-index:1;
-}
-
-/* ══ TOPBAR ═══════════════════════════════════════════════ */
+/* ═══ MAIN ═══ */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;z-index:1;}
 .topbar{
-  height:var(--topbar-h);
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 22px;
-  background:rgba(4,15,8,0.88);
-  border-bottom:1px solid var(--border);
-  backdrop-filter:blur(20px);
-  flex-shrink:0;position:relative;z-index:5;
+  height:var(--topbar-h);display:flex;align-items:center;justify-content:space-between;
+  padding:0 22px;background:rgba(4,15,8,0.88);border-bottom:1px solid var(--border);
+  backdrop-filter:blur(20px);flex-shrink:0;z-index:5;
 }
-.page-title{
-  font-family:'Cinzel',serif;font-size:15px;font-weight:700;
-  color:var(--txt);letter-spacing:0.5px;
-}
+.page-title{font-family:'Cinzel',serif;font-size:15px;font-weight:700;color:var(--txt);letter-spacing:0.5px;}
 .topbar-right{display:flex;align-items:center;gap:14px;}
-.live-pill{
-  display:flex;align-items:center;gap:6px;
-  padding:5px 10px;
-  background:rgba(46,204,113,0.1);
-  border:1px solid rgba(46,204,113,0.25);
-  border-radius:20px;
-  font-size:10px;font-weight:700;color:var(--green-win);
-  font-family:'DM Mono',monospace;letter-spacing:1px;
-}
-.live-dot{
-  width:6px;height:6px;border-radius:50%;
-  background:var(--green-win);
-  animation:pulse 1.4s ease infinite;
-}
-.topbar-clock{
-  font-size:12px;color:var(--txt-dim);
-  font-family:'DM Mono',monospace;
-}
+.live-pill{display:flex;align-items:center;gap:6px;padding:5px 10px;background:rgba(46,204,113,0.1);border:1px solid rgba(46,204,113,0.25);border-radius:20px;font-size:10px;font-weight:700;color:var(--green-win);font-family:'DM Mono',monospace;letter-spacing:1px;}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green-win);animation:pulse 1.4s ease infinite;}
+.topbar-clock{font-size:12px;color:var(--txt-dim);font-family:'DM Mono',monospace;}
 
-/* ══ CONTENT AREA ═════════════════════════════════════════ */
-.content{flex:1;overflow-y:auto;padding:22px;}
-
-/* ══ SECTIONS ═════════════════════════════════════════════ */
+.content{flex:1;overflow-y:auto;padding:20px 22px;}
 .section{display:none;}
-.section.active{display:block;animation:fadeSlide 0.3s ease;}
-@keyframes fadeSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.section.active{display:block;animation:fadeSlide 0.28s ease;}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
-/* ══ STAT CARDS ═══════════════════════════════════════════ */
+/* ═══ STAT CARDS ═══ */
 .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
 .stat-card{
   background:linear-gradient(135deg,rgba(15,92,46,0.28),rgba(4,15,8,0.6));
-  border:1px solid var(--border);border-radius:14px;padding:18px 18px;
+  border:1px solid var(--border);border-radius:14px;padding:18px;
   position:relative;overflow:hidden;transition:border-color 0.2s,transform 0.2s;
-  cursor:default;
 }
 .stat-card:hover{border-color:var(--border2);transform:translateY(-1px);}
-.stat-card::after{
-  content:attr(data-icon);
-  position:absolute;right:10px;bottom:6px;
-  font-size:44px;opacity:0.06;line-height:1;
-  pointer-events:none;
-}
-/* Top accent line per color */
-.stat-card.gold-card {border-top:2px solid var(--gold);}
+.stat-card::after{content:attr(data-icon);position:absolute;right:10px;bottom:4px;font-size:44px;opacity:0.055;line-height:1;pointer-events:none;}
+.stat-card.gold-card{border-top:2px solid var(--gold);}
 .stat-card.green-card{border-top:2px solid var(--green-win);}
-.stat-card.red-card  {border-top:2px solid var(--red);}
-.stat-card.blue-card {border-top:2px solid var(--blue);}
-
-.stat-label{
-  font-size:10px;color:var(--txt-dim);
-  text-transform:uppercase;letter-spacing:1.5px;
-  margin-bottom:8px;font-family:'DM Mono',monospace;
-}
-.stat-value{
-  font-family:'Cinzel',serif;font-size:24px;font-weight:700;
-  line-height:1;
-}
-.stat-value.gold {color:var(--gold);}
-.stat-value.green{color:var(--green-win);}
-.stat-value.red  {color:var(--red);}
-.stat-value.blue {color:var(--blue);}
+.stat-card.red-card{border-top:2px solid var(--red);}
+.stat-card.blue-card{border-top:2px solid var(--blue);}
+.stat-label{font-size:10px;color:var(--txt-dim);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;font-family:'DM Mono',monospace;}
+.stat-value{font-family:'Cinzel',serif;font-size:24px;font-weight:700;line-height:1;}
+.stat-value.gold{color:var(--gold);} .stat-value.green{color:var(--green-win);} .stat-value.red{color:var(--red);} .stat-value.blue{color:var(--blue);}
 .stat-sub{font-size:11px;color:var(--txt-dim);margin-top:6px;}
 
-/* ══ TABLE WRAP ═══════════════════════════════════════════ */
-.table-wrap{
-  background:linear-gradient(135deg,rgba(10,26,13,0.8),rgba(4,10,6,0.9));
-  border:1px solid var(--border);border-radius:14px;
-  overflow:hidden;margin-bottom:18px;
-}
-.table-header{
-  padding:14px 18px;
-  border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;
-  background:rgba(255,255,255,0.02);
-}
-.table-title{
-  font-family:'Cinzel',serif;font-size:13px;font-weight:700;color:var(--txt);
-}
+/* ═══ TABLE WRAP ═══ */
+.table-wrap{background:linear-gradient(135deg,rgba(10,26,13,0.8),rgba(4,10,6,0.9));border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:18px;}
+.table-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.02);}
+.table-title{font-family:'Cinzel',serif;font-size:13px;font-weight:700;color:var(--txt);}
 .table-actions{display:flex;gap:8px;align-items:center;}
+table{width:100%;border-collapse:collapse;}
+thead tr{border-bottom:1px solid var(--border);}
+th{padding:9px 16px;text-align:left;font-size:9px;font-weight:600;color:var(--txt-dim);text-transform:uppercase;letter-spacing:2px;font-family:'DM Mono',monospace;white-space:nowrap;}
+td{padding:11px 16px;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:middle;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr{transition:background 0.15s;}
+tbody tr:hover{background:var(--glass);}
 
-/* ══ BUTTONS ══════════════════════════════════════════════ */
-.btn{
-  padding:7px 14px;border-radius:var(--rsm);
-  font-size:12px;font-weight:600;cursor:pointer;
-  font-family:'Outfit',sans-serif;transition:all 0.18s;
-  border:1px solid transparent;
-}
-.btn-gold {background:var(--gold-dim);border-color:var(--gold-bdr);color:var(--gold);}
+/* ═══ BUTTONS ═══ */
+.btn{padding:7px 14px;border-radius:var(--rsm);font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.18s;border:1px solid transparent;}
+.btn-gold{background:var(--gold-dim);border-color:var(--gold-bdr);color:var(--gold);}
 .btn-gold:hover{background:rgba(241,196,15,0.22);}
 .btn-ghost{background:var(--glass);border-color:var(--border);color:var(--txt-mid);}
 .btn-ghost:hover{background:var(--glass2);color:var(--txt);}
@@ -323,359 +192,169 @@ body::before{
 .btn-red{background:var(--red-dim);border-color:rgba(231,76,60,0.25);color:var(--red);}
 .btn-red:hover{background:rgba(231,76,60,0.22);}
 
-/* ══ TABLE ════════════════════════════════════════════════ */
-table{width:100%;border-collapse:collapse;}
-thead tr{border-bottom:1px solid var(--border);}
-th{
-  padding:9px 16px;text-align:left;
-  font-size:9px;font-weight:600;color:var(--txt-dim);
-  text-transform:uppercase;letter-spacing:2px;
-  font-family:'DM Mono',monospace;white-space:nowrap;
-}
-td{
-  padding:11px 16px;font-size:13px;
-  border-bottom:1px solid rgba(255,255,255,0.04);
-  vertical-align:middle;
-}
-tbody tr:last-child td{border-bottom:none;}
-tbody tr{transition:background 0.15s;}
-tbody tr:hover{background:var(--glass);}
-
-/* ══ AVATAR / USER CELL ═══════════════════════════════════ */
-.av{
-  width:34px;height:34px;border-radius:50%;
-  background:linear-gradient(135deg,var(--green-mid),var(--green-deep));
-  border:1px solid var(--border2);
-  display:flex;align-items:center;justify-content:center;
-  font-size:12px;font-weight:700;font-family:'Cinzel',serif;
-  color:var(--gold);overflow:hidden;flex-shrink:0;
-}
+/* ═══ AVATARS & PILLS ═══ */
+.av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--green-mid),var(--green-deep));border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:'Cinzel',serif;color:var(--gold);overflow:hidden;flex-shrink:0;}
 .av img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
 .user-cell{display:flex;align-items:center;gap:10px;}
 .uname{font-size:13px;font-weight:600;}
 .uemail{font-size:11px;color:var(--txt-dim);font-family:'DM Mono',monospace;}
-
-/* ══ PILL BADGES ══════════════════════════════════════════ */
-.pill{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:3px 9px;border-radius:20px;
-  font-size:10px;font-weight:700;font-family:'DM Mono',monospace;
-}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;font-family:'DM Mono',monospace;}
 .pill.green{background:rgba(46,204,113,0.12);color:var(--green-win);border:1px solid rgba(46,204,113,0.2);}
-.pill.red  {background:var(--red-dim);color:var(--red);border:1px solid rgba(231,76,60,0.2);}
-.pill.gold {background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-bdr);}
-.pill.blue {background:var(--blue-dim);color:var(--blue);border:1px solid rgba(52,152,219,0.2);}
+.pill.red{background:var(--red-dim);color:var(--red);border:1px solid rgba(231,76,60,0.2);}
+.pill.gold{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-bdr);}
+.pill.blue{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(52,152,219,0.2);}
+.pill.orange{background:rgba(230,126,34,0.12);color:#e67e22;border:1px solid rgba(230,126,34,0.2);}
 .pill.dot::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;}
-
-/* ══ ACTION BUTTONS ═══════════════════════════════════════ */
-.act-btn{
-  width:28px;height:28px;border-radius:6px;
-  display:inline-flex;align-items:center;justify-content:center;
-  cursor:pointer;font-size:13px;transition:all 0.15s;
-  border:1px solid var(--border);background:var(--glass);
-}
+.act-btn{width:28px;height:28px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;transition:all 0.15s;border:1px solid var(--border);background:var(--glass);}
 .act-btn:hover{border-color:var(--gold-bdr);background:var(--gold-dim);}
 .act-row{display:flex;gap:5px;}
-
-/* ══ SEARCH INPUT ═════════════════════════════════════════ */
-.search-inp{
-  padding:7px 12px;border-radius:var(--rsm);
-  border:1px solid var(--border);background:var(--glass);
-  color:var(--txt);font-size:12px;font-family:'Outfit',sans-serif;outline:none;
-  transition:border-color 0.2s;
-}
+.search-inp{padding:7px 12px;border-radius:var(--rsm);border:1px solid var(--border);background:var(--glass);color:var(--txt);font-size:12px;font-family:'Outfit',sans-serif;outline:none;transition:border-color 0.2s;}
 .search-inp:focus{border-color:var(--gold-bdr);}
 
-/* ══ TOP-UP CARDS ═════════════════════════════════════════ */
-.req-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px;margin-bottom:18px;}
+/* ═══ REQUEST CARDS ═══ */
+.req-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-bottom:18px;}
 .req-card{
-  background:linear-gradient(135deg,rgba(15,92,46,0.22),rgba(4,15,8,0.8));
+  background:linear-gradient(135deg,rgba(15,92,46,0.2),rgba(4,15,8,0.8));
   border:1px solid var(--border);border-radius:14px;padding:18px;
   transition:border-color 0.2s,transform 0.2s;
 }
 .req-card:hover{border-color:var(--border2);transform:translateY(-1px);}
 .req-card-top{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
-.req-amount{
-  font-family:'Cinzel',serif;font-size:26px;font-weight:700;
-  color:var(--gold);margin-bottom:3px;
-}
+.req-amount{font-family:'Cinzel',serif;font-size:26px;font-weight:700;color:var(--gold);margin-bottom:3px;}
 .req-meta{font-size:11px;color:var(--txt-dim);font-family:'DM Mono',monospace;}
 .req-actions{display:flex;gap:8px;margin-top:12px;}
-.req-approve{
-  flex:1;padding:9px;
-  background:rgba(46,204,113,0.12);border:1px solid rgba(46,204,113,0.25);
-  color:var(--green-win);font-size:12px;font-weight:700;
-  border-radius:var(--rsm);cursor:pointer;
-  font-family:'Outfit',sans-serif;transition:background 0.18s;
-}
+.req-approve{flex:1;padding:9px;background:rgba(46,204,113,0.12);border:1px solid rgba(46,204,113,0.25);color:var(--green-win);font-size:12px;font-weight:700;border-radius:var(--rsm);cursor:pointer;font-family:'Outfit',sans-serif;transition:background 0.18s;}
 .req-approve:hover{background:rgba(46,204,113,0.22);}
-.req-reject{
-  flex:1;padding:9px;
-  background:var(--red-dim);border:1px solid rgba(231,76,60,0.25);
-  color:var(--red);font-size:12px;font-weight:700;
-  border-radius:var(--rsm);cursor:pointer;
-  font-family:'Outfit',sans-serif;transition:background 0.18s;
-}
+.req-reject{flex:1;padding:9px;background:var(--red-dim);border:1px solid rgba(231,76,60,0.25);color:var(--red);font-size:12px;font-weight:700;border-radius:var(--rsm);cursor:pointer;font-family:'Outfit',sans-serif;transition:background 0.18s;}
 .req-reject:hover{background:rgba(231,76,60,0.22);}
 
-/* ══ CHAT ═════════════════════════════════════════════════ */
-.chat-layout{
-  display:grid;grid-template-columns:260px 1fr;gap:12px;
-  height:calc(100vh - var(--topbar-h) - 44px);
+/* Withdraw specific */
+.wd-card{
+  background:linear-gradient(135deg,rgba(52,152,219,0.08),rgba(4,15,8,0.85));
+  border:1px solid rgba(52,152,219,0.18);border-radius:14px;padding:18px;
+  transition:border-color 0.2s,transform 0.2s;
 }
-.chat-users-panel{
-  background:linear-gradient(135deg,rgba(10,26,13,0.8),rgba(4,10,6,0.9));
-  border:1px solid var(--border);border-radius:14px;
-  overflow:hidden;display:flex;flex-direction:column;
-}
+.wd-card:hover{border-color:rgba(52,152,219,0.35);transform:translateY(-1px);}
+.wd-card.done{background:linear-gradient(135deg,rgba(15,92,46,0.1),rgba(4,15,8,0.85));border-color:rgba(46,204,113,0.12);}
+.wd-card.rejected{background:linear-gradient(135deg,rgba(231,76,60,0.07),rgba(4,15,8,0.85));border-color:rgba(231,76,60,0.12);}
+.wd-amount{font-family:'Cinzel',serif;font-size:24px;font-weight:700;color:var(--blue);margin-bottom:3px;}
+.wd-detail-row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;}
+.wd-detail{background:var(--glass);border:1px solid var(--border);border-radius:6px;padding:6px 10px;}
+.wd-detail-label{font-size:9px;color:var(--txt-dim);letter-spacing:1px;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:2px;}
+.wd-detail-val{font-size:12px;font-weight:600;color:var(--txt);}
+
+/* ═══ CHAT ═══ */
+.chat-layout{display:grid;grid-template-columns:260px 1fr;gap:12px;height:calc(100vh - var(--topbar-h) - 48px);}
+.chat-users-panel{background:linear-gradient(135deg,rgba(10,26,13,0.8),rgba(4,10,6,0.9));border:1px solid var(--border);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;}
 .chat-users-hdr{padding:14px 16px;border-bottom:1px solid var(--border);}
-.chat-search{
-  width:100%;margin-top:10px;padding:8px 12px;
-  background:var(--glass);border:1px solid var(--border);
-  border-radius:6px;color:var(--txt);
-  font-size:12px;font-family:'Outfit',sans-serif;outline:none;
-}
+.chat-search{width:100%;margin-top:10px;padding:8px 12px;background:var(--glass);border:1px solid var(--border);border-radius:6px;color:var(--txt);font-size:12px;font-family:'Outfit',sans-serif;outline:none;}
 .chat-search:focus{border-color:var(--gold-bdr);}
 .chat-user-list{flex:1;overflow-y:auto;}
-.chat-user-item{
-  display:flex;align-items:center;gap:10px;
-  padding:11px 14px;cursor:pointer;
-  border-bottom:1px solid rgba(255,255,255,0.04);
-  transition:background 0.15s;position:relative;
-}
+.chat-user-item{display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.04);transition:background 0.15s;}
 .chat-user-item:hover{background:var(--glass);}
-.chat-user-item.active{
-  background:var(--gold-dim);
-  border-left:2px solid var(--gold);
-}
-.cui-unread{
-  margin-left:auto;background:var(--red);color:white;
-  font-size:9px;width:17px;height:17px;
-  border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-weight:700;flex-shrink:0;font-family:'DM Mono',monospace;
-}
-.chat-window{
-  background:linear-gradient(135deg,rgba(10,26,13,0.8),rgba(4,10,6,0.9));
-  border:1px solid var(--border);border-radius:14px;overflow:hidden;
-  display:flex;flex-direction:column;
-}
-.chat-win-hdr{
-  padding:13px 16px;border-bottom:1px solid var(--border);
-  display:flex;align-items:center;gap:12px;
-  background:rgba(255,255,255,0.02);flex-shrink:0;
-}
-.chat-win-info{flex:1;}
+.chat-user-item.active{background:var(--gold-dim);border-left:2px solid var(--gold);}
+.chat-window{background:linear-gradient(135deg,rgba(10,26,13,0.8),rgba(4,10,6,0.9));border:1px solid var(--border);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;}
+.chat-win-hdr{padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.02);flex-shrink:0;}
 .chat-win-name{font-size:14px;font-weight:700;}
 .chat-win-status{font-size:11px;color:var(--txt-dim);font-family:'DM Mono',monospace;}
-.chat-msgs{
-  flex:1;overflow-y:auto;padding:16px;
-  display:flex;flex-direction:column;gap:8px;
-}
-.msg-bubble{
-  max-width:70%;padding:9px 13px;border-radius:12px;
-  font-size:13px;line-height:1.5;
-}
-.msg-out{
-  align-self:flex-end;
-  background:var(--gold-dim);border:1px solid var(--gold-bdr);
-  border-radius:12px 12px 2px 12px;
-}
-.msg-in{
-  align-self:flex-start;
-  background:var(--glass2);border:1px solid var(--border);
-  border-radius:12px 12px 12px 2px;
-}
+.chat-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:8px;}
+.msg-bubble{max-width:70%;padding:9px 13px;border-radius:12px;font-size:13px;line-height:1.5;}
+.msg-out{align-self:flex-end;background:var(--gold-dim);border:1px solid var(--gold-bdr);border-radius:12px 12px 2px 12px;}
+.msg-in{align-self:flex-start;background:var(--glass2);border:1px solid var(--border);border-radius:12px 12px 12px 2px;}
 .msg-time{font-size:10px;color:var(--txt-dim);margin-top:3px;font-family:'DM Mono',monospace;}
-.chat-inp-area{
-  padding:10px 14px;border-top:1px solid var(--border);
-  display:flex;gap:8px;background:rgba(0,0,0,0.2);flex-shrink:0;
-}
-.chat-inp{
-  flex:1;padding:9px 13px;
-  background:var(--glass);border:1px solid var(--border);
-  border-radius:20px;color:var(--txt);
-  font-size:13px;font-family:'Outfit',sans-serif;outline:none;
-}
+.chat-inp-area{padding:10px 14px;border-top:1px solid var(--border);display:flex;gap:8px;background:rgba(0,0,0,0.2);flex-shrink:0;}
+.chat-inp{flex:1;padding:9px 13px;background:var(--glass);border:1px solid var(--border);border-radius:20px;color:var(--txt);font-size:13px;font-family:'Outfit',sans-serif;outline:none;}
 .chat-inp:focus{border-color:var(--gold-bdr);}
-.send-btn{
-  padding:0 18px;height:38px;
-  background:linear-gradient(135deg,var(--gold),#d4a900);
-  border:none;border-radius:20px;
-  color:#0a1a05;font-weight:700;font-size:13px;
-  cursor:pointer;font-family:'Outfit',sans-serif;
-  transition:opacity 0.18s;flex-shrink:0;
-}
+.send-btn{padding:0 18px;height:38px;background:linear-gradient(135deg,var(--gold),#d4a900);border:none;border-radius:20px;color:#0a1a05;font-weight:700;font-size:13px;cursor:pointer;font-family:'Outfit',sans-serif;transition:opacity 0.18s;flex-shrink:0;}
 .send-btn:hover{opacity:0.88;}
-.chat-empty-state{
-  flex:1;display:flex;align-items:center;justify-content:center;
-  flex-direction:column;gap:10px;color:var(--txt-dim);font-size:13px;
-}
+.chat-empty-state{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:var(--txt-dim);font-size:13px;}
 
-/* ══ BALANCE MODAL ════════════════════════════════════════ */
-.modal-overlay{
-  position:fixed;inset:0;z-index:1000;
-  background:rgba(0,0,0,0.72);backdrop-filter:blur(8px);
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;transition:opacity 0.25s;padding:20px;
-}
+/* ═══ MODAL ═══ */
+.modal-overlay{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.72);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s;padding:20px;}
 .modal-overlay.open{opacity:1;pointer-events:all;}
-.modal-box{
-  width:100%;max-width:420px;
-  background:linear-gradient(180deg,#0a2e16 0%,#040a06 100%);
-  border:1px solid var(--gold-bdr);
-  border-radius:18px;padding:28px;
-  transform:scale(0.95);transition:transform 0.25s;
-}
+.modal-box{width:100%;max-width:420px;background:linear-gradient(180deg,#0a2e16 0%,#040a06 100%);border:1px solid var(--gold-bdr);border-radius:18px;padding:28px;transform:scale(0.95);transition:transform 0.25s;}
 .modal-overlay.open .modal-box{transform:scale(1);}
-.modal-title{
-  font-family:'Cinzel',serif;font-size:17px;font-weight:700;
-  color:var(--gold);margin-bottom:22px;
-}
-.modal-label{
-  font-size:10px;color:var(--txt-dim);margin-bottom:6px;
-  text-transform:uppercase;letter-spacing:1.5px;
-  font-family:'DM Mono',monospace;
-}
-.modal-inp{
-  width:100%;padding:11px 13px;margin-bottom:12px;
-  background:rgba(0,0,0,0.45);border:1px solid var(--border2);
-  border-radius:var(--rsm);color:var(--txt);
-  font-size:15px;font-family:'Outfit',sans-serif;outline:none;
-  transition:border-color 0.2s;
-}
+.modal-title{font-family:'Cinzel',serif;font-size:17px;font-weight:700;color:var(--gold);margin-bottom:22px;}
+.modal-label{font-size:10px;color:var(--txt-dim);margin-bottom:6px;text-transform:uppercase;letter-spacing:1.5px;font-family:'DM Mono',monospace;}
+.modal-inp{width:100%;padding:11px 13px;margin-bottom:12px;background:rgba(0,0,0,0.45);border:1px solid var(--border2);border-radius:var(--rsm);color:var(--txt);font-size:15px;font-family:'Outfit',sans-serif;outline:none;transition:border-color 0.2s;}
 .modal-inp:focus{border-color:var(--gold-bdr);}
 .modal-btns{display:flex;gap:10px;margin-top:6px;}
-.modal-ok{
-  flex:1;padding:12px;
-  background:linear-gradient(135deg,var(--gold),#d4a900);
-  border:none;border-radius:var(--rsm);
-  color:#0a1a05;font-weight:700;font-size:14px;
-  cursor:pointer;font-family:'Outfit',sans-serif;
-}
-.modal-cancel{
-  flex:1;padding:12px;
-  background:var(--glass);border:1px solid var(--border);
-  border-radius:var(--rsm);color:var(--txt-mid);
-  font-size:14px;font-weight:600;cursor:pointer;
-  font-family:'Outfit',sans-serif;transition:background 0.18s;
-}
+.modal-ok{flex:1;padding:12px;background:linear-gradient(135deg,var(--gold),#d4a900);border:none;border-radius:var(--rsm);color:#0a1a05;font-weight:700;font-size:14px;cursor:pointer;font-family:'Outfit',sans-serif;}
+.modal-cancel{flex:1;padding:12px;background:var(--glass);border:1px solid var(--border);border-radius:var(--rsm);color:var(--txt-mid);font-size:14px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:background 0.18s;}
 .modal-cancel:hover{background:var(--glass2);}
 
-/* ══ TWO COL GRID ═════════════════════════════════════════ */
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-
-/* ══ TOAST ════════════════════════════════════════════════ */
-.toast{
-  position:fixed;bottom:28px;left:50%;
-  transform:translateX(-50%) translateY(80px);
-  background:rgba(10,30,16,0.96);
-  border:1px solid var(--gold-bdr);
-  border-radius:12px;padding:12px 20px;
-  font-size:13px;color:var(--txt-mid);
-  z-index:9999;pointer-events:none;
-  box-shadow:0 8px 32px rgba(0,0,0,0.5);
-  transition:transform 0.35s,opacity 0.35s;opacity:0;
-  white-space:nowrap;
-}
-.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
-
-/* ══ EMPTY STATE ══════════════════════════════════════════ */
-.empty-state{
-  padding:30px;text-align:center;
-  color:var(--txt-dim);font-size:13px;
-}
-
-/* ══ SKELETON ═════════════════════════════════════════════ */
-.skel{
-  background:linear-gradient(90deg,rgba(255,255,255,0.03) 25%,rgba(255,255,255,0.06) 50%,rgba(255,255,255,0.03) 75%);
-  background-size:200% 100%;
-  animation:skelAnim 1.4s infinite;border-radius:6px;
-}
-@keyframes skelAnim{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
-/* ══ FILTER TABS ══════════════════════════════════════════ */
+/* ═══ FILTER TABS ═══ */
 .filter-tabs{display:flex;gap:6px;}
-.filter-tab{
-  padding:6px 14px;border-radius:20px;
-  font-size:11px;font-weight:600;cursor:pointer;
-  border:1px solid var(--border);background:var(--glass);
-  color:var(--txt-mid);transition:all 0.18s;
-  font-family:'DM Mono',monospace;
-}
-.filter-tab.active{
-  background:var(--gold-dim);border-color:var(--gold-bdr);color:var(--gold);
-}
+.filter-tab{padding:6px 14px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--glass);color:var(--txt-mid);transition:all 0.18s;font-family:'DM Mono',monospace;}
+.filter-tab.active{background:var(--gold-dim);border-color:var(--gold-bdr);color:var(--gold);}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.empty-state{padding:28px;text-align:center;color:var(--txt-dim);font-size:13px;}
+
+/* ═══ TOAST ═══ */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(10,30,16,0.96);border:1px solid var(--gold-bdr);border-radius:12px;padding:12px 20px;font-size:13px;color:var(--txt-mid);z-index:9999;pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,0.5);transition:transform 0.35s,opacity 0.35s;opacity:0;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+.toast.success{border-color:rgba(46,204,113,0.5);}
+.toast.error{border-color:rgba(231,76,60,0.5);}
 </style>
 </head>
 <body>
 
-<!-- ══ LOGIN ═════════════════════════════════════════════ -->
+<!-- ═══ LOGIN ═══ -->
 <div id="login-screen">
   <div class="login-card">
     <div class="login-logo">♠ DONKEY BET</div>
     <div class="login-suits">♠ ♥ ♦ ♣</div>
     <div class="login-sub">Admin Dashboard</div>
-    <input class="login-inp" id="li-pass" type="password" placeholder="Admin Password"
-      onkeydown="if(event.key==='Enter')adminLogin()">
-    <button class="login-btn" onclick="adminLogin()">Access Dashboard</button>
+    <input class="login-inp" id="li-pass" type="password" placeholder="• • • • • • • •" onkeydown="if(event.key==='Enter')adminLogin()">
+    <button class="login-btn" onclick="adminLogin()">Access Dashboard →</button>
     <div class="login-err" id="li-err"></div>
   </div>
 </div>
 
-<!-- ══ SIDEBAR ════════════════════════════════════════════ -->
+<!-- ═══ SIDEBAR ═══ -->
 <div class="sidebar">
   <div class="sidebar-logo">
     <div class="logo-mark">♠ DONKEY BET</div>
     <div class="logo-sub">Control Panel</div>
     <div class="logo-admin-pill">Admin</div>
   </div>
-
   <div class="sidebar-nav">
     <div class="nav-section">Overview</div>
-    <div class="nav-item active" onclick="goTo('dashboard',this)">
-      <span class="nav-icon">📊</span> Dashboard
-    </div>
-    <div class="nav-item" onclick="goTo('users',this)">
-      <span class="nav-icon">👥</span> Players
-    </div>
-
+    <div class="nav-item active" onclick="goTo('dashboard',this)"><span class="nav-icon">📊</span> Dashboard</div>
+    <div class="nav-item" onclick="goTo('users',this)"><span class="nav-icon">👥</span> Players</div>
     <div class="nav-section">Finance</div>
     <div class="nav-item" onclick="goTo('topup',this)">
-      <span class="nav-icon">💳</span> Top Up Requests
+      <span class="nav-icon">💳</span> Top Up
       <span class="nav-badge" id="badge-topup">0</span>
     </div>
-    <div class="nav-item" onclick="goTo('balances',this)">
-      <span class="nav-icon">💰</span> Balances
+    <div class="nav-item" onclick="goTo('withdraw',this)">
+      <span class="nav-icon">💸</span> Withdrawals
+      <span class="nav-badge" id="badge-wd">0</span>
     </div>
-
+    <div class="nav-item" onclick="goTo('balances',this)"><span class="nav-icon">💰</span> Balances</div>
     <div class="nav-section">Communication</div>
     <div class="nav-item" onclick="goTo('chat',this)">
       <span class="nav-icon">💬</span> Messages
       <span class="nav-badge" id="badge-chat">0</span>
     </div>
-
     <div class="nav-section">Data</div>
-    <div class="nav-item" onclick="goTo('history',this)">
-      <span class="nav-icon">📋</span> Game History
-    </div>
+    <div class="nav-item" onclick="goTo('history',this)"><span class="nav-icon">📋</span> Game History</div>
   </div>
-
   <div class="sidebar-footer">
     <div class="admin-status">
       <div class="admin-dot"></div>
       <div>
-        <div class="admin-label">Admin</div>
-        <div class="admin-sub">Online · Live</div>
+        <div style="font-size:12px;font-weight:600;color:var(--txt-mid)">Admin</div>
+        <div style="font-size:10px;color:var(--txt-dim);font-family:'DM Mono',monospace">Online · Live</div>
       </div>
     </div>
     <button class="signout-btn" onclick="adminSignOut()">🚪 Sign Out</button>
   </div>
 </div>
 
-<!-- ══ MAIN ═══════════════════════════════════════════════ -->
+<!-- ═══ MAIN ═══ -->
 <div class="main">
-
-  <!-- TOPBAR -->
   <div class="topbar">
     <div class="page-title" id="page-title">Dashboard</div>
     <div class="topbar-right">
@@ -684,12 +363,10 @@ tbody tr:hover{background:var(--glass);}
     </div>
   </div>
 
-  <!-- CONTENT -->
   <div class="content">
 
-    <!-- ── DASHBOARD ─────────────────────────────────── -->
+    <!-- DASHBOARD -->
     <div class="section active" id="sec-dashboard">
-
       <div class="stat-row">
         <div class="stat-card blue-card" data-icon="👥">
           <div class="stat-label">Total Players</div>
@@ -707,12 +384,11 @@ tbody tr:hover{background:var(--glass);}
           <div class="stat-sub">Across all accounts</div>
         </div>
         <div class="stat-card red-card" data-icon="💳">
-          <div class="stat-label">Pending Top Ups</div>
+          <div class="stat-label">Pending Requests</div>
           <div class="stat-value red" id="st-pending">—</div>
-          <div class="stat-sub">Awaiting approval</div>
+          <div class="stat-sub">Top ups + withdrawals</div>
         </div>
       </div>
-
       <div class="two-col">
         <div class="table-wrap">
           <div class="table-header">
@@ -721,12 +397,9 @@ tbody tr:hover{background:var(--glass);}
           </div>
           <table>
             <thead><tr><th>Player</th><th>Status</th><th>Balance</th></tr></thead>
-            <tbody id="dash-users-body">
-              <tr><td colspan="3" class="empty-state">Loading...</td></tr>
-            </tbody>
+            <tbody id="dash-users-body"><tr><td colspan="3" class="empty-state">Loading...</td></tr></tbody>
           </table>
         </div>
-
         <div class="table-wrap">
           <div class="table-header">
             <div class="table-title">Pending Top Ups</div>
@@ -734,15 +407,24 @@ tbody tr:hover{background:var(--glass);}
           </div>
           <table>
             <thead><tr><th>Player</th><th>Amount</th><th>Time</th></tr></thead>
-            <tbody id="dash-topup-body">
-              <tr><td colspan="3" class="empty-state">Loading...</td></tr>
-            </tbody>
+            <tbody id="dash-topup-body"><tr><td colspan="3" class="empty-state">Loading...</td></tr></tbody>
           </table>
         </div>
       </div>
+      <!-- Pending withdrawals mini table -->
+      <div class="table-wrap">
+        <div class="table-header">
+          <div class="table-title">Pending Withdrawals</div>
+          <button class="btn btn-ghost" onclick="goTo('withdraw',document.querySelector('[onclick*=withdraw]'))">Manage All</button>
+        </div>
+        <table>
+          <thead><tr><th>Player</th><th>Amount</th><th>Bank</th><th>Time</th></tr></thead>
+          <tbody id="dash-wd-body"><tr><td colspan="4" class="empty-state">Loading...</td></tr></tbody>
+        </table>
+      </div>
     </div>
 
-    <!-- ── USERS ──────────────────────────────────────── -->
+    <!-- PLAYERS -->
     <div class="section" id="sec-users">
       <div class="table-wrap">
         <div class="table-header">
@@ -752,32 +434,39 @@ tbody tr:hover{background:var(--glass);}
           </div>
         </div>
         <table>
-          <thead><tr>
-            <th>Player</th><th>Player ID</th><th>Status</th><th>Balance</th><th>Joined</th><th>Actions</th>
-          </tr></thead>
-          <tbody id="users-body">
-            <tr><td colspan="6" class="empty-state">Loading...</td></tr>
-          </tbody>
+          <thead><tr><th>Player</th><th>Player ID</th><th>Status</th><th>Balance</th><th>Joined</th><th>Actions</th></tr></thead>
+          <tbody id="users-body"><tr><td colspan="6" class="empty-state">Loading...</td></tr></tbody>
         </table>
       </div>
     </div>
 
-    <!-- ── TOP UP REQUESTS ────────────────────────────── -->
+    <!-- TOP UP -->
     <div class="section" id="sec-topup">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-        <div style="font-size:13px;color:var(--txt-dim)">Pending top up requests from players</div>
+        <div style="font-size:13px;color:var(--txt-dim)">Player top up requests</div>
         <div class="filter-tabs">
-          <span class="filter-tab active" id="tf-all"    onclick="setTopupFilter('all',this)">All</span>
-          <span class="filter-tab"        id="tf-pending" onclick="setTopupFilter('pending',this)">Pending</span>
-          <span class="filter-tab"        id="tf-done"    onclick="setTopupFilter('done',this)">Done</span>
+          <span class="filter-tab active" onclick="setFilter('topup','all',this)">All</span>
+          <span class="filter-tab" onclick="setFilter('topup','pending',this)">Pending</span>
+          <span class="filter-tab" onclick="setFilter('topup','done',this)">Done</span>
         </div>
       </div>
-      <div class="req-grid" id="topup-grid">
-        <div class="empty-state">Loading...</div>
-      </div>
+      <div class="req-grid" id="topup-grid"><div class="empty-state">Loading...</div></div>
     </div>
 
-    <!-- ── BALANCES ────────────────────────────────────── -->
+    <!-- WITHDRAWALS -->
+    <div class="section" id="sec-withdraw">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div style="font-size:13px;color:var(--txt-dim)">Player withdrawal requests</div>
+        <div class="filter-tabs">
+          <span class="filter-tab active" onclick="setFilter('wd','all',this)">All</span>
+          <span class="filter-tab" onclick="setFilter('wd','pending',this)">Pending</span>
+          <span class="filter-tab" onclick="setFilter('wd','done',this)">Done</span>
+        </div>
+      </div>
+      <div class="req-grid" id="wd-grid"><div class="empty-state">Loading...</div></div>
+    </div>
+
+    <!-- BALANCES -->
     <div class="section" id="sec-balances">
       <div class="table-wrap">
         <div class="table-header">
@@ -785,50 +474,38 @@ tbody tr:hover{background:var(--glass);}
           <div style="font-size:11px;color:var(--txt-dim);font-family:'DM Mono',monospace;">Real-time sync</div>
         </div>
         <table>
-          <thead><tr>
-            <th>Player</th><th>Player ID</th><th>Balance</th><th>Status</th><th>Action</th>
-          </tr></thead>
-          <tbody id="balances-body">
-            <tr><td colspan="5" class="empty-state">Loading...</td></tr>
-          </tbody>
+          <thead><tr><th>Player</th><th>Player ID</th><th>Balance</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody id="balances-body"><tr><td colspan="5" class="empty-state">Loading...</td></tr></tbody>
         </table>
       </div>
     </div>
 
-    <!-- ── CHAT ───────────────────────────────────────── -->
+    <!-- CHAT -->
     <div class="section" id="sec-chat">
       <div class="chat-layout">
         <div class="chat-users-panel">
           <div class="chat-users-hdr">
             <div class="table-title">Conversations</div>
-            <input class="chat-search" placeholder="Search player..." oninput="filterChatUsers()">
+            <input class="chat-search" placeholder="Search player..." oninput="filterChatUsers(this.value)">
           </div>
-          <div class="chat-user-list" id="chat-user-list">
-            <div class="empty-state">No conversations yet</div>
-          </div>
+          <div class="chat-user-list" id="chat-user-list"><div class="empty-state">No players yet</div></div>
         </div>
         <div class="chat-window">
           <div class="chat-win-hdr" id="chat-win-hdr">
-            <div class="chat-empty-state" style="flex:unset;gap:8px;color:var(--txt-dim);font-size:13px;">
-              💬 Select a player to chat
-            </div>
+            <div style="color:var(--txt-dim);font-size:13px;">💬 Select a player to chat</div>
           </div>
           <div class="chat-msgs" id="chat-msgs">
-            <div class="chat-empty-state">
-              <span style="font-size:28px">💬</span>
-              <span>Select a conversation</span>
-            </div>
+            <div class="chat-empty-state"><span style="font-size:28px">💬</span><span>Select a conversation</span></div>
           </div>
           <div class="chat-inp-area">
-            <input class="chat-inp" id="chat-inp" placeholder="Type a message..."
-              onkeydown="if(event.key==='Enter')adminSendMsg()">
+            <input class="chat-inp" id="chat-inp" placeholder="Type a message..." onkeydown="if(event.key==='Enter')adminSendMsg()">
             <button class="send-btn" onclick="adminSendMsg()">Send ➤</button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ── GAME HISTORY ────────────────────────────────── -->
+    <!-- GAME HISTORY -->
     <div class="section" id="sec-history">
       <div class="table-wrap">
         <div class="table-header">
@@ -836,30 +513,26 @@ tbody tr:hover{background:var(--glass);}
           <input class="search-inp" id="hist-search" placeholder="Search player…" oninput="filterHistory()" style="width:200px">
         </div>
         <table>
-          <thead><tr>
-            <th>Player</th><th>Opponent</th><th>Named Card</th><th>Result</th><th>Amount</th><th>Date</th>
-          </tr></thead>
-          <tbody id="history-body">
-            <tr><td colspan="6" class="empty-state">Loading...</td></tr>
-          </tbody>
+          <thead><tr><th>Player</th><th>Opponent</th><th>Named Card</th><th>Result</th><th>Amount</th><th>Date</th></tr></thead>
+          <tbody id="history-body"><tr><td colspan="6" class="empty-state">Loading...</td></tr></tbody>
         </table>
       </div>
     </div>
 
-  </div><!-- /content -->
-</div><!-- /main -->
+  </div>
+</div>
 
-<!-- ══ BALANCE MODAL ══════════════════════════════════════ -->
+<!-- BALANCE MODAL -->
 <div class="modal-overlay" id="bal-modal">
   <div class="modal-box">
-    <div class="modal-title">💰 Set Player Balance</div>
+    <div class="modal-title">💰 Edit Player Balance</div>
     <div class="modal-label">Player</div>
-    <div style="font-size:14px;font-weight:600;margin-bottom:16px;color:var(--txt)" id="bal-modal-name">—</div>
+    <div style="font-size:14px;font-weight:600;margin-bottom:14px;color:var(--txt)" id="bal-modal-name">—</div>
     <div class="modal-label">Current Balance</div>
-    <div style="font-family:'Cinzel',serif;font-size:22px;color:var(--gold);margin-bottom:16px" id="bal-modal-current">Rs. 0</div>
+    <div style="font-family:'Cinzel',serif;font-size:22px;color:var(--gold);margin-bottom:14px" id="bal-modal-current">Rs. 0</div>
     <div class="modal-label">Set New Balance (Rs.)</div>
     <input class="modal-inp" id="bal-modal-inp" type="number" min="0" placeholder="Enter new balance...">
-    <div class="modal-label" style="margin-top:2px">Or Adjust</div>
+    <div class="modal-label">Or Adjust</div>
     <div style="display:flex;gap:8px;margin-bottom:14px">
       <input class="modal-inp" id="bal-modal-add" type="number" placeholder="+ Add" style="margin-bottom:0;flex:1">
       <input class="modal-inp" id="bal-modal-sub" type="number" placeholder="− Subtract" style="margin-bottom:0;flex:1">
@@ -873,13 +546,12 @@ tbody tr:hover{background:var(--glass);}
 
 <div class="toast" id="toast"></div>
 
-<!-- ══ FIREBASE SCRIPT ════════════════════════════════════ -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getDatabase, ref, onValue, off, get, set, update, push, remove, serverTimestamp }
+import { getDatabase, ref, onValue, off, get, set, update, push, remove }
   from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
-const firebaseConfig = {
+const FB = {
   apiKey:"AIzaSyCh8ATjBERok1XPOhPameciyPalntsPWg8",
   authDomain:"donkey-bet.firebaseapp.com",
   databaseURL:"https://donkey-bet-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -888,318 +560,313 @@ const firebaseConfig = {
   messagingSenderId:"709170827454",
   appId:"1:709170827454:web:200a3ac74bbad45ff90eef"
 };
-
-const ADMIN_PASS = "donkeybet@admin2025";
+const ADMIN_PASS = "5422";
 const ADMIN_UID  = "admin";
 
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(FB);
 const db  = getDatabase(app);
 
-// ── STATE ─────────────────────────────────────────────────
-let allUsers   = {};
-let allTopups  = {};
-let allHistory = [];
-let currentSection = 'dashboard';
-let balModalUid    = null;
-let chatWithUid    = null;
-let chatMsgRef     = null;
-let chatMsgListener = null;
-let topupFilter    = 'all';
+let allUsers = {}, allTopups = {}, allWithdraws = {}, allHistory = [];
+let balModalUid = null, chatWithUid = null;
+let chatMsgRef = null, chatMsgListener = null;
+let topupFilter = 'all', wdFilter = 'all';
+let chatUsersData = {};
 
-// ── HELPERS ───────────────────────────────────────────────
-window.toast = (msg, dur=2800) => {
+// ── Helpers ────────────────────────────────────
+window.toast = (msg, type='', dur=2800) => {
   const el = document.getElementById('toast');
   el.textContent = msg;
-  el.classList.add('show');
+  el.className = 'toast show' + (type?' '+type:'');
   clearTimeout(el._t);
   el._t = setTimeout(() => el.classList.remove('show'), dur);
 };
-
-function timeStr(ts) {
-  if (!ts) return '—';
-  return new Date(ts).toLocaleString('en-GB',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+function timeStr(ts){ if(!ts)return'—'; return new Date(ts).toLocaleString('en-GB',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}); }
+function timeAgo(ts){
+  if(!ts)return'—'; const d=Date.now()-ts;
+  if(d<60000)return'just now'; if(d<3600000)return Math.floor(d/60000)+'m ago';
+  if(d<86400000)return Math.floor(d/3600000)+'h ago'; return Math.floor(d/86400000)+'d ago';
 }
-function timeAgo(ts) {
-  if (!ts) return '—';
-  const d = Date.now() - ts;
-  if (d < 60000)    return 'just now';
-  if (d < 3600000)  return Math.floor(d/60000)+'m ago';
-  if (d < 86400000) return Math.floor(d/3600000)+'h ago';
-  return Math.floor(d/86400000)+'d ago';
-}
-function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;'); }
+function esc(s){ return(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;'); }
+function avHTML(u,size=34){ const s=`width:${size}px;height:${size}px;font-size:${Math.round(size*0.38)}px`; return u?.photoURL?`<div class="av" style="${s}"><img src="${esc(u.photoURL)}"></div>`:`<div class="av" style="${s}">${(u?.name||'?')[0].toUpperCase()}</div>`; }
 
-// ── CLOCK ─────────────────────────────────────────────────
-setInterval(() => {
-  document.getElementById('topbar-clock').textContent =
-    new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-}, 1000);
+setInterval(()=>{ document.getElementById('topbar-clock').textContent=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); },1000);
 
-// ── LOGIN ─────────────────────────────────────────────────
+// ── Login ──────────────────────────────────────
 window.adminLogin = () => {
   const pass = document.getElementById('li-pass').value;
   if (pass === ADMIN_PASS) {
-    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('login-screen').style.display='none';
     initDashboard();
-    toast('Welcome back, Admin!');
+    toast('Welcome back, Admin! 👋','success');
   } else {
-    document.getElementById('li-err').textContent = 'Incorrect password.';
-    document.getElementById('li-pass').value = '';
+    document.getElementById('li-err').textContent='Incorrect password.';
+    document.getElementById('li-pass').value='';
   }
 };
-
 window.adminSignOut = () => {
-  document.getElementById('login-screen').style.display = 'flex';
-  document.getElementById('li-pass').value = '';
-  document.getElementById('li-err').textContent = '';
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('li-pass').value='';
+  document.getElementById('li-err').textContent='';
 };
+document.getElementById('li-pass').addEventListener('keydown',e=>{ if(e.key==='Enter') window.adminLogin(); });
 
-document.getElementById('li-pass').addEventListener('keydown', e => { if(e.key==='Enter') window.adminLogin(); });
-
-// ── NAV ───────────────────────────────────────────────────
+// ── Nav ────────────────────────────────────────
 window.goTo = (section, el) => {
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   el?.classList.add('active');
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.getElementById('sec-'+section)?.classList.add('active');
-  const titles = {
-    dashboard:'Dashboard', users:'Players',
-    topup:'Top Up Requests', balances:'Manage Balances',
-    chat:'Messages', history:'Game History'
-  };
-  document.getElementById('page-title').textContent = titles[section] || section;
-  currentSection = section;
+  const titles={dashboard:'Dashboard',users:'Players',topup:'Top Up Requests',withdraw:'Withdrawal Requests',balances:'Player Balances',chat:'Messages',history:'Game History'};
+  document.getElementById('page-title').textContent=titles[section]||section;
 };
 
-// ── INIT ──────────────────────────────────────────────────
-function initDashboard() {
-  listenUsers();
-  listenTopups();
-  listenHistory();
-  listenChatUsers();
+// ── Init ───────────────────────────────────────
+function initDashboard(){
+  listenUsers(); listenTopups(); listenWithdraws(); listenHistory(); listenChats();
 }
 
-// ── USERS ─────────────────────────────────────────────────
-function listenUsers() {
-  onValue(ref(db,'users'), snap => {
-    allUsers = snap.val() || {};
-    renderStats();
-    renderDashUsers();
-    renderUsersTable();
-    renderBalancesTable();
-    renderChatUserList();
+// ── Users ──────────────────────────────────────
+function listenUsers(){
+  onValue(ref(db,'users'),snap=>{
+    allUsers=snap.val()||{};
+    renderStats(); renderDashUsers(); renderUsersTable(); renderBalancesTable(); renderChatUserList();
   });
 }
-
-function renderStats() {
-  const users = Object.values(allUsers);
-  document.getElementById('st-total').textContent   = users.length;
-  document.getElementById('st-online').textContent  = users.filter(u=>u.online).length;
-  const bal = users.reduce((s,u) => s+(u.balance||0), 0);
-  document.getElementById('st-balance').textContent = 'Rs. '+bal.toLocaleString();
-  const pending = Object.values(allTopups).filter(t=>t.status==='pending').length;
-  document.getElementById('st-pending').textContent = pending;
-  const b = document.getElementById('badge-topup');
-  b.textContent = pending;
-  b.classList.toggle('show', pending>0);
+function renderStats(){
+  const u=Object.values(allUsers);
+  document.getElementById('st-total').textContent=u.length;
+  document.getElementById('st-online').textContent=u.filter(x=>x.online).length;
+  const bal=u.reduce((s,x)=>s+(x.balance||0),0);
+  document.getElementById('st-balance').textContent='Rs. '+bal.toLocaleString();
+  const ptu=Object.values(allTopups).filter(t=>t.status==='pending').length;
+  const pwd=Object.values(allWithdraws).filter(t=>t.status==='pending').length;
+  const total=ptu+pwd;
+  document.getElementById('st-pending').textContent=total;
+  const bt=document.getElementById('badge-topup'); bt.textContent=ptu; bt.classList.toggle('show',ptu>0);
+  const bw=document.getElementById('badge-wd'); bw.textContent=pwd; bw.classList.toggle('show',pwd>0);
 }
-
-function renderDashUsers() {
-  const tbody = document.getElementById('dash-users-body');
-  const users = Object.entries(allUsers).slice(0,6);
-  if (!users.length) { tbody.innerHTML='<tr><td colspan="3" class="empty-state">No players yet</td></tr>'; return; }
-  tbody.innerHTML = users.map(([uid,u]) => `
-    <tr>
-      <td><div class="user-cell">
-        <div class="av">${u.photoURL?`<img src="${esc(u.photoURL)}">`:(u.name||'?')[0].toUpperCase()}</div>
-        <div><div class="uname">${esc(u.name||'—')}</div><div class="uemail">${esc(u.uid||'')}</div></div>
-      </div></td>
-      <td><span class="pill ${u.online?'green':'red'} dot">${u.online?'Online':'Offline'}</span></td>
-      <td style="font-family:'DM Mono',monospace;color:var(--gold)">Rs. ${(u.balance||0).toLocaleString()}</td>
-    </tr>`).join('');
+function renderDashUsers(){
+  const tbody=document.getElementById('dash-users-body');
+  const users=Object.entries(allUsers).slice(0,6);
+  if(!users.length){tbody.innerHTML='<tr><td colspan="3" class="empty-state">No players yet</td></tr>';return;}
+  tbody.innerHTML=users.map(([uid,u])=>`<tr>
+    <td><div class="user-cell">${avHTML(u)}<div><div class="uname">${esc(u.name||'—')}</div><div class="uemail">${esc(u.uid||'')}</div></div></div></td>
+    <td><span class="pill ${u.online?'green':'red'} dot">${u.online?'Online':'Offline'}</span></td>
+    <td style="font-family:'DM Mono',monospace;color:var(--gold)">Rs. ${(u.balance||0).toLocaleString()}</td>
+  </tr>`).join('');
 }
-
-function renderUsersTable(filter='') {
-  const tbody = document.getElementById('users-body');
-  let entries = Object.entries(allUsers);
-  if (filter) entries = entries.filter(([,u]) =>
-    u.name?.toLowerCase().includes(filter) || u.uid?.toLowerCase().includes(filter) || u.email?.toLowerCase().includes(filter)
-  );
-  if (!entries.length) { tbody.innerHTML='<tr><td colspan="6" class="empty-state">No players found</td></tr>'; return; }
-  tbody.innerHTML = entries.map(([uid,u]) => `
-    <tr>
-      <td><div class="user-cell">
-        <div class="av">${u.photoURL?`<img src="${esc(u.photoURL)}">`:(u.name||'?')[0].toUpperCase()}</div>
-        <div><div class="uname">${esc(u.name||'—')}</div><div class="uemail">${esc(u.email||'')}</div></div>
-      </div></td>
-      <td style="font-family:'DM Mono',monospace;color:var(--txt-mid);font-size:12px">${esc(u.uid||'—')}</td>
-      <td><span class="pill ${u.online?'green':'red'} dot">${u.online?'Online':'Offline'}</span></td>
-      <td style="font-family:'DM Mono',monospace;color:var(--gold)">Rs. ${(u.balance||0).toLocaleString()}</td>
-      <td style="font-size:11px;color:var(--txt-dim);font-family:'DM Mono',monospace">${timeStr(u.createdAt)}</td>
-      <td><div class="act-row">
-        <div class="act-btn" title="Edit Balance" onclick="openBalModal('${uid}')">💰</div>
-        <div class="act-btn" title="Chat" onclick="openAdminChat('${uid}','${esc(u.name||'Player')}')">💬</div>
-      </div></td>
-    </tr>`).join('');
+function renderUsersTable(filter=''){
+  const tbody=document.getElementById('users-body');
+  let entries=Object.entries(allUsers);
+  if(filter) entries=entries.filter(([,u])=>u.name?.toLowerCase().includes(filter)||u.uid?.toLowerCase().includes(filter)||u.email?.toLowerCase().includes(filter));
+  if(!entries.length){tbody.innerHTML='<tr><td colspan="6" class="empty-state">No players found</td></tr>';return;}
+  tbody.innerHTML=entries.map(([uid,u])=>`<tr>
+    <td><div class="user-cell">${avHTML(u)}<div><div class="uname">${esc(u.name||'—')}</div><div class="uemail">${esc(u.email||'')}</div></div></div></td>
+    <td style="font-family:'DM Mono',monospace;color:var(--txt-mid);font-size:12px">${esc(u.uid||'—')}</td>
+    <td><span class="pill ${u.online?'green':'red'} dot">${u.online?'Online':'Offline'}</span></td>
+    <td style="font-family:'DM Mono',monospace;color:var(--gold)">Rs. ${(u.balance||0).toLocaleString()}</td>
+    <td style="font-size:11px;color:var(--txt-dim);font-family:'DM Mono',monospace">${timeStr(u.createdAt)}</td>
+    <td><div class="act-row">
+      <div class="act-btn" title="Edit Balance" onclick="openBalModal('${uid}')">💰</div>
+      <div class="act-btn" title="Chat" onclick="openAdminChat('${uid}','${esc(u.name||'Player')}')">💬</div>
+    </div></td>
+  </tr>`).join('');
 }
+window.filterUsers=()=>renderUsersTable(document.getElementById('user-search').value.trim().toLowerCase());
 
-window.filterUsers = () => renderUsersTable(document.getElementById('user-search').value.trim().toLowerCase());
-
-// ── BALANCES ──────────────────────────────────────────────
-function renderBalancesTable() {
-  const tbody = document.getElementById('balances-body');
-  const entries = Object.entries(allUsers);
-  if (!entries.length) { tbody.innerHTML='<tr><td colspan="5" class="empty-state">No players</td></tr>'; return; }
-  tbody.innerHTML = entries.map(([uid,u]) => `
-    <tr>
-      <td><div class="user-cell">
-        <div class="av">${u.photoURL?`<img src="${esc(u.photoURL)}">`:(u.name||'?')[0].toUpperCase()}</div>
-        <div class="uname">${esc(u.name||'—')}</div>
-      </div></td>
-      <td style="font-family:'DM Mono',monospace;color:var(--txt-mid);font-size:12px">${esc(u.uid||'—')}</td>
-      <td style="font-family:'Cinzel',serif;font-size:18px;color:var(--gold)">Rs. ${(u.balance||0).toLocaleString()}</td>
-      <td><span class="pill ${u.online?'green':'red'} dot">${u.online?'Online':'Offline'}</span></td>
-      <td><button class="btn btn-gold" onclick="openBalModal('${uid}')">Edit Balance</button></td>
-    </tr>`).join('');
+// ── Balances ───────────────────────────────────
+function renderBalancesTable(){
+  const tbody=document.getElementById('balances-body');
+  const entries=Object.entries(allUsers);
+  if(!entries.length){tbody.innerHTML='<tr><td colspan="5" class="empty-state">No players</td></tr>';return;}
+  tbody.innerHTML=entries.map(([uid,u])=>`<tr>
+    <td><div class="user-cell">${avHTML(u)}<div class="uname">${esc(u.name||'—')}</div></div></td>
+    <td style="font-family:'DM Mono',monospace;color:var(--txt-mid);font-size:12px">${esc(u.uid||'—')}</td>
+    <td style="font-family:'Cinzel',serif;font-size:18px;color:var(--gold)">Rs. ${(u.balance||0).toLocaleString()}</td>
+    <td><span class="pill ${u.online?'green':'red'} dot">${u.online?'Online':'Offline'}</span></td>
+    <td><button class="btn btn-gold" onclick="openBalModal('${uid}')">Edit Balance</button></td>
+  </tr>`).join('');
 }
-
-// ── BALANCE MODAL ─────────────────────────────────────────
-window.openBalModal = (uid) => {
-  balModalUid = uid;
-  const u = allUsers[uid];
-  document.getElementById('bal-modal-name').textContent    = u?.name||'—';
-  document.getElementById('bal-modal-current').textContent = 'Rs. '+(u?.balance||0).toLocaleString();
-  document.getElementById('bal-modal-inp').value = u?.balance||0;
-  document.getElementById('bal-modal-add').value = '';
-  document.getElementById('bal-modal-sub').value = '';
+window.openBalModal=(uid)=>{
+  balModalUid=uid; const u=allUsers[uid];
+  document.getElementById('bal-modal-name').textContent=u?.name||'—';
+  document.getElementById('bal-modal-current').textContent='Rs. '+(u?.balance||0).toLocaleString();
+  document.getElementById('bal-modal-inp').value=u?.balance||0;
+  document.getElementById('bal-modal-add').value='';
+  document.getElementById('bal-modal-sub').value='';
   document.getElementById('bal-modal').classList.add('open');
 };
-window.closeBalModal = () => {
-  document.getElementById('bal-modal').classList.remove('open');
-  balModalUid = null;
-};
-window.saveBal = async () => {
-  if (!balModalUid) return;
-  const cur    = allUsers[balModalUid]?.balance||0;
-  const setVal = parseFloat(document.getElementById('bal-modal-inp').value);
-  const addVal = parseFloat(document.getElementById('bal-modal-add').value)||0;
-  const subVal = parseFloat(document.getElementById('bal-modal-sub').value)||0;
-  let newBal   = !isNaN(setVal) ? setVal : cur;
-  newBal       = Math.max(0, Math.round(newBal + addVal - subVal));
-  await update(ref(db,`users/${balModalUid}`), { balance:newBal });
-  toast(`✓ Balance updated → Rs. ${newBal.toLocaleString()}`);
+window.closeBalModal=()=>{ document.getElementById('bal-modal').classList.remove('open'); balModalUid=null; };
+window.saveBal=async()=>{
+  if(!balModalUid) return;
+  const cur=allUsers[balModalUid]?.balance||0;
+  const setVal=parseFloat(document.getElementById('bal-modal-inp').value);
+  const addVal=parseFloat(document.getElementById('bal-modal-add').value)||0;
+  const subVal=parseFloat(document.getElementById('bal-modal-sub').value)||0;
+  let nb=!isNaN(setVal)?setVal:cur;
+  nb=Math.max(0,Math.round(nb+addVal-subVal));
+  await update(ref(db,`users/${balModalUid}`),{balance:nb});
+  toast(`✓ Balance updated → Rs. ${nb.toLocaleString()}`,'success');
   closeBalModal();
 };
-document.getElementById('bal-modal').addEventListener('click', e => { if(e.target===e.currentTarget) closeBalModal(); });
+document.getElementById('bal-modal').addEventListener('click',e=>{ if(e.target===e.currentTarget) closeBalModal(); });
 
-// ── TOP UP REQUESTS ────────────────────────────────────────
-function listenTopups() {
-  onValue(ref(db,'topupRequests'), snap => {
-    allTopups = snap.val()||{};
-    renderStats();
-    renderDashTopups();
-    renderTopupGrid();
+// ── Top Up ─────────────────────────────────────
+function listenTopups(){
+  onValue(ref(db,'topupRequests'),snap=>{
+    allTopups=snap.val()||{};
+    renderStats(); renderDashTopups(); renderTopupGrid();
   });
 }
-
-function renderDashTopups() {
-  const tbody = document.getElementById('dash-topup-body');
-  const pending = Object.entries(allTopups).filter(([,t])=>t.status==='pending').slice(0,5);
-  if (!pending.length) { tbody.innerHTML='<tr><td colspan="3" class="empty-state">No pending requests</td></tr>'; return; }
-  tbody.innerHTML = pending.map(([,t]) => `
-    <tr>
-      <td style="font-size:13px;font-weight:600">${esc(t.userName||'—')}</td>
-      <td><span class="pill gold">Rs. ${(t.amount||0).toLocaleString()}</span></td>
-      <td style="font-size:11px;color:var(--txt-dim);font-family:'DM Mono',monospace">${timeAgo(t.timestamp)}</td>
-    </tr>`).join('');
+function renderDashTopups(){
+  const tbody=document.getElementById('dash-topup-body');
+  const pending=Object.entries(allTopups).filter(([,t])=>t.status==='pending').slice(0,5);
+  if(!pending.length){tbody.innerHTML='<tr><td colspan="3" class="empty-state">No pending requests</td></tr>';return;}
+  tbody.innerHTML=pending.map(([,t])=>`<tr>
+    <td style="font-size:13px;font-weight:600">${esc(t.userName||'—')}</td>
+    <td><span class="pill gold">Rs. ${(t.amount||0).toLocaleString()}</span></td>
+    <td style="font-size:11px;color:var(--txt-dim);font-family:'DM Mono',monospace">${timeAgo(t.timestamp)}</td>
+  </tr>`).join('');
 }
-
-window.setTopupFilter = (f, el) => {
-  topupFilter = f;
-  document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+window.setFilter=(type,f,el)=>{
+  if(type==='topup') topupFilter=f;
+  else wdFilter=f;
+  el.closest('.filter-tabs')?.querySelectorAll('.filter-tab').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
-  renderTopupGrid();
+  if(type==='topup') renderTopupGrid();
+  else renderWdGrid();
 };
-
-function renderTopupGrid() {
-  const grid = document.getElementById('topup-grid');
-  let entries = Object.entries(allTopups);
-  if (topupFilter==='pending') entries = entries.filter(([,t])=>t.status==='pending');
-  if (topupFilter==='done')    entries = entries.filter(([,t])=>t.status!=='pending');
+function renderTopupGrid(){
+  const grid=document.getElementById('topup-grid');
+  let entries=Object.entries(allTopups);
+  if(topupFilter==='pending') entries=entries.filter(([,t])=>t.status==='pending');
+  if(topupFilter==='done') entries=entries.filter(([,t])=>t.status!=='pending');
   entries.sort((a,b)=>(b[1].timestamp||0)-(a[1].timestamp||0));
-
-  if (!entries.length) { grid.innerHTML='<div class="empty-state">No requests found</div>'; return; }
-  grid.innerHTML = entries.map(([key,t]) => {
-    const done = t.status !== 'pending';
-    const statusLabel = t.status==='approved'?'Approved':t.status==='rejected'?'Rejected':'Pending';
-    const statusClass = t.status==='approved'?'green':t.status==='rejected'?'red':'gold';
+  if(!entries.length){grid.innerHTML='<div class="empty-state">No requests found</div>';return;}
+  grid.innerHTML=entries.map(([key,t])=>{
+    const done=t.status!=='pending';
+    const sc=t.status==='approved'?'green':t.status==='rejected'?'red':'gold';
+    const sl=t.status==='approved'?'Approved':t.status==='rejected'?'Rejected':'Pending';
     return `<div class="req-card">
       <div class="req-card-top">
-        <div class="av">${(t.userName||'?')[0].toUpperCase()}</div>
-        <div>
-          <div style="font-size:13px;font-weight:700">${esc(t.userName||'—')}</div>
-          <div class="req-meta">${esc(t.userId||'')} · ${timeAgo(t.timestamp)}</div>
-        </div>
-        <span class="pill ${statusClass}" style="margin-left:auto">${statusLabel}</span>
+        ${avHTML({name:t.userName})}
+        <div><div style="font-size:13px;font-weight:700">${esc(t.userName||'—')}</div><div class="req-meta">${esc(t.userId||'')} · ${timeAgo(t.timestamp)}</div></div>
+        <span class="pill ${sc}" style="margin-left:auto">${sl}</span>
       </div>
       <div class="req-amount">Rs. ${(t.amount||0).toLocaleString()}</div>
-      <div class="req-meta" style="margin-top:2px">${esc(t.uid||'')}</div>
-      ${!done ? `
-      <div class="req-actions">
+      ${!done?`<div class="req-actions">
         <button class="req-approve" onclick="approveTopup('${key}','${t.uid}',${t.amount})">✓ Approve & Credit</button>
-        <button class="req-reject"  onclick="rejectTopup('${key}')">✗ Reject</button>
+        <button class="req-reject" onclick="rejectTopup('${key}')">✗ Reject</button>
       </div>
-      <div style="margin-top:8px">
-        <button class="btn btn-ghost" style="font-size:11px;width:100%" onclick="openAdminChat('${t.uid}','${esc(t.userName||'Player')}')">💬 Chat with Player</button>
-      </div>` : ''}
+      <button class="btn btn-ghost" style="width:100%;margin-top:8px;font-size:11px" onclick="openAdminChat('${t.uid}','${esc(t.userName||'Player')}')">💬 Chat with Player</button>`:''}
     </div>`;
   }).join('');
 }
+window.approveTopup=async(key,uid,amount)=>{
+  if(!uid||!amount) return;
+  const nb=(allUsers[uid]?.balance||0)+amount;
+  await update(ref(db,`users/${uid}`),{balance:nb});
+  await update(ref(db,`topupRequests/${key}`),{status:'approved',approvedAt:Date.now()});
+  const chatId=[ADMIN_UID,uid].sort().join('_');
+  await push(ref(db,`chats/${chatId}/messages`),{from:ADMIN_UID,text:`✅ Top-up of Rs. ${amount.toLocaleString()} approved! New balance: Rs. ${nb.toLocaleString()}.`,timestamp:Date.now()});
+  toast(`✓ Rs. ${amount.toLocaleString()} credited to ${allUsers[uid]?.name||'player'}`,'success');
+};
+window.rejectTopup=async(key)=>{ await update(ref(db,`topupRequests/${key}`),{status:'rejected',rejectedAt:Date.now()}); toast('Top-up rejected.'); };
 
-window.approveTopup = async (key, uid, amount) => {
-  if (!uid||!amount) return;
-  const newBal = (allUsers[uid]?.balance||0) + amount;
-  await update(ref(db,`users/${uid}`), { balance:newBal });
-  await update(ref(db,`topupRequests/${key}`), { status:'approved', approvedAt:Date.now() });
-  const chatId = [ADMIN_UID,uid].sort().join('_');
-  await push(ref(db,`chats/${chatId}/messages`), {
-    from:ADMIN_UID,
-    text:`✅ Your top-up of Rs. ${amount.toLocaleString()} has been approved! New balance: Rs. ${newBal.toLocaleString()}.`,
-    timestamp:Date.now()
+// ── Withdrawals ────────────────────────────────
+function listenWithdraws(){
+  onValue(ref(db,'withdrawRequests'),snap=>{
+    allWithdraws=snap.val()||{};
+    renderStats(); renderDashWd(); renderWdGrid();
   });
-  toast(`✓ Approved — Rs. ${amount.toLocaleString()} credited to ${allUsers[uid]?.name||'player'}`);
+}
+function renderDashWd(){
+  const tbody=document.getElementById('dash-wd-body');
+  const pending=Object.entries(allWithdraws).filter(([,t])=>t.status==='pending').slice(0,5);
+  if(!pending.length){tbody.innerHTML='<tr><td colspan="4" class="empty-state">No pending withdrawals</td></tr>';return;}
+  tbody.innerHTML=pending.map(([,t])=>`<tr>
+    <td style="font-size:13px;font-weight:600">${esc(t.userName||'—')}</td>
+    <td><span class="pill blue">Rs. ${(t.amount||0).toLocaleString()}</span></td>
+    <td style="font-size:12px;color:var(--txt-mid)">${esc(t.bname||'—')}</td>
+    <td style="font-size:11px;color:var(--txt-dim);font-family:'DM Mono',monospace">${timeAgo(t.timestamp)}</td>
+  </tr>`).join('');
+}
+function renderWdGrid(){
+  const grid=document.getElementById('wd-grid');
+  let entries=Object.entries(allWithdraws);
+  if(wdFilter==='pending') entries=entries.filter(([,t])=>t.status==='pending');
+  if(wdFilter==='done') entries=entries.filter(([,t])=>t.status!=='pending');
+  entries.sort((a,b)=>(b[1].timestamp||0)-(a[1].timestamp||0));
+  if(!entries.length){grid.innerHTML='<div class="empty-state">No withdrawal requests found</div>';return;}
+  grid.innerHTML=entries.map(([key,t])=>{
+    const done=t.status!=='pending';
+    const sc=t.status==='approved'?'green':t.status==='rejected'?'red':'blue';
+    const sl=t.status==='approved'?'Approved':t.status==='rejected'?'Rejected':'Pending';
+    const cls=t.status==='approved'?'done':t.status==='rejected'?'rejected':'';
+    return `<div class="wd-card ${cls}">
+      <div class="req-card-top">
+        ${avHTML({name:t.userName})}
+        <div><div style="font-size:13px;font-weight:700">${esc(t.userName||'—')}</div><div class="req-meta">${esc(t.userId||'')} · ${timeAgo(t.timestamp)}</div></div>
+        <span class="pill ${sc}" style="margin-left:auto">${sl}</span>
+      </div>
+      <div class="wd-amount">Rs. ${(t.amount||0).toLocaleString()}</div>
+      <div class="wd-detail-row">
+        <div class="wd-detail">
+          <div class="wd-detail-label">Bank</div>
+          <div class="wd-detail-val">${esc(t.bname||'—')}</div>
+        </div>
+        <div class="wd-detail">
+          <div class="wd-detail-label">Account No.</div>
+          <div class="wd-detail-val" style="font-family:'DM Mono',monospace">${esc(t.bank||'—')}</div>
+        </div>
+        <div class="wd-detail">
+          <div class="wd-detail-label">Holder</div>
+          <div class="wd-detail-val">${esc(t.holder||'—')}</div>
+        </div>
+      </div>
+      ${!done?`<div class="req-actions" style="margin-top:12px">
+        <button class="req-approve" onclick="approveWd('${key}','${t.uid}',${t.amount})">✓ Mark as Transferred</button>
+        <button class="req-reject" onclick="rejectWd('${key}','${t.uid}',${t.amount})">✗ Reject</button>
+      </div>
+      <button class="btn btn-ghost" style="width:100%;margin-top:8px;font-size:11px" onclick="openAdminChat('${t.uid}','${esc(t.userName||'Player')}')">💬 Chat with Player</button>`:''}
+    </div>`;
+  }).join('');
+}
+window.approveWd=async(key,uid,amount)=>{
+  await update(ref(db,`withdrawRequests/${key}`),{status:'approved',approvedAt:Date.now()});
+  const chatId=[ADMIN_UID,uid].sort().join('_');
+  await push(ref(db,`chats/${chatId}/messages`),{from:ADMIN_UID,text:`✅ Your withdrawal of Rs. ${amount.toLocaleString()} has been transferred to your bank account.`,timestamp:Date.now()});
+  toast(`✓ Withdrawal of Rs. ${amount.toLocaleString()} marked as transferred.`,'success');
+};
+window.rejectWd=async(key,uid,amount)=>{
+  // Refund balance on rejection
+  const nb=(allUsers[uid]?.balance||0)+amount;
+  await update(ref(db,`withdrawRequests/${key}`),{status:'rejected',rejectedAt:Date.now()});
+  await update(ref(db,`users/${uid}`),{balance:nb});
+  const chatId=[ADMIN_UID,uid].sort().join('_');
+  await push(ref(db,`chats/${chatId}/messages`),{from:ADMIN_UID,text:`❌ Your withdrawal request of Rs. ${amount.toLocaleString()} has been rejected. Amount has been refunded to your balance.`,timestamp:Date.now()});
+  toast(`Withdrawal rejected. Rs. ${amount.toLocaleString()} refunded.`);
 };
 
-window.rejectTopup = async (key) => {
-  await update(ref(db,`topupRequests/${key}`), { status:'rejected', rejectedAt:Date.now() });
-  toast('Top-up request rejected.');
-};
-
-// ── GAME HISTORY ──────────────────────────────────────────
-function listenHistory() {
-  onValue(ref(db,'gameHistory'), snap => {
-    const raw = snap.val()||{};
-    allHistory = [];
-    Object.entries(raw).forEach(([playerUid, games]) => {
-      Object.values(games).forEach(g => {
-        allHistory.push({...g, playerUid, playerName:allUsers[playerUid]?.name||playerUid});
-      });
+// ── Game History ───────────────────────────────
+function listenHistory(){
+  onValue(ref(db,'gameHistory'),snap=>{
+    const raw=snap.val()||{};
+    allHistory=[];
+    Object.entries(raw).forEach(([pUid,games])=>{
+      Object.values(games).forEach(g=>allHistory.push({...g,playerUid:pUid,playerName:allUsers[pUid]?.name||pUid}));
     });
     allHistory.sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));
     renderHistory();
   });
 }
-
-function renderHistory(filter='') {
-  const tbody = document.getElementById('history-body');
-  let data = allHistory;
-  if (filter) data = data.filter(h =>
-    h.playerName?.toLowerCase().includes(filter) ||
-    h.opponent?.toLowerCase().includes(filter)
-  );
-  if (!data.length) { tbody.innerHTML='<tr><td colspan="6" class="empty-state">No games recorded</td></tr>'; return; }
-  tbody.innerHTML = data.slice(0,60).map(h => {
-    const win = h.result==='win';
+function renderHistory(filter=''){
+  const tbody=document.getElementById('history-body');
+  let data=allHistory;
+  if(filter) data=data.filter(h=>h.playerName?.toLowerCase().includes(filter)||h.opponent?.toLowerCase().includes(filter));
+  if(!data.length){tbody.innerHTML='<tr><td colspan="6" class="empty-state">No games recorded</td></tr>';return;}
+  tbody.innerHTML=data.slice(0,60).map(h=>{
+    const win=h.result==='win';
     return `<tr>
       <td style="font-weight:600">${esc(h.playerName||'—')}</td>
       <td style="color:var(--txt-mid)">${esc(h.opponent||'—')}</td>
@@ -1210,95 +877,76 @@ function renderHistory(filter='') {
     </tr>`;
   }).join('');
 }
+window.filterHistory=()=>renderHistory(document.getElementById('hist-search').value.trim().toLowerCase());
 
-window.filterHistory = () => renderHistory(document.getElementById('hist-search').value.trim().toLowerCase());
-
-// ── ADMIN CHAT ────────────────────────────────────────────
-function listenChatUsers() {
-  onValue(ref(db,'chats'), snap => {
-    renderChatUserList(snap.val()||{});
-  });
+// ── Chat ───────────────────────────────────────
+let allChats={};
+function listenChats(){
+  onValue(ref(db,'chats'),snap=>{ allChats=snap.val()||{}; renderChatUserList(); });
 }
-
-function renderChatUserList(chatsData) {
-  const list = document.getElementById('chat-user-list');
-  const users = Object.entries(allUsers);
-  if (!users.length) { list.innerHTML='<div class="empty-state">No players yet</div>'; return; }
-  list.innerHTML = users.map(([uid,u]) => {
-    const chatId   = [ADMIN_UID,uid].sort().join('_');
-    const msgs     = chatsData?.[chatId]?.messages ? Object.values(chatsData[chatId].messages) : [];
-    const lastMsg  = msgs.sort((a,b)=>b.timestamp-a.timestamp)[0];
-    const isActive = chatWithUid===uid;
+function renderChatUserList(searchQ=''){
+  const list=document.getElementById('chat-user-list');
+  let users=Object.entries(allUsers);
+  if(searchQ) users=users.filter(([,u])=>u.name?.toLowerCase().includes(searchQ.toLowerCase()));
+  if(!users.length){list.innerHTML='<div class="empty-state">No players yet</div>';return;}
+  list.innerHTML=users.map(([uid,u])=>{
+    const chatId=[ADMIN_UID,uid].sort().join('_');
+    const msgs=allChats[chatId]?.messages?Object.values(allChats[chatId].messages):[];
+    const last=msgs.sort((a,b)=>b.timestamp-a.timestamp)[0];
+    const isActive=chatWithUid===uid;
     return `<div class="chat-user-item ${isActive?'active':''}" onclick="openAdminChat('${uid}','${esc(u.name||'Player')}')">
-      <div class="av" style="width:36px;height:36px;font-size:12px;flex-shrink:0;position:relative">
-        ${u.photoURL?`<img src="${esc(u.photoURL)}">`:(u.name||'?')[0].toUpperCase()}
-        <div style="position:absolute;bottom:0;right:0;width:8px;height:8px;border-radius:50%;
-          background:${u.online?'var(--green-win)':'#555'};border:2px solid var(--bg)"></div>
+      <div style="position:relative;flex-shrink:0">
+        ${avHTML(u,36)}
+        <div style="position:absolute;bottom:0;right:0;width:8px;height:8px;border-radius:50%;background:${u.online?'var(--green-win)':'#555'};border:2px solid var(--bg)"></div>
       </div>
       <div style="flex:1;min-width:0">
         <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(u.name||'—')}</div>
-        <div style="font-size:11px;color:var(--txt-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(lastMsg?.text||'No messages')}</div>
+        <div style="font-size:11px;color:var(--txt-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(last?.text||'No messages')}</div>
       </div>
-      ${lastMsg?`<div style="font-size:10px;color:var(--txt-dim);font-family:'DM Mono',monospace;white-space:nowrap">${timeAgo(lastMsg.timestamp)}</div>`:''}
+      ${last?`<div style="font-size:10px;color:var(--txt-dim);font-family:'DM Mono',monospace;white-space:nowrap;flex-shrink:0">${timeAgo(last.timestamp)}</div>`:''}
     </div>`;
   }).join('');
 }
-
-window.openAdminChat = (uid, name) => {
-  chatWithUid = uid;
-  const u = allUsers[uid]||{};
-  document.getElementById('chat-win-hdr').innerHTML = `
-    <div class="av" style="width:36px;height:36px;font-size:12px">
-      ${u.photoURL?`<img src="${esc(u.photoURL)}">`:(name||'?')[0].toUpperCase()}
-    </div>
-    <div class="chat-win-info">
+window.filterChatUsers=(q)=>renderChatUserList(q);
+window.openAdminChat=(uid,name)=>{
+  chatWithUid=uid; const u=allUsers[uid]||{};
+  document.getElementById('chat-win-hdr').innerHTML=`
+    ${avHTML(u,38)}
+    <div style="flex:1">
       <div class="chat-win-name">${esc(name)}</div>
-      <div class="chat-win-status" style="color:${u.online?'var(--green-win)':'var(--txt-dim)'}">
-        ${u.online?'● Online':'○ Offline'} · ${esc(u.uid||'')}
-      </div>
+      <div class="chat-win-status" style="color:${u.online?'var(--green-win)':'var(--txt-dim)'}">${u.online?'● Online':'○ Offline'} · ${esc(u.uid||'')}</div>
     </div>
     <button class="btn btn-gold" onclick="openBalModal('${uid}')">💰 Edit Balance</button>
   `;
-
-  if (chatMsgRef && chatMsgListener) off(chatMsgRef,'value',chatMsgListener);
-  const chatId = [ADMIN_UID,uid].sort().join('_');
-  chatMsgRef = ref(db,`chats/${chatId}/messages`);
-  chatMsgListener = onValue(chatMsgRef, snap => {
-    const data = snap.val()||{};
-    const msgs = Object.values(data).sort((a,b)=>a.timestamp-b.timestamp);
-    const el   = document.getElementById('chat-msgs');
-    if (!msgs.length) {
-      el.innerHTML='<div class="chat-empty-state"><span style="font-size:28px">💬</span><span>No messages yet</span></div>';
-      return;
-    }
-    el.innerHTML = msgs.map(m => {
-      const mine = m.from===ADMIN_UID;
-      const t    = new Date(m.timestamp);
+  if(chatMsgRef&&chatMsgListener) off(chatMsgRef,'value',chatMsgListener);
+  const chatId=[ADMIN_UID,uid].sort().join('_');
+  chatMsgRef=ref(db,`chats/${chatId}/messages`);
+  chatMsgListener=onValue(chatMsgRef,snap=>{
+    const data=snap.val()||{};
+    const msgs=Object.values(data).sort((a,b)=>a.timestamp-b.timestamp);
+    const el=document.getElementById('chat-msgs');
+    if(!msgs.length){el.innerHTML='<div class="chat-empty-state"><span style="font-size:28px">💬</span><span>No messages yet</span></div>';return;}
+    el.innerHTML=msgs.map(m=>{
+      const mine=m.from===ADMIN_UID;
+      const t=new Date(m.timestamp);
       return `<div class="msg-bubble ${mine?'msg-out':'msg-in'}">
         <div>${esc(m.text||'')}</div>
         <div class="msg-time">${t.getHours()}:${String(t.getMinutes()).padStart(2,'0')}</div>
       </div>`;
     }).join('');
-    el.scrollTop = el.scrollHeight;
+    el.scrollTop=el.scrollHeight;
   });
-
-  goTo('chat', document.querySelector('[onclick*="chat"]'));
-  setTimeout(() => document.getElementById('chat-inp').focus(), 300);
+  goTo('chat',document.querySelector('[onclick*="chat"]'));
+  renderChatUserList();
+  setTimeout(()=>document.getElementById('chat-inp').focus(),300);
 };
-
-window.adminSendMsg = async () => {
-  if (!chatWithUid) return;
-  const inp  = document.getElementById('chat-inp');
-  const text = inp.value.trim();
-  if (!text) return;
-  inp.value = '';
-  const chatId = [ADMIN_UID,chatWithUid].sort().join('_');
-  await push(ref(db,`chats/${chatId}/messages`), {
-    from:ADMIN_UID, text, timestamp:Date.now()
-  });
+window.adminSendMsg=async()=>{
+  if(!chatWithUid) return;
+  const inp=document.getElementById('chat-inp'); const text=inp.value.trim();
+  if(!text) return; inp.value='';
+  const chatId=[ADMIN_UID,chatWithUid].sort().join('_');
+  await push(ref(db,`chats/${chatId}/messages`),{from:ADMIN_UID,text,timestamp:Date.now()});
 };
-
-window.filterChatUsers = () => {};
 </script>
 </body>
 </html>
