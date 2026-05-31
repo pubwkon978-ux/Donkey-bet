@@ -196,6 +196,9 @@ body::before{
 .toast.error{border-color:rgba(231,76,60,0.5);}
 .toast.success{border-color:rgba(46,204,113,0.5);}
 
+/* Shake animation */
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+
 /* Upload progress */
 .upload-progress{
   height:3px;background:var(--border);border-radius:2px;margin-top:8px;overflow:hidden;display:none;
@@ -393,16 +396,26 @@ document.getElementById('photo-upload').addEventListener('change', e => {
 
 window.saveProfile = async () => {
   const name = document.getElementById('inp-username').value.trim();
+
+  // Block empty or too-short name
   if (!name || name.length < 2) {
-    document.getElementById('err-box').classList.add('show');
+    const errEl = document.getElementById('err-box');
+    errEl.textContent = 'Player name is required! Enter at least 2 characters.';
+    errEl.classList.add('show');
     document.getElementById('inp-username').focus();
+    // Shake the input field
+    const inp = document.getElementById('inp-username');
+    inp.style.borderColor = 'var(--red)';
+    inp.style.animation = 'shake 0.4s ease';
+    setTimeout(() => { inp.style.animation = ''; inp.style.borderColor = ''; }, 500);
     return;
   }
+
   if (!CU) { toast('Session expired. Please sign in again.', 'error'); return; }
 
   const btn = document.getElementById('btn-enter');
   btn.disabled = true;
-  btn.innerHTML = '<div class="spinner"></div> Setting up...';
+  btn.innerHTML = '<div class="spinner"></div> Saving...';
 
   let photoURL = '';
   try {
@@ -416,19 +429,30 @@ window.saveProfile = async () => {
   } catch(err) {
     console.warn('Photo upload failed:', err);
     photoURL = CU.photoURL || '';
-    toast('Photo upload failed — using default', 'error');
+    toast('Photo upload failed - using default', 'error');
   }
 
-  const uid = genUID();
-  const profile = {
-    name, uid, email: CU.email, photoURL,
-    balance:0, lockedBalance:0, totalWins:0, totalLosses:0,
-    createdAt: Date.now(), online: true
-  };
-
   try {
-    await set(ref(db, `users/${CU.uid}`), profile);
-    toast('Profile created! Entering game...', 'success');
+    // Check if profile already exists (update vs create)
+    const snap = await get(ref(db, `users/${CU.uid}`));
+    let profile;
+    if (snap.exists()) {
+      // Update existing profile - keep balance, wins etc intact
+      const existing = snap.val();
+      profile = { ...existing, name, photoURL };
+      await set(ref(db, `users/${CU.uid}`), profile);
+      toast('Profile updated! Entering game...', 'success');
+    } else {
+      // Create new profile
+      const uid = genUID();
+      profile = {
+        name, uid, email: CU.email, photoURL,
+        balance:0, lockedBalance:0, totalWins:0, totalLosses:0,
+        createdAt: Date.now(), online: true
+      };
+      await set(ref(db, `users/${CU.uid}`), profile);
+      toast('Profile created! Entering game...', 'success');
+    }
     setTimeout(() => { window.location.href = 'game.html'; }, 900);
   } catch(err) {
     btn.disabled = false;
@@ -443,22 +467,36 @@ onAuthStateChanged(auth, async user => {
   if (!user) { window.location.href = 'login.html'; return; }
   CU = user;
 
-  // If profile already exists → go straight to game
   const snap = await get(ref(db, `users/${CU.uid}`));
-  if (snap.exists()) { window.location.href = 'game.html'; return; }
+  const existing = snap.exists() ? snap.val() : null;
 
-  // Pre-fill from Google
-  pendingPhotoURL = user.photoURL || '';
-  const prev = document.getElementById('avatar-preview');
-  if (user.photoURL) {
-    prev.innerHTML = `<img src="${user.photoURL}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+  if (existing) {
+    // Existing profile -- pre-fill with saved data for editing
+    pendingPhotoURL = existing.photoURL || '';
+    const prev = document.getElementById('avatar-preview');
+    if (existing.photoURL) {
+      prev.innerHTML = '<img src="' + existing.photoURL + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';
+    } else {
+      prev.textContent = (existing.name||'U')[0].toUpperCase();
+    }
+    const ni = document.getElementById('inp-username');
+    ni.value = existing.name || '';
+    document.getElementById('btn-enter').innerHTML = '<span>Save & Continue</span><span class="arrow">→</span>';
+    onNameInput();
   } else {
-    prev.textContent = (user.displayName||'U')[0].toUpperCase();
+    // New user -- pre-fill from Google account
+    pendingPhotoURL = user.photoURL || '';
+    const prev = document.getElementById('avatar-preview');
+    if (user.photoURL) {
+      prev.innerHTML = '<img src="' + user.photoURL + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';
+    } else {
+      prev.textContent = (user.displayName||'U')[0].toUpperCase();
+    }
+    const ni = document.getElementById('inp-username');
+    ni.value = user.displayName || '';
+    onNameInput();
+    setTimeout(() => { ni.focus(); ni.select(); }, 400);
   }
-  const ni = document.getElementById('inp-username');
-  ni.value = user.displayName || '';
-  onNameInput();
-  setTimeout(() => { ni.focus(); ni.select(); }, 400);
 });
 </script>
 </body>
