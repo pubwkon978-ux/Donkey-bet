@@ -759,7 +759,15 @@ window.openWithdraw = () => { closeMenu(); openModal('withdraw'); };
 window.openTerms    = () => { closeMenu(); openModal('terms'); };
 window.openSupport  = () => { closeMenu(); openChat(ADMIN_UID,'Support','',false); };
 window.doSignOut    = async () => {
-  closeMenu(); setOnline(false); await fbSignOut(auth);
+  closeMenu();
+  if (CU) setOnline(false);
+  // Clean up all listeners before sign out
+  if (balListener) off(ref(db,`users/${CU?.uid}/balance`),'value',balListener);
+  if (playersRef && playersListener) off(playersRef,'value',playersListener);
+  if (inviteListener) off(ref(db,'invites'),'value',inviteListener);
+  Object.values(unreadListeners).forEach(unsub => { try { off(unsub); } catch(e){} });
+  if (gameListener) { try { gameListener(); } catch(e){} gameListener=null; }
+  try { await fbSignOut(auth); } catch(e) {}
   window.location.href = 'login.html';
 };
 
