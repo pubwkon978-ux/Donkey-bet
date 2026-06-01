@@ -6,7 +6,6 @@
 <title>Donkey Bet ♠</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ═══ CSS VARIABLES ═══ */
 :root {
   --green-deep: #0a3d1f;
   --green-mid:  #0f5c2e;
@@ -37,35 +36,25 @@ body::before{
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
   pointer-events:none;z-index:0;
 }
-
-/* ═══ VIEWS ═══ */
+ 
+/* VIEWS */
 .view{display:none;}
 .view.active{display:block;}
 #view-lobby{min-height:100vh;position:relative;z-index:1;}
-#view-game{position:fixed;inset:0;z-index:500;
-  background:radial-gradient(ellipse at 40% 40%,#1a7a40 0%,#0a4422 60%,#071d0f 100%);
-  display:none;flex-direction:column;}
+#view-game{position:fixed;inset:0;z-index:500;background:radial-gradient(ellipse at 40% 40%,#1a7a40 0%,#0a4422 60%,#071d0f 100%);display:none;flex-direction:column;}
 #view-game.active{display:flex;}
-
-/* ═══ TOPBAR ═══ */
-.topbar{
-  position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
-  padding:14px 16px;background:rgba(4,15,8,0.88);border-bottom:1px solid var(--border);backdrop-filter:blur(20px);
-}
+ 
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:rgba(4,15,8,0.88);border-bottom:1px solid var(--border);backdrop-filter:blur(20px);}
 .topbar-logo{font-family:'Cinzel',serif;font-size:18px;font-weight:700;color:var(--gold);letter-spacing:1px;}
 .menu-btn{width:40px;height:40px;background:var(--glass2);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.2s;position:relative;}
 .menu-btn:hover{background:rgba(255,255,255,0.1);}
 .topbar-badge{position:absolute;top:-5px;right:-5px;background:var(--red);color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;padding:0 3px;display:none;align-items:center;justify-content:center;border:2px solid #040f08;font-family:monospace;line-height:1;}
 .topbar-badge.show{display:flex;}
-
-/* ═══ MAIN CONTENT ═══ */
+ 
+/* MAIN */
 .main-content{padding:16px;display:flex;flex-direction:column;gap:14px;padding-bottom:24px;}
-
-/* Balance Card */
-.balance-card{
-  background:linear-gradient(135deg,rgba(15,92,46,0.6),rgba(4,15,8,0.8));
-  border:1px solid var(--gold-bdr);border-radius:18px;padding:20px;text-align:center;position:relative;overflow:hidden;
-}
+.balance-card{background:linear-gradient(135deg,rgba(15,92,46,0.6),rgba(4,15,8,0.8));border:1px solid var(--gold-bdr);border-radius:18px;padding:20px;text-align:center;position:relative;overflow:hidden;}
 .balance-card::before{content:'♠';position:absolute;font-size:120px;color:rgba(241,196,15,0.04);right:-20px;bottom:-30px;line-height:1;}
 .balance-label{font-size:12px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
 .balance-amount{font-family:'Cinzel',serif;font-size:38px;font-weight:700;color:var(--gold);text-shadow:0 0 20px rgba(241,196,15,0.3);line-height:1;}
@@ -74,19 +63,13 @@ body::before{
 .balance-sub{font-size:12px;color:var(--text-dim);margin-top:4px;}
 .balance-locked{font-size:11px;color:rgba(231,76,60,0.7);margin-top:4px;display:none;}
 .balance-locked.show{display:block;}
-
-/* Zero balance banner */
 .zero-balance-banner{background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.3);border-radius:var(--radius);padding:14px 16px;display:flex;align-items:center;gap:12px;}
 .zbb-icon{font-size:22px;flex-shrink:0;}
 .zbb-text{flex:1;font-size:13px;color:var(--text-mid);line-height:1.5;}
 .zbb-btn{padding:8px 14px;background:linear-gradient(135deg,var(--gold),#e6ac00);border:none;border-radius:var(--rsm);color:#0a1a05;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Outfit',sans-serif;}
-
-/* Section headers */
 .sec-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
 .sec-label{font-family:'Cinzel',serif;font-size:13px;font-weight:600;color:var(--text-mid);letter-spacing:1px;text-transform:uppercase;}
 .sec-link{font-size:12px;color:var(--gold);cursor:pointer;}
-
-/* Player cards */
 .players-list{display:flex;flex-direction:column;gap:8px;}
 .player-card{display:flex;align-items:center;gap:12px;background:var(--glass);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;transition:border-color 0.2s;}
 .player-card:hover{border-color:var(--gold-bdr);}
@@ -105,25 +88,17 @@ body::before{
 .req-btn:disabled{opacity:0.5;cursor:not-allowed;}
 .msg-badge{position:absolute;top:-6px;right:-6px;background:var(--red);color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;padding:0 3px;display:none;align-items:center;justify-content:center;border:2px solid #040f08;font-family:monospace;line-height:1;z-index:2;}
 .msg-badge.show{display:flex;}
-
-/* Search */
 .search-box{display:flex;gap:8px;margin-bottom:12px;}
 .search-inp{flex:1;padding:10px 14px;background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:var(--rsm);color:white;font-size:14px;font-family:'Outfit',sans-serif;outline:none;}
 .search-inp:focus{border-color:var(--gold-bdr);}
 .search-btn{padding:10px 16px;background:var(--gold-dim);border:1px solid var(--gold-bdr);border-radius:var(--rsm);color:var(--gold);font-size:13px;font-weight:600;cursor:pointer;}
 .empty{text-align:center;padding:24px;color:var(--text-dim);font-size:13px;}
-
-/* Invite Pending Bar */
-.invite-pending-bar{
-  background:rgba(241,196,15,0.08);border:1px solid var(--gold-bdr);
-  border-radius:var(--radius);padding:12px 16px;
-  display:none;align-items:center;gap:10px;font-size:13px;color:var(--text-mid);
-}
+.invite-pending-bar{background:rgba(241,196,15,0.08);border:1px solid var(--gold-bdr);border-radius:var(--radius);padding:12px 16px;display:none;align-items:center;gap:10px;font-size:13px;color:var(--text-mid);}
 .invite-pending-bar.show{display:flex;}
 .invite-cancel-btn{margin-left:auto;padding:5px 12px;background:var(--red-dim);border:1px solid rgba(231,76,60,0.3);border-radius:6px;color:var(--red);font-size:11px;font-weight:600;cursor:pointer;}
 .waiting-spinner{display:inline-block;width:20px;height:20px;border:2.5px solid rgba(241,196,15,0.3);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0;}
-
-/* ═══ OVERLAY & SIDE MENU ═══ */
+ 
+/* OVERLAY & MENU */
 .overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity 0.3s;}
 .overlay.open{opacity:1;pointer-events:all;}
 .side-menu{position:fixed;top:0;right:0;bottom:0;width:300px;z-index:201;background:linear-gradient(180deg,#071d10 0%,#040a06 100%);border-left:1px solid var(--border);transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);overflow-y:auto;display:flex;flex-direction:column;}
@@ -142,8 +117,8 @@ body::before{
 .menu-item .mi-icon{font-size:18px;width:26px;text-align:center;}
 .menu-item.danger{color:#e74c3c;}
 .menu-footer{padding:16px 20px;border-top:1px solid var(--border);font-size:11px;color:var(--text-dim);text-align:center;}
-
-/* ═══ MODAL SHEETS ═══ */
+ 
+/* MODALS */
 .modal-bg{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity 0.3s;}
 .modal-bg.open{opacity:1;pointer-events:all;}
 .modal-sheet{width:100%;max-height:82vh;background:linear-gradient(180deg,#0a2e16 0%,#040a06 100%);border-top:1px solid var(--gold-bdr);border-radius:20px 20px 0 0;overflow-y:auto;transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);}
@@ -172,14 +147,11 @@ body::before{
 .win{color:#2ecc71;} .loss{color:#e74c3c;}
 .terms-body{padding:16px;font-size:13px;line-height:1.9;color:var(--text-mid);}
 .terms-body h3{font-family:'Cinzel',serif;color:var(--gold);font-size:13px;margin:16px 0 6px;}
-.terms-body p{margin-bottom:10px;}
-
-/* Bet Modal */
 .bet-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0;}
 .bet-chip{padding:12px 6px;text-align:center;background:var(--glass2);border:1px solid var(--border);border-radius:var(--rsm);cursor:pointer;font-size:13px;font-weight:600;transition:all 0.2s;}
 .bet-chip.on{background:var(--gold-dim);border-color:var(--gold-bdr);color:var(--gold);}
-
-/* ═══ CHAT MODAL ═══ */
+ 
+/* CHAT MODAL */
 .chat-modal{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity 0.3s;}
 .chat-modal.open{opacity:1;pointer-events:all;}
 .chat-sheet{width:100%;height:75vh;background:linear-gradient(180deg,#071d10 0%,#040a06 100%);border-top:1px solid var(--gold-bdr);border-radius:20px 20px 0 0;display:flex;flex-direction:column;transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);}
@@ -200,16 +172,9 @@ body::before{
 .attach-btn{width:36px;height:36px;border-radius:50%;background:var(--glass2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;flex-shrink:0;}
 .send-btn{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e6ac00);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .typing-indicator{font-size:11px;color:var(--text-dim);padding:0 14px 6px;height:18px;}
-
-/* ═══ INVITE POPUP ═══ */
-.req-popup{
-  position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-140px);
-  z-index:400;width:calc(100% - 32px);max-width:360px;
-  background:linear-gradient(135deg,#0f3d20,#071d10);
-  border:1px solid var(--gold-bdr);border-radius:18px;padding:20px;
-  box-shadow:0 20px 60px rgba(0,0,0,0.7);
-  transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1),opacity 0.4s;opacity:0;
-}
+ 
+/* INVITE POPUP */
+.req-popup{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-140px);z-index:400;width:calc(100% - 32px);max-width:360px;background:linear-gradient(135deg,#0f3d20,#071d10);border:1px solid var(--gold-bdr);border-radius:18px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,0.7);transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1),opacity 0.4s;opacity:0;}
 .req-popup.show{transform:translateX(-50%) translateY(0);opacity:1;}
 .req-popup-title{font-family:'Cinzel',serif;font-size:15px;color:var(--gold);margin-bottom:4px;}
 .req-popup-body{font-size:13px;color:var(--text-mid);margin-bottom:6px;}
@@ -218,14 +183,19 @@ body::before{
 .req-popup-btns{display:flex;gap:10px;}
 .btn-accept{flex:1;padding:11px;background:linear-gradient(135deg,#2ecc71,#27ae60);border:none;border-radius:var(--rsm);color:white;font-size:14px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;}
 .btn-decline{flex:1;padding:11px;background:rgba(231,76,60,0.15);border:1px solid rgba(231,76,60,0.3);border-radius:var(--rsm);color:#e74c3c;font-size:14px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;}
-
-/* ═══ GAME VIEW ═══ */
-.game-topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(4,15,8,0.75);border-bottom:1px solid var(--border);flex-shrink:0;}
-.game-players{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-mid);}
-.game-vs{font-family:'Cinzel',serif;font-size:11px;font-weight:700;color:var(--text-dim);padding:2px 8px;background:var(--glass);border-radius:4px;}
-.quit-btn{padding:7px 16px;background:rgba(231,76,60,0.15);border:1px solid rgba(231,76,60,0.3);border-radius:var(--rsm);color:#e74c3c;font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;}
+ 
+/* GAME VIEW */
+.game-topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(4,15,8,0.75);border-bottom:1px solid var(--border);flex-shrink:0;}
+/* Player avatars in game topbar */
+.game-players-row{display:flex;align-items:center;gap:8px;}
+.gp-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--green-mid),var(--green-deep));border:2px solid var(--gold-bdr);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:'Cinzel',serif;color:var(--gold);flex-shrink:0;overflow:hidden;}
+.gp-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.gp-name{font-size:13px;font-weight:600;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.gp-you{color:var(--gold);}
+.game-vs-badge{font-family:'Cinzel',serif;font-size:10px;font-weight:700;color:var(--text-dim);padding:2px 7px;background:var(--glass);border-radius:4px;}
+.quit-btn{padding:7px 14px;background:rgba(231,76,60,0.15);border:1px solid rgba(231,76,60,0.3);border-radius:var(--rsm);color:#e74c3c;font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;}
 .game-body{flex:1;overflow-y:auto;padding:14px;}
-
+ 
 /* In-game chat panel */
 .game-chat-panel{position:fixed;top:49px;right:0;bottom:0;width:270px;z-index:600;background:linear-gradient(180deg,#071d10 0%,#040a06 100%);border-left:1px solid var(--gold-bdr);display:flex;flex-direction:column;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);box-shadow:-6px 0 30px rgba(0,0,0,0.6);}
 .game-chat-panel.open{transform:translateX(0);}
@@ -242,7 +212,7 @@ body::before{
 .gchat-unread{background:var(--red);color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;padding:0 3px;display:none;align-items:center;justify-content:center;font-family:monospace;}
 .gchat-unread.show{display:flex;}
 .gchat-toggle-lbl{writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);font-size:8px;font-weight:700;color:var(--text-mid);letter-spacing:1px;text-transform:uppercase;}
-
+ 
 /* Game components */
 @keyframes dealIn{from{opacity:0;transform:scale(0.5) translateY(-30px)}to{opacity:1;transform:scale(1) translateY(0)}}
 @keyframes glow{0%,100%{box-shadow:0 0 8px rgba(241,196,15,0.5)}50%{box-shadow:0 0 22px rgba(241,196,15,1)}}
@@ -269,49 +239,64 @@ body::before{
 .role-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;}
 .role-dealer{background:rgba(52,152,219,0.15);border:1px solid rgba(52,152,219,0.3);color:#3498db;}
 .role-predictor{background:rgba(241,196,15,0.15);border:1px solid rgba(241,196,15,0.3);color:var(--gold);}
-
+ 
+/* Card split visualization */
+.card-split-container{display:flex;gap:10px;margin:10px 0;}
+.card-half{flex:1;background:rgba(0,0,0,0.3);border-radius:8px;padding:10px;border:1px solid rgba(255,255,255,0.1);}
+.card-half-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;text-align:center;}
+.card-half.dealer-half .card-half-label{color:#3498db;}
+.card-half.predictor-half .card-half-label{color:var(--gold);}
+.card-half-cards{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;min-height:50px;align-items:flex-start;}
+ 
+/* Dealer message style */
+.dealer-msg-box{
+  background:rgba(52,152,219,0.1);border:1px solid rgba(52,152,219,0.25);
+  border-radius:10px;padding:12px 14px;margin-bottom:12px;text-align:center;
+}
+.dealer-msg-name{font-size:13px;color:#3498db;font-weight:700;margin-bottom:2px;}
+.dealer-msg-text{font-size:14px;color:var(--text-mid);}
+.dealer-msg-text strong{color:var(--gold);}
+ 
 /* Reconnect overlay */
 .reconnect-overlay{position:fixed;inset:0;z-index:900;background:rgba(4,15,8,0.94);display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
 .reconnect-overlay.show{display:flex;}
 .reconnect-btn{padding:12px 28px;background:linear-gradient(135deg,var(--gold),#e6ac00);border:none;border-radius:var(--rsm);color:#0a1a05;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;}
-
+ 
 /* Skeleton */
 .skel{background:linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.08) 50%,rgba(255,255,255,0.04) 75%);background-size:200% 100%;animation:skelAnim 1.4s infinite;border-radius:var(--radius);}
 @keyframes skelAnim{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .skel-player{height:68px;margin-bottom:8px;}
-
+ 
 /* Loader */
 .page-loader{position:fixed;inset:0;z-index:9000;background:#040f08;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;transition:opacity 0.5s;}
 .page-loader.hidden{opacity:0;pointer-events:none;}
 .loader-suits{font-size:36px;letter-spacing:12px;animation:lp 1.2s ease infinite;}
 .loader-text{font-family:'Cinzel',serif;font-size:22px;font-weight:700;color:var(--gold);letter-spacing:3px;}
-
+ 
 /* Toast */
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(10,30,16,0.96);border:1px solid var(--gold-bdr);border-radius:12px;padding:12px 20px;font-size:13px;color:var(--text-mid);z-index:9999;white-space:nowrap;transition:transform 0.35s,opacity 0.35s;opacity:0;pointer-events:none;max-width:calc(100vw - 32px);}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
 .toast.error{border-color:rgba(231,76,60,0.5);}
 .toast.success{border-color:rgba(46,204,113,0.5);}
-
+ 
 @media(max-width:380px){.side-menu{width:260px;}.game-chat-panel{width:240px;}}
 </style>
 </head>
 <body>
-
-<!-- LOADER -->
+ 
 <div class="page-loader" id="page-loader">
   <div class="loader-text">DONKEY BET</div>
   <div class="loader-suits">♠ ♥ ♦ ♣</div>
 </div>
-
-<!-- RECONNECT -->
+ 
 <div class="reconnect-overlay" id="reconnect-overlay">
   <div style="font-size:48px;animation:lp 1.2s ease infinite">📡</div>
   <div style="font-family:'Cinzel',serif;font-size:18px;color:var(--gold)">Connection Lost</div>
   <div style="font-size:13px;color:var(--text-dim)">Trying to reconnect...</div>
   <button class="reconnect-btn" onclick="location.reload()">Reload App</button>
 </div>
-
-<!-- ══ LOBBY VIEW ══ -->
+ 
+<!-- LOBBY VIEW -->
 <div class="view" id="view-lobby">
   <div class="topbar">
     <div class="topbar-logo">♠ DONKEY BET</div>
@@ -323,7 +308,7 @@ body::before{
       </div>
     </div>
   </div>
-
+ 
   <div class="main-content">
     <div class="balance-card">
       <div class="balance-label">Your Balance</div>
@@ -331,19 +316,19 @@ body::before{
       <div class="balance-locked" id="balance-locked">Rs. 0 locked in game</div>
       <div class="balance-sub" id="main-uid">Loading...</div>
     </div>
-
+ 
     <div class="zero-balance-banner" id="zero-banner" style="display:none;">
       <div class="zbb-icon">⚠️</div>
       <div class="zbb-text">Your balance is empty. Top up to play!</div>
       <button class="zbb-btn" onclick="openTopUp()">Top Up</button>
     </div>
-
+ 
     <div class="invite-pending-bar" id="invite-pending-bar">
       <div class="waiting-spinner"></div>
       <span id="invite-pending-text">Waiting for response...</span>
       <button class="invite-cancel-btn" onclick="cancelInvite()">Cancel</button>
     </div>
-
+ 
     <div>
       <div class="sec-header"><div class="sec-label">⚔ Find Opponent</div></div>
       <div class="search-box">
@@ -352,7 +337,7 @@ body::before{
       </div>
       <div id="search-results"></div>
     </div>
-
+ 
     <div>
       <div class="sec-header">
         <div class="sec-label">🟢 Online Players</div>
@@ -366,19 +351,21 @@ body::before{
     </div>
   </div>
 </div>
-
-<!-- ══ GAME VIEW ══ -->
+ 
+<!-- GAME VIEW -->
 <div class="view" id="view-game">
   <div class="game-topbar">
-    <div class="game-players">
-      <span id="g-p0name" style="font-weight:700;color:var(--gold)">You</span>
-      <span class="game-vs">VS</span>
-      <span id="g-p1name" style="font-weight:700">Opponent</span>
+    <div class="game-players-row">
+      <div class="gp-avatar" id="g-av-you"><span id="g-av-you-letter">?</span></div>
+      <div class="gp-name gp-you" id="g-p0name">You</div>
+      <div class="game-vs-badge">VS</div>
+      <div class="gp-name" id="g-p1name">Opp</div>
+      <div class="gp-avatar" id="g-av-opp"><span id="g-av-opp-letter">?</span></div>
     </div>
     <button class="quit-btn" onclick="confirmQuit()">✕ Quit</button>
   </div>
   <div class="game-body" id="game-body"></div>
-
+ 
   <div class="game-chat-panel" id="gchat-panel">
     <div class="gchat-header">
       <span style="font-size:14px;">💬</span>
@@ -399,8 +386,8 @@ body::before{
     <div class="gchat-toggle-lbl">Chat</div>
   </div>
 </div>
-
-<!-- ══ OVERLAY + SIDE MENU ══ -->
+ 
+<!-- OVERLAY + SIDE MENU -->
 <div class="overlay" id="overlay" onclick="closeMenu()"></div>
 <div class="side-menu" id="side-menu">
   <div class="menu-profile">
@@ -424,16 +411,14 @@ body::before{
   </div>
   <div class="menu-footer">Donkey Bet v2.0 · Play Responsibly</div>
 </div>
-
-<!-- ══ MODALS ══ -->
-<!-- Game History -->
+ 
+<!-- MODALS -->
 <div class="modal-bg" id="modal-history">
   <div class="modal-sheet" id="sheet-history">
     <div class="modal-header"><div class="modal-title">📋 Game History</div><div class="close-btn" onclick="closeModal('history')">✕</div></div>
     <div class="modal-body" id="history-body"><div class="empty">No games played yet</div></div>
   </div>
 </div>
-<!-- Top Up -->
 <div class="modal-bg" id="modal-topup">
   <div class="modal-sheet" id="sheet-topup">
     <div class="modal-header"><div class="modal-title">💳 Top Up</div><div class="close-btn" onclick="closeModal('topup')">✕</div></div>
@@ -453,7 +438,6 @@ body::before{
     </div>
   </div>
 </div>
-<!-- Withdraw -->
 <div class="modal-bg" id="modal-withdraw">
   <div class="modal-sheet" id="sheet-withdraw">
     <div class="modal-header"><div class="modal-title">💸 Withdraw</div><div class="close-btn" onclick="closeModal('withdraw')">✕</div></div>
@@ -471,7 +455,6 @@ body::before{
     </div>
   </div>
 </div>
-<!-- Terms -->
 <div class="modal-bg" id="modal-terms">
   <div class="modal-sheet" id="sheet-terms">
     <div class="modal-header"><div class="modal-title">📜 Terms &amp; Privacy Policy</div><div class="close-btn" onclick="closeModal('terms')">✕</div></div>
@@ -485,7 +468,6 @@ body::before{
     </div>
   </div>
 </div>
-<!-- Bet -->
 <div class="modal-bg" id="modal-bet">
   <div class="modal-sheet" id="sheet-bet">
     <div class="modal-header"><div class="modal-title">⚔ Set Bet Amount</div><div class="close-btn" onclick="closeModal('bet')">✕</div></div>
@@ -504,8 +486,8 @@ body::before{
     </div>
   </div>
 </div>
-
-<!-- ══ CHAT MODAL ══ -->
+ 
+<!-- CHAT MODAL -->
 <div class="chat-modal" id="chat-modal">
   <div class="chat-sheet" id="chat-sheet">
     <div class="chat-header">
@@ -532,8 +514,8 @@ body::before{
     </div>
   </div>
 </div>
-
-<!-- ══ INVITE POPUP ══ -->
+ 
+<!-- INVITE POPUP -->
 <div class="req-popup" id="req-popup">
   <div class="req-popup-title">⚔ Game Request!</div>
   <div class="req-popup-body" id="req-popup-body">Player wants to play with you</div>
@@ -544,9 +526,9 @@ body::before{
     <button class="btn-decline" onclick="declineRequest()">✕ Decline</button>
   </div>
 </div>
-
+ 
 <div class="toast" id="toast"></div>
-
+ 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut as fbSignOut }
@@ -554,7 +536,7 @@ import { getAuth, onAuthStateChanged, signOut as fbSignOut }
 import {
   getDatabase, ref, set, get, update, onValue, off, push, onDisconnect, remove, serverTimestamp, runTransaction
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
-
+ 
 const FB = {
   apiKey:"AIzaSyCh8ATjBERok1XPOhPameciyPalntsPWg8",
   authDomain:"donkey-bet.firebaseapp.com",
@@ -567,11 +549,11 @@ const FB = {
 const app  = initializeApp(FB);
 const auth = getAuth(app);
 const db   = getDatabase(app);
-
+ 
 const CLD_CLOUD  = 'dnvx958gz';
 const CLD_PRESET = 'donkey_bet';
 const ADMIN_UID  = 'admin';
-
+ 
 let CU = null, CP = null;
 let chatWithUid = null, chatMsgsRef = null, chatListener = null;
 let playersRef = null, playersListener = null;
@@ -583,7 +565,8 @@ let gameState = null;
 let gchatOpen = false, gchatRef = null, gchatListener = null, gchatUnread = 0;
 let unreadCounts = {}, unreadListeners = {};
 let typingTimer = null, inviteCountdown = null;
-
+let allUsersCache = {};
+ 
 // ── Helpers ──────────────────────────────
 window.toast = (msg, type='', dur=2800) => {
   const el = document.getElementById('toast');
@@ -613,10 +596,19 @@ function setOnline(online) {
 }
 function avatarHtml(photoURL, name, size=42) {
   const letter = (name||'?')[0].toUpperCase();
-  if (photoURL) return `<img src="${esc(photoURL)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.outerHTML='${letter}'">`;
+  if (photoURL) return `<img src="${esc(photoURL)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.outerHTML='<span>${letter}</span>'">`;
   return `<span>${letter}</span>`;
 }
-
+// Set avatar element from photoURL + name
+function setAvatarEl(el, photoURL, name) {
+  if (!el) return;
+  if (photoURL) {
+    el.innerHTML = `<img src="${esc(photoURL)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.innerHTML='<span>${(name||'?')[0].toUpperCase()}</span>'">`;
+  } else {
+    el.innerHTML = `<span>${(name||'?')[0].toUpperCase()}</span>`;
+  }
+}
+ 
 // ── Auth ─────────────────────────────────
 onAuthStateChanged(auth, async user => {
   document.getElementById('page-loader').classList.add('hidden');
@@ -625,9 +617,14 @@ onAuthStateChanged(auth, async user => {
   const snap = await get(ref(db, `users/${CU.uid}`));
   if (!snap.exists()) { window.location.href = 'profile.html'; return; }
   CP = snap.val();
+  // Extra guard: if no name set, redirect to profile
+  if (!CP.name || CP.name.trim().length < 2) {
+    window.location.href = 'profile.html';
+    return;
+  }
   enterLobby();
 });
-
+ 
 function enterLobby() {
   showView('lobby');
   setOnline(true);
@@ -637,16 +634,17 @@ function enterLobby() {
   listenIncomingInvites();
   checkActiveGame();
 }
-
+ 
 function renderLobbyUI() {
   const bal = CP.balance || 0;
   updateBalance(bal);
   document.getElementById('main-uid').textContent   = `ID: ${CP.uid}`;
   document.getElementById('menu-name').textContent  = CP.name;
   document.getElementById('menu-uid').textContent   = `ID: ${CP.uid}`;
-  document.getElementById('menu-avatar').innerHTML  = avatarHtml(CP.photoURL, CP.name, 56);
+  const menuAv = document.getElementById('menu-avatar');
+  setAvatarEl(menuAv, CP.photoURL, CP.name);
 }
-
+ 
 function updateBalance(bal) {
   const el = document.getElementById('main-balance');
   el.textContent = `Rs. ${bal.toLocaleString()}`;
@@ -657,7 +655,7 @@ function updateBalance(bal) {
   document.getElementById('bet-modal-bal').textContent   = `Rs. ${bal.toLocaleString()}`;
   document.getElementById('zero-banner').style.display   = bal <= 0 ? 'flex' : 'none';
 }
-
+ 
 function listenBalance() {
   if (balListener) off(ref(db,`users/${CU.uid}/balance`),'value',balListener);
   balListener = onValue(ref(db,`users/${CU.uid}/balance`), snap => {
@@ -670,20 +668,21 @@ function listenBalance() {
     else el.classList.remove('show');
   });
 }
-
+ 
 // ── Players ───────────────────────────────
 function listenPlayers() {
   if (playersRef && playersListener) off(playersRef,'value',playersListener);
   playersRef = ref(db,'users');
   playersListener = onValue(playersRef, snap => {
     const data = snap.val()||{};
+    allUsersCache = data;
     renderPlayers(data);
     Object.keys(data).forEach(uid => { if(uid!==CU.uid) setupUnreadListener(uid); });
     setupUnreadListener(ADMIN_UID);
   });
 }
 window.refreshPlayers = () => listenPlayers();
-
+ 
 function renderPlayers(data) {
   const list = document.getElementById('players-list');
   const users = Object.entries(data).filter(([uid])=>uid!==CU.uid);
@@ -695,7 +694,7 @@ function renderPlayers(data) {
   });
   list.innerHTML = users.map(([uid,p])=>playerCardHTML(uid,p)).join('');
 }
-
+ 
 function playerCardHTML(uid,p) {
   const unread = unreadCounts[uid]||0;
   const ph = avatarHtml(p.photoURL,p.name);
@@ -714,7 +713,7 @@ function playerCardHTML(uid,p) {
     </div>
   </div>`;
 }
-
+ 
 window.searchPlayers = async () => {
   const q = document.getElementById('search-inp').value.trim().toLowerCase();
   const res = document.getElementById('search-results');
@@ -728,7 +727,7 @@ window.searchPlayers = async () => {
   res.innerHTML='<div style="margin-bottom:8px;font-size:11px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;">Results</div>'+
     matches.map(([uid,p])=>`<div style="margin-bottom:8px">${playerCardHTML(uid,p)}</div>`).join('');
 };
-
+ 
 // ── Unread tracking ───────────────────────
 function setupUnreadListener(uid) {
   if (unreadListeners[uid]) return;
@@ -747,7 +746,7 @@ function updateUnreadBadge(uid,count) {
   const tb = document.getElementById('topbar-badge');
   if (tb) { tb.textContent=total>9?'9+':total; tb.classList.toggle('show',total>0); }
 }
-
+ 
 // ── Menu ─────────────────────────────────
 window.openMenu = () => { document.getElementById('side-menu').classList.add('open'); document.getElementById('overlay').classList.add('open'); };
 window.closeMenu= () => { document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); };
@@ -761,7 +760,6 @@ window.openSupport  = () => { closeMenu(); openChat(ADMIN_UID,'Support','',false
 window.doSignOut    = async () => {
   closeMenu();
   if (CU) setOnline(false);
-  // Clean up all listeners before sign out
   if (balListener) off(ref(db,`users/${CU?.uid}/balance`),'value',balListener);
   if (playersRef && playersListener) off(playersRef,'value',playersListener);
   if (inviteListener) off(ref(db,'invites'),'value',inviteListener);
@@ -770,7 +768,7 @@ window.doSignOut    = async () => {
   try { await fbSignOut(auth); } catch(e) {}
   window.location.href = 'login.html';
 };
-
+ 
 // ── History ───────────────────────────────
 async function loadHistory() {
   const body = document.getElementById('history-body');
@@ -789,7 +787,7 @@ async function loadHistory() {
     </div>`;
   }).join('');
 }
-
+ 
 // ── Top Up / Withdraw ─────────────────────
 window.selectTopup = (amt,el) => { selTopup=amt; document.querySelectorAll('.amount-chip').forEach(c=>c.classList.remove('on')); el.classList.add('on'); document.getElementById('topup-custom').value=''; };
 window.submitTopup = async () => {
@@ -810,11 +808,12 @@ window.submitWithdraw = async () => {
   await push(ref(db,'withdrawRequests'),{uid:CU.uid,userId:CP.uid,userName:CP.name,amount,bank,bname,holder,status:'pending',timestamp:Date.now()});
   toast('Withdraw request submitted!','success'); closeModal('withdraw');
 };
-
+ 
 // ── Chat ──────────────────────────────────
 window.openChat = (uid,name,photoURL,online) => {
   chatWithUid=uid;
-  const av=document.getElementById('chat-avatar'); av.innerHTML=avatarHtml(photoURL,name);
+  const av=document.getElementById('chat-avatar');
+  setAvatarEl(av, photoURL||'', name);
   document.getElementById('chat-name').textContent=name;
   const isOnline=online==='true'||online===true;
   document.getElementById('chat-status').textContent=isOnline?'● Online':'○ Offline';
@@ -878,7 +877,7 @@ document.getElementById('chat-file-inp').addEventListener('change', async e=>{
   } catch { toast('Image upload failed','error'); }
   e.target.value='';
 });
-
+ 
 // ── Game Invite ───────────────────────────
 window.openBetModal = (uid,name) => {
   if (CP.balance<=0){toast('Top up to play!','error');openTopUp();return;}
@@ -955,9 +954,18 @@ window.acceptRequest = async () => {
   const inv=pendingInvite; const invId=pendingInviteId;
   pendingInvite=null; pendingInviteId=null;
   const gameId=invId+'_game';
-  const gameData={players:{[CU.uid]:{name:CP.name,photo:CP.photoURL||'',role:'predictor'},[inv.from]:{name:inv.fromName,photo:inv.fromPhoto||'',role:'dealer'}},dealer:inv.from,predictor:CU.uid,bet:inv.amount||0,status:'setup',timestamp:Date.now()};
+  // predictor = acceptor (the person who accepts), dealer = inviter (the person who sent)
+  const gameData={
+    players:{
+      [CU.uid]:{name:CP.name,photo:CP.photoURL||'',role:'predictor'},
+      [inv.from]:{name:inv.fromName,photo:inv.fromPhoto||'',role:'dealer'}
+    },
+    dealer:inv.from,predictor:CU.uid,
+    bet:inv.amount||0,status:'setup',timestamp:Date.now()
+  };
   await set(ref(db,`activeGames/${gameId}`),gameData);
   await update(ref(db,`invites/${invId}`),{status:'accepted',gameId});
+  // Go directly to game — no toast delay
   loadAndStartGame(gameId);
 };
 window.declineRequest = async () => {
@@ -974,7 +982,8 @@ async function loadAndStartGame(gameId) {
   const myRole=CU.uid===g.dealer?'dealer':'predictor';
   const oppUid=myRole==='dealer'?g.predictor:g.dealer;
   const oppName=g.players[oppUid]?.name||'Opponent';
-  startGame(gameId,g,myRole,oppUid,oppName);
+  const oppPhoto=g.players[oppUid]?.photo||'';
+  startGame(gameId,g,myRole,oppUid,oppName,oppPhoto);
 }
 async function checkActiveGame() {
   const snap=await get(ref(db,'activeGames'));
@@ -983,12 +992,12 @@ async function checkActiveGame() {
   const myGame=Object.entries(games).find(([id,g])=>g.players&&g.players[CU.uid]&&g.status!=='result'&&g.status!=='quit'&&g.status!=='ended');
   if (myGame){toast('Reconnecting to your game...','success');setTimeout(()=>loadAndStartGame(myGame[0]),1200);}
 }
-
+ 
 // ── Game Engine ───────────────────────────
 const SUITS=['♠','♥','♦','♣'], RANKS=['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
 function buildDeck(){const d=[];for(const s of SUITS)for(const r of RANKS)d.push(r+s);return d;}
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-function cardHTML(card,size=48,anim=''){
+function cardHTML(card,size=44,anim=''){
   if(!card)return''; const suit=card.slice(-1); const rank=card.slice(0,-1); const red=suit==='♥'||suit==='♦';
   return `<div class="g-card ${anim}" style="width:${size}px;height:${Math.round(size*1.4)}px;background:#fff;color:${red?'#c0392b':'#1a1a1a'};font-size:${Math.round(size*0.28)}px;box-shadow:0 2px 8px rgba(0,0,0,0.3);">
     <span style="align-self:flex-start;padding:2px 4px;font-size:${Math.round(size*0.22)}px">${rank}</span>
@@ -996,13 +1005,19 @@ function cardHTML(card,size=48,anim=''){
     <span style="align-self:flex-end;padding:2px 4px;font-size:${Math.round(size*0.22)}px;transform:rotate(180deg)">${rank}</span>
   </div>`;
 }
-
-function startGame(gameId,gData,myRole,oppUid,oppName) {
+ 
+function startGame(gameId,gData,myRole,oppUid,oppName,oppPhoto) {
   if (gameListener){gameListener();gameListener=null;}
-  gameState={gameId,myRole,oppUid,bet:gData.bet||0,dealActionLock:false};
-  document.getElementById('g-p0name').textContent=CP.name;
-  document.getElementById('g-p1name').textContent=oppName||gData.players[oppUid]?.name||'Opponent';
-  document.getElementById('gchat-name').textContent=oppName||'Chat';
+  gameState={gameId,myRole,oppUid,bet:gData.bet||0,dealActionLock:false,oppName,oppPhoto};
+ 
+  // Set player names in topbar
+  document.getElementById('g-p0name').textContent = CP.name;
+  document.getElementById('g-p1name').textContent = oppName;
+  // Set avatars
+  setAvatarEl(document.getElementById('g-av-you'), CP.photoURL, CP.name);
+  setAvatarEl(document.getElementById('g-av-opp'), oppPhoto, oppName);
+  document.getElementById('gchat-name').textContent = oppName;
+ 
   showView('game');
   gchatOpen=false; gchatUnread=0;
   setupGameChat(gameId,oppUid);
@@ -1013,9 +1028,16 @@ function startGame(gameId,gData,myRole,oppUid,oppName) {
   });
   gameListener=unsub;
 }
-
+ 
 function renderGamePhase(g,gameId) {
-  const isDealer=CU.uid===g.dealer; const body=document.getElementById('game-body'); const bet=g.bet||0;
+  const isDealer=CU.uid===g.dealer;
+  const body=document.getElementById('game-body');
+  const bet=g.bet||0;
+  const dealerName=g.players?.[g.dealer]?.name||'Dealer';
+  const predictorName=g.players?.[g.predictor]?.name||'Predictor';
+  const myName=CP.name;
+  const oppName=isDealer?predictorName:dealerName;
+ 
   if (g.status==='setup') {
     body.innerHTML=`<div style="display:flex;flex-direction:column;gap:14px"><div class="g-panel">
       <div class="g-h2">⚔ Game Setup</div>
@@ -1027,43 +1049,80 @@ function renderGamePhase(g,gameId) {
       </div>
       ${isDealer?`<p style="font-size:13px;color:var(--text-mid);text-align:center;margin-bottom:14px">You are the <strong>Dealer</strong>. Press deal when ready.</p>
         <button class="g-btn-p" onclick="dealerDeal('${gameId}')">🃏 Deal Cards</button>`
-      :`<p style="font-size:13px;color:var(--text-mid);text-align:center">Waiting for dealer to deal cards...</p>
+      :`<p style="font-size:13px;color:var(--text-mid);text-align:center">Waiting for <strong>${esc(dealerName)}</strong> to deal cards...</p>
         <div style="text-align:center;margin-top:20px;font-size:32px;animation:lp 1.2s ease infinite">🃏</div>`}
     </div></div>`;
+ 
   } else if (g.status==='predict') {
+    // Show dealer's name prompting predictor to name a card
     body.innerHTML=`<div style="display:flex;flex-direction:column;gap:14px"><div class="g-panel">
       <div class="g-h2">🔮 Prediction Phase</div>
       <div style="text-align:center;margin-bottom:16px">
         <div style="font-size:12px;color:var(--text-dim)">Bet Amount</div>
         <div style="font-family:'Cinzel',serif;font-size:28px;color:var(--gold)">Rs. ${bet.toLocaleString()}</div>
       </div>
-      ${!isDealer?`<p style="font-size:13px;color:var(--text-mid);text-align:center;margin-bottom:12px">Name a card — if it appears in your half, <strong style="color:var(--gold)">you win!</strong></p>
+      ${!isDealer?`
+        <div class="dealer-msg-box">
+          <div class="dealer-msg-name">${esc(dealerName)}</div>
+          <div class="dealer-msg-text"><strong>${esc(predictorName)}</strong>, name a card!</div>
+        </div>
+        <p style="font-size:13px;color:var(--text-mid);text-align:center;margin-bottom:12px">If your card appears in your half — <strong style="color:var(--gold)">you win!</strong></p>
         <label style="font-size:11px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:8px">Select Card</label>
         <div style="display:flex;gap:8px;margin-bottom:14px">
           <select class="g-sel" id="g-rank">${RANKS.map(r=>`<option>${r}</option>`).join('')}</select>
           <select class="g-sel" id="g-suit">${SUITS.map(s=>`<option>${s}</option>`).join('')}</select>
         </div>
         <button class="g-btn-p" onclick="predictorPredict('${gameId}')">🔮 Name This Card!</button>`
-      :`<p style="font-size:13px;color:var(--text-mid);text-align:center">Waiting for predictor to name a card...</p>
-        <div style="text-align:center;margin-top:20px;font-size:32px;animation:lp 1.2s ease infinite">🔮</div>`}
+      :`
+        <div class="dealer-msg-box">
+          <div class="dealer-msg-name">${esc(dealerName)} (You)</div>
+          <div class="dealer-msg-text"><strong>${esc(predictorName)}</strong>, name a card!</div>
+        </div>
+        <div style="text-align:center;margin-top:20px;font-size:32px;animation:lp 1.2s ease infinite">🔮</div>
+        <p style="font-size:13px;color:var(--text-mid);text-align:center;margin-top:12px">Waiting for <strong>${esc(predictorName)}</strong> to name a card...</p>`}
     </div></div>`;
+ 
   } else if (g.status==='dealing') {
-    const namedCard=g.namedCard||'?'; const dealtCards=g.dealtCards||[]; const deck=g.deck||[];
-    const found=dealtCards.includes(namedCard); const progress=deck.length?Math.round((dealtCards.length/deck.length)*100):0;
+    const namedCard=g.namedCard||'?';
+    const deck=g.deck||[];
+    const dealtCards=g.dealtCards||[];
+    const half=Math.ceil(deck.length/2);
+    // Split: first half goes to predictor, second half to dealer
+    const predictorCards=dealtCards.slice(0,half);
+    const dealerCards=dealtCards.slice(half);
+    const found=dealtCards.includes(namedCard);
+    const foundInPredictorHalf=predictorCards.includes(namedCard);
+    const progress=deck.length?Math.round((dealtCards.length/deck.length)*100):0;
+    const currentPile = dealtCards.length < half ? 'predictor' : 'dealer';
+ 
     body.innerHTML=`<div style="display:flex;flex-direction:column;gap:14px"><div class="g-panel">
       <div class="g-h2">🃏 Dealing...</div>
       <div class="g-progress-bar"><div class="g-progress-fill" style="width:${progress}%"></div></div>
-      <div style="text-align:center;margin-bottom:12px">
-        <div style="font-size:12px;color:var(--text-dim);margin-bottom:4px">Named Card</div>
-        <div style="font-size:24px;font-weight:700;color:var(--gold)">${namedCard}</div>
-        <div style="font-size:11px;color:var(--text-dim);margin-top:4px">${dealtCards.length} / ${deck.length} cards dealt</div>
+      <div style="text-align:center;margin-bottom:10px">
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px">Named Card</div>
+        <div style="font-size:22px;font-weight:700;color:var(--gold)">${namedCard}</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:2px">${dealtCards.length} / ${deck.length} dealt · Currently dealing to: <span style="color:${currentPile==='predictor'?'var(--gold)':'#3498db'};font-weight:700">${currentPile==='predictor'?predictorName:dealerName}</span></div>
       </div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:14px;max-height:180px;overflow-y:auto;">
-        ${dealtCards.map(c=>cardHTML(c,44,c===namedCard?'glow-anim':'deal-anim')).join('')}
+ 
+      <div class="card-split-container">
+        <div class="card-half predictor-half">
+          <div class="card-half-label">🔮 ${esc(predictorName)}'s cards (${predictorCards.length})</div>
+          <div class="card-half-cards">
+            ${predictorCards.length===0?`<div style="font-size:11px;color:var(--text-dim);padding:8px;width:100%;text-align:center;">Waiting...</div>`:predictorCards.map(c=>cardHTML(c,38,c===namedCard?'glow-anim':'deal-anim')).join('')}
+          </div>
+        </div>
+        <div class="card-half dealer-half">
+          <div class="card-half-label">🃏 ${esc(dealerName)}'s cards (${dealerCards.length})</div>
+          <div class="card-half-cards">
+            ${dealerCards.length===0?`<div style="font-size:11px;color:var(--text-dim);padding:8px;width:100%;text-align:center;">Waiting...</div>`:dealerCards.map(c=>cardHTML(c,38,c===namedCard?'glow-anim':'deal-anim')).join('')}
+          </div>
+        </div>
       </div>
+ 
       ${isDealer?`<button class="g-btn-p" id="deal-next-btn" onclick="dealNext('${gameId}')" ${found?'disabled':''}>${found?'✓ Named card appeared!':'▶ Deal Next Card'}</button>`
-      :`<p style="font-size:13px;color:var(--text-mid);text-align:center">${found?'✓ Named card appeared!':'Dealer is dealing cards...'}</p>`}
+      :`<p style="font-size:13px;color:var(--text-mid);text-align:center">${found?'✓ Named card appeared!':'Waiting for dealer to deal next card...'}</p>`}
     </div></div>`;
+ 
   } else if (g.status==='result') {
     const isWin=(isDealer&&g.winner==='dealer')||(!isDealer&&g.winner==='predictor'); const amt=g.bet||0;
     body.innerHTML=`<div style="display:flex;flex-direction:column;gap:14px"><div class="g-panel" style="text-align:center;">
@@ -1074,9 +1133,10 @@ function renderGamePhase(g,gameId) {
         <div style="font-family:'Cinzel',serif;font-size:28px;color:${isWin?'var(--gold)':'#e74c3c'}">${isWin?`+Rs. ${amt.toLocaleString()}`:`-Rs. ${amt.toLocaleString()}`}</div>
       </div>
       <div style="font-size:13px;color:var(--text-dim);margin-bottom:6px">Named Card: <strong style="color:var(--gold)">${g.namedCard}</strong></div>
-      <div style="font-size:13px;color:var(--text-dim);margin-bottom:20px">Won by: <strong style="color:${g.winner==='predictor'?'var(--gold)':'#3498db'}">${g.winner==='predictor'?'Predictor':'Dealer'}</strong></div>
+      <div style="font-size:13px;color:var(--text-dim);margin-bottom:20px">Won by: <strong style="color:${g.winner==='predictor'?'var(--gold)':'#3498db'}">${g.winner==='predictor'?predictorName:dealerName}</strong></div>
       <button class="g-btn-p" onclick="quitGame()">Back to Lobby</button>
     </div></div>`;
+ 
   } else if (g.status==='quit') {
     body.innerHTML=`<div class="g-panel" style="text-align:center;padding:32px;">
       <div style="font-size:32px;margin-bottom:12px">🚪</div>
@@ -1086,7 +1146,7 @@ function renderGamePhase(g,gameId) {
     </div>`;
   }
 }
-
+ 
 window.dealerDeal = async gameId => {
   const snap=await get(ref(db,`activeGames/${gameId}`)); const g=snap.val();
   if (!g||g.status!=='setup') return;
@@ -1109,12 +1169,16 @@ window.dealNext = async gameId => {
     const deck=g.deck||[]; const dealtCards=g.dealtCards||[];
     if (dealtCards.length>=deck.length) return;
     const nextCard=deck[dealtCards.length]; const newDealt=[...dealtCards,nextCard];
-    if (nextCard===g.namedCard) await resolveGame(gameId,g,'predictor',newDealt);
+    const half=Math.ceil(deck.length/2);
+    // Named card in predictor's half (first half) = predictor wins
+    // All cards dealt without named card in predictor's half = dealer wins
+    const namedCardInPredictorHalf=newDealt.slice(0,half).includes(g.namedCard);
+    if (namedCardInPredictorHalf) await resolveGame(gameId,g,'predictor',newDealt);
     else if (newDealt.length>=deck.length) await resolveGame(gameId,g,'dealer',newDealt);
     else await update(ref(db,`activeGames/${gameId}`),{dealtCards:newDealt});
   } finally { if(gameState) gameState.dealActionLock=false; }
 };
-
+ 
 async function resolveGame(gameId,g,winner,dealtCards) {
   const bet=g.bet||0; const dealerUid=g.dealer; const predictorUid=g.predictor;
   const winnerUid=winner==='predictor'?predictorUid:dealerUid;
@@ -1134,7 +1198,7 @@ async function resolveGame(gameId,g,winner,dealtCards) {
   const histEntry=(uid,res)=>push(ref(db,`gameHistory/${uid}`),{opponent:res==='win'?g.players[loserUid]?.name:g.players[winnerUid]?.name,namedCard:g.namedCard,result:res,amount:bet,timestamp:Date.now(),gameId});
   await histEntry(winnerUid,'win'); await histEntry(loserUid,'loss');
 }
-
+ 
 window.confirmQuit = () => { if(confirm('Are you sure you want to quit?')) quitGame(); };
 window.quitGame = async () => {
   if (gameState?.gameId) await update(ref(db,`activeGames/${gameState.gameId}`),{status:'quit'}).catch(()=>{});
@@ -1143,7 +1207,7 @@ window.quitGame = async () => {
   gameState=null; gchatOpen=false; gchatUnread=0;
   showView('lobby');
 };
-
+ 
 // ── In-game chat ──────────────────────────
 function setupGameChat(gameId,oppUid) {
   if (gchatRef&&gchatListener) off(gchatRef,'value',gchatListener);
@@ -1175,7 +1239,7 @@ window.sendGameMsg = async () => {
   const chatId=[CU.uid,gameState.oppUid].sort().join('_');
   await push(ref(db,`chats/${chatId}/messages`),{from:CU.uid,text,timestamp:Date.now(),seen:false});
 };
-
+ 
 // ── Network status ────────────────────────
 const connRef=ref(db,'.info/connected');
 onValue(connRef, snap=>{
