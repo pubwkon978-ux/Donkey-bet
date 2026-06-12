@@ -612,7 +612,7 @@ function setAvatarEl(el, photoURL, name) {
 // ── Auth ─────────────────────────────────
 onAuthStateChanged(auth, async user => {
   document.getElementById('page-loader').classList.add('hidden');
-  if (!user) { window.location.href = 'login.html'; return; }
+  if (!user) { window.location.href = 'index.html'; return; }
   CU = user;
   const snap = await get(ref(db, `users/${CU.uid}`));
   if (!snap.exists()) { window.location.href = 'profile.html'; return; }
@@ -766,7 +766,7 @@ window.doSignOut    = async () => {
   Object.values(unreadListeners).forEach(unsub => { try { off(unsub); } catch(e){} });
   if (gameListener) { try { gameListener(); } catch(e){} gameListener=null; }
   try { await fbSignOut(auth); } catch(e) {}
-  window.location.href = 'login.html';
+  window.location.href = 'index.html';
 };
  
 // ── History ───────────────────────────────
