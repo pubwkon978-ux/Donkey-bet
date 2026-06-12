@@ -1,0 +1,27 @@
+{
+  "name": "Donkey Bet Admin",
+  "short_name": "DB Admin",
+  "description": "Donkey Bet Admin Control Panel",
+  "start_url": "/Donkey-bet/admin.html",
+  "scope": "/Donkey-bet/",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#040f08",
+  "theme_color": "#040f08",
+  "icons": [
+    {
+      "src": "icon1.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon1.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["utilities"],
+  "lang": "en"
+}
