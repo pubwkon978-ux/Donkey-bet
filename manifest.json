@@ -2,7 +2,7 @@
   "name": "Donkey Bet",
   "short_name": "Donkey Bet",
   "description": "Play card games with friends. Win real prizes.",
-  "start_url": "/Donkey-bet/game.html",
+  "start_url": "/Donkey-bet/index.html",
   "scope": "/Donkey-bet/",
   "display": "standalone",
   "orientation": "portrait",
