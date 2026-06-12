@@ -354,7 +354,7 @@ window.saveProfile = async () => {
  
 onAuthStateChanged(auth, async user => {
   document.getElementById('page-loader').classList.add('hidden');
-  if (!user) { window.location.href = 'login.html'; return; }
+  if (!user) { window.location.href = 'index.html'; return; }
   CU = user;
  
   const snap = await get(ref(db, `users/${CU.uid}`));
